@@ -25,7 +25,11 @@ class GHXArray(object):
     """
 
     def __init__(self, json_path, loads_path):
-        # class data
+
+        """
+        This is going to do something super-duper cool
+        """
+
         self.name = ""
         self.num_bh = 0
         self.flow_rate = 0.0
@@ -294,5 +298,7 @@ class GHX:
         self.calc_inside_convection()
         self.calc_short_circuiting()
 
-GHXArray(path_to_json, path_to_loads).simulate()
+
+if __name__ == "__main__":
+    GHXArray(path_to_json, path_to_loads).simulate()
 
