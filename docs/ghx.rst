@@ -4,7 +4,7 @@ ghx package
 Module contents
 ---------------
 
-.. automodule:: ghx.ghx
+.. automodule:: ghx
     :members:
     :undoc-members:
     :show-inheritance:
