@@ -1,6 +1,6 @@
 
 import sys
-import ghx
+import ghx.ghx
 
 # nice usage function
 def usage():

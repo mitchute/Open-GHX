@@ -3,15 +3,19 @@ import numpy as np
 import simplejson as json
 import CoolProp.CoolProp as CP
 
-class GHXArray(object):
+class GHXArray:
     """
-    GHX Array Docs
+    GHXArray is the class object that holds the information that defines a ground heat exchanger array. This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
     """
 
     def __init__(self, json_path, loads_path):
 
         """
-        This is going to do something super-duper cool
+        Constructor for the class. Call it wil the path to the json input file and the csv loads file.
+
+        Calls get_input and get_loads to load data into structs.
+
+        GHXArray(<json_path>, <loads_path>)
         """
 
         self.name = ""
@@ -31,8 +35,13 @@ class GHXArray(object):
         # get loads
         self.get_loads(loads_path)
 
-    # reads json input file
     def get_input(self, json_path):
+
+        """
+        Reads data from the json file using the simplejson python library. If the json data is loaded successfully, the GHXArray data structure is populated. If data load is not successful, program exits.
+
+        :param json_path: path to the json input file containing information about the GHX array
+        """
 
         # read from JSON file
         try:
@@ -111,8 +120,13 @@ class GHXArray(object):
             print("Program exiting")
             sys.exit(1)
 
-    # loads json into GHX data structures
     def load_GHX_data(self, json_data):
+
+        """
+        Instansiates and loades data into GHX class for individual ground heat exchangers. If key values are not found in input file, messages output to the user.
+
+        :param json_data: json data loaded from input file
+        """
 
         # num ghx's
         num_ghx = len(json_data['GHXs'])
@@ -177,8 +191,13 @@ class GHXArray(object):
                 print("\t'Pipe Thickness' key not found")
                 pass
 
-    # import loads
     def get_loads(self, load_path):
+
+        """
+        Reads loads from the load input file. If data load is not successful, program exits.
+
+        :param load_path: path of csv file containing timeseries loads
+        """
 
         try:
             print("Importing loads")
@@ -190,16 +209,34 @@ class GHXArray(object):
             print("Program exiting")
             sys.exit(1)
 
-    # density of working fluid
     def dens(self, temp_in_c):
+
+        """
+        Determines the fluid density as a function of temperature, in Celsius. Uses the CoolProp python library to find the fluid density. Fluid type is determined from the type of fluid specified for the GHX array object.
+
+        :param temp_in_c: temperature in Celsius
+        :returns: float
+        """
         return CP.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
-    # specfic heat of working fluid
     def cp(self, temp_in_c):
+
+        """
+        Determines the fluid specific heat as a function of temperature, in Celsius. Uses the CoolProp python library to find the fluid specific heat. Fluid type is determined from the type of fluid specified for the GHX array object.
+
+        :param temp_in_c: temperature in Celsius
+        :returns: float
+        """
+
         return CP.PropsSI('C', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
-    # calculate g-funcitons if not present
     def calc_g_func(self):
+
+        """
+        Attempts to calculate g-functions for given ground heat exchangers. If not successful, program exits.
+
+        More documentation to come...
+        """
 
         try:
             print("Calculating g-functions")
@@ -213,6 +250,13 @@ class GHXArray(object):
             sys.exit(1)
 
     def update_g_func_interp_lists(self):
+
+        """
+        Because g-funcitons are read in as pairs, we need to convert the t/ts and g-func values into individual lists so we can use the built in python interpolation routines. This takes the given g-function pairs and converts to individual lists.
+
+        Called every time the g-functions are updated.
+        """
+
         num = len(self.g_func_pairs)
 
         self.g_func_x = []
@@ -223,6 +267,10 @@ class GHXArray(object):
             self.g_func_y.append(self.g_func_pairs[i][1])
 
     def update_load_lists(self):
+
+        """
+        Converts the loads data into single lists.
+        """
         num = len(self.load_pairs)
 
         self.sim_hours = []
@@ -232,8 +280,11 @@ class GHXArray(object):
             self.sim_hours.append(self.load_pairs[i][0])
             self.sim_loads.append(self.load_pairs[i][1])
 
-    # interpolate to correct value of g-function
     def g_func(self, x):
+
+        """
+        Interpolates to the correct g-function value
+        """
 
         num = len(self.g_func_pairs)
         lower_index = 0
@@ -248,6 +299,12 @@ class GHXArray(object):
         return np.interp(x, self.g_func_x, self.g_func_y)
 
     def simulate(self):
+
+        """
+        Main simulation routine. Simulates the GHXArray object.
+
+        More docs to come...
+        """
         print("Beginning simulation")
 
         # calculate g-functions if not present
@@ -261,7 +318,17 @@ class GHXArray(object):
         print("Simulation complete")
 
 class GHX:
+
+    """
+    Class that contains the information for a single ground heat exchanger.
+    """
+
     def __init__(self):
+
+        """
+        Constructor for the class.
+        """
+
         self.name = ""
         self.location = []
         self.bh_length = 0.0
@@ -272,13 +339,34 @@ class GHX:
         self.shank_space = 0.0
         self.pipe_thickness = 0.0
 
-    def calc_inside_convection(self):
+    def calc_inside_convection_res(self):
+
+        """
+        Calculates the inside convection resistance.
+
+        More docs to come...
+        """
+
         return 0
 
-    def calc_short_circuiting(self):
+    def calc_short_circuiting_res(self):
+
+        """
+        Calculates short circuiting resistance.
+
+        More docs to come...
+        """
+
         return 0
 
     def calc_resistance(self):
-        self.calc_inside_convection()
-        self.calc_short_circuiting()
+
+        """
+        Calc total thermal resistance of the borehole
+
+        More docs to come...
+        """
+
+        self.calc_inside_convection_res()
+        self.calc_short_circuiting_res()
 
