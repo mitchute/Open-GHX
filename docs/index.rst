@@ -9,9 +9,9 @@ Welcome to Open GHX's documentation!
 Contents:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 4
 
-    main
+    ghx
 
 Indices and tables
 ==================

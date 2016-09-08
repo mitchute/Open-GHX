@@ -4,15 +4,6 @@ ghx package
 Submodules
 ----------
 
-ghx.ghx module
-------------------
-
-.. automodule:: ghx.ghx
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-
 Module contents
 ---------------
 

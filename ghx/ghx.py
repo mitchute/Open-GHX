@@ -1,8 +1,8 @@
 
-import simplejson as json
 import sys
-import CoolProp.CoolProp as CP
 import numpy as np
+import simplejson as json
+import CoolProp.CoolProp as CP
 
 # nice usage function
 def usage():
