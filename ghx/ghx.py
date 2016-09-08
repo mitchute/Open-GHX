@@ -7,7 +7,7 @@ import numpy as np
 # nice usage function
 def usage():
     print("""Call this script with two command line arguments:
-    $ main.py <path to json> <path to loads>""")
+    $ ghx.py <path to json> <path to loads>""")
 
 # check the command line arguments
 if not len(sys.argv) == 3:
