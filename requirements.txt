@@ -1,4 +1,3 @@
-os
-sys
 simplejson
-CoolProp.CoolProp
+CoolProp
+numpy
