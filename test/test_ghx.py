@@ -12,11 +12,92 @@ class TestGHXArray(unittest.TestCase):
 
     def test_initGHXArray(self):
 
+        """
+        Tests input processing
+        """
         json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
 
-        ghx.GHXArray(json_file_path, csv_file_path)
-        self.assertEqual(0.0, 0.0)
+        # init
+        A = ghx.GHXArray(json_file_path, csv_file_path)
+
+        # check data
+        self.assertEqual(A.name, "Vertical GHE 1x2 Std")
+        self.assertEqual(A.num_bh, 2)
+        self.assertEqual(A.flow_rate, 0.000303)
+        self.assertEqual(A.grnd_cond, 2.493)
+        self.assertEqual(A.grnd_cp, 2.4957E06)
+        self.assertEqual(A.grnd_temp, 13.0)
+        self.assertEqual(A.fluid, "Water")
+        self.assertTrue(A.g_func_present)
+
+        for i in range(A.num_bh):
+            self.assertEqual(A.ghx_list[i].name, "BH %d" %(i+1))
+            self.assertEqual(A.ghx_list[i].location, [0,0])
+            self.assertEqual(A.ghx_list[i].bh_length, 76.2)
+            self.assertEqual(A.ghx_list[i].bh_radius, 0.05715)
+            self.assertEqual(A.ghx_list[i].grout_cond, 0.744)
+            self.assertEqual(A.ghx_list[i].pipe_cond, 0.389)
+            self.assertEqual(A.ghx_list[i].pipe_out_dia, 0.0267)
+            self.assertEqual(A.ghx_list[i].shank_space, 0.0254)
+            self.assertEqual(A.ghx_list[i].pipe_thickness, 0.00243)
+
+    def test_dens(self):
+
+        """
+        Tests fluid density calculation routine
+        """
+        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+
+        # init
+        A = ghx.GHXArray(json_file_path, csv_file_path)
+
+        tolerance = 0.1
+
+        # expect passing test
+        self.assertAlmostEqual(A.dens(20), 998.2, delta=tolerance)
+
+        # expect fail test
+        with self.assertRaises(StandardError):
+            A.dens(-10) # out of range
+
+    def test_cp(self):
+
+        """
+        Tests fluid specific heat calculation routine
+        """
+        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+
+        # init
+        A = ghx.GHXArray(json_file_path, csv_file_path)
+
+        tolerance = 0.1
+
+        # expect passing test
+        self.assertAlmostEqual(A.cp(20), 4184.1, delta=tolerance)
+
+        # expect fail test
+        with self.assertRaises(StandardError):
+            A.cp(-10) # out of range
+
+
+    def test_interp_g_funcs(self):
+
+        """
+        Tests g-function interpolation
+        """
+        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+
+        # init
+        A = ghx.GHXArray(json_file_path, csv_file_path)
+
+        tolerance = 0.1
+
+        # expect passing test
+        self.assertAlmostEqual(A.g_func(0.0), 7.70, delta=tolerance)
 
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':

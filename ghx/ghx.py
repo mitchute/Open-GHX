@@ -163,7 +163,7 @@ class GHXArray:
                 pass
 
             try:
-                self.ghx_list[i].grount_cond = json_data['GHXs'][i]['Grout Cond']
+                self.ghx_list[i].grout_cond = json_data['GHXs'][i]['Grout Cond']
             except:
                 print("\t'Grout Cond' key not found")
                 pass
@@ -334,7 +334,7 @@ class GHX:
         self.location = []
         self.bh_length = 0.0
         self.bh_radius = 0.0
-        self.grount_cond = 0.0
+        self.grout_cond = 0.0
         self.pipe_cond = 0.0
         self.pipe_out_dia = 0.0
         self.shank_space = 0.0
