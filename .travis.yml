@@ -1,3 +1,11 @@
 language: python
+
+install:
+  - pip install coveralls
+
 script:
+  - coverage run --source=ghx.ghx test/test_ghx.py test
   - python test/test_ghx.py
+
+after_success:
+  coveralls
