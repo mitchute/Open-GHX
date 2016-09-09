@@ -9,7 +9,7 @@ class GHXArray:
     GHXArray is the class object that holds the information that defines a ground heat exchanger array. This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
     """
 
-    def __init__(self, json_path, loads_path):
+    def __init__(self, json_path, loads_path, print_output=True):
 
         """
         Constructor for the class. Call it wil the path to the json input file and the csv loads file.
@@ -29,6 +29,7 @@ class GHXArray:
         self.ghx_list = []
         self.g_func_pairs = []
         self.g_func_present = False
+        self.print_output = print_output
 
         # ghx data
         self.get_input(json_path)
@@ -46,61 +47,64 @@ class GHXArray:
 
         # read from JSON file
         try:
-            print("Reading JSON input")
+            if self.print_output==True: print("Reading JSON input")
+
             with open(json_path) as json_file:
                 json_data = json.load(json_file)
-            print("....Success")
+
+            if self.print_output==True: print("....Success")
+
         except:
-            print("Error reading JSON data file---check input file")
-            print("Program exiting")
+            if self.print_output==True: print("Error reading JSON data file---check input file")
+            if self.print_output==True: print("Program exiting")
             sys.exit(1)
 
         # load data into data structs
         try:
-            print("Loading data into structs")
+            if self.print_output==True: print("Loading data into structs")
 
             # load GHX Array level inputs first
 
             try:
                 self.name = json_data['Name']
             except:
-                print("\t'Name' key not found")
+                if self.print_output==True: print("\t'Name' key not found")
                 pass
 
             try:
                 self.num_bh = json_data['Num BH']
             except:
-                print("\t'Num BH' key not found")
+                if self.print_output==True: print("\t'Num BH' key not found")
                 pass
 
             try:
                 self.flow_rate = json_data['Flow Rate']
             except:
-                print("\t'Flow Rate' key not found")
+                if self.print_output==True: print("\t'Flow Rate' key not found")
                 pass
 
             try:
                 self.grnd_cond = json_data['Grnd Cond']
             except:
-                print("\t'Grnd Cond' key not found")
+                if self.print_output==True: print("\t'Grnd Cond' key not found")
                 pass
 
             try:
                 self.grnd_cp = json_data['Grnd Cp']
             except:
-                print("\t'Grnd Cp' key not found")
+                if self.print_output==True: print("\t'Grnd Cp' key not found")
                 pass
 
             try:
                 self.grnd_temp = json_data['Grnd Temp']
             except:
-                print("\t'Grnd Temp' key not found")
+                if self.print_output==True: print("\t'Grnd Temp' key not found")
                 pass
 
             try:
                 self.fluid = json_data['Fluid']
             except:
-                print("\t'Fluid' key not found")
+                if self.print_output==True: print("\t'Fluid' key not found")
                 pass
 
             try:
@@ -108,17 +112,17 @@ class GHXArray:
                 self.g_func_present = True
                 self.update_g_func_interp_lists()
             except:
-                print("\t'G-func Pairs' key not found")
+                if self.print_output==True: print("\t'G-func Pairs' key not found")
                 pass
 
             # load data for each GHX
             self.load_GHX_data(json_data)
 
             # success
-            print("....Success")
+            if self.print_output==True: print("....Success")
         except:
-            print("Error loading data into data structs")
-            print("Program exiting")
+            if self.print_output==True: print("Error loading data into data structs")
+            if self.print_output==True: print("Program exiting")
             sys.exit(1)
 
     def load_GHX_data(self, json_data):
@@ -141,31 +145,31 @@ class GHXArray:
             try:
                 self.ghx_list[i].name = json_data['GHXs'][i]['Name']
             except:
-                print("\t'Name' key not found")
+                if self.print_output==True: print("\t'Name' key not found")
                 pass
 
             try:
                 self.ghx_list[i].location = json_data['GHXs'][i]['Location']
             except:
-                print("\t'Location' key not found")
+                if self.print_output==True: print("\t'Location' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_length = json_data['GHXs'][i]['BH Length']
             except:
-                print("\t'BH Length' key not found")
+                if self.print_output==True: print("\t'BH Length' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_radius = json_data['GHXs'][i]['BH Radius']
             except:
-                print("\t'BH Radius' key not found")
+                if self.print_output==True: print("\t'BH Radius' key not found")
                 pass
 
             try:
                 self.ghx_list[i].grout_cond = json_data['GHXs'][i]['Grout Cond']
             except:
-                print("\t'Grout Cond' key not found")
+                if self.print_output==True: print("\t'Grout Cond' key not found")
                 pass
 
             try:
@@ -177,19 +181,19 @@ class GHXArray:
             try:
                 self.ghx_list[i].pipe_out_dia = json_data['GHXs'][i]['Pipe Dia']
             except:
-                print("\t'Pipe Dia' key not found")
+                if self.print_output==True: print("\t'Pipe Dia' key not found")
                 pass
 
             try:
                 self.ghx_list[i].shank_space = json_data['GHXs'][i]['Shank Space']
             except:
-                print("\t'Shank Space' key not found")
+                if self.print_output==True: print("\t'Shank Space' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_thickness = json_data['GHXs'][i]['Pipe Thickness']
             except:
-                print("\t'Pipe Thickness' key not found")
+                if self.print_output==True: print("\t'Pipe Thickness' key not found")
                 pass
 
     def get_loads(self, load_path):
@@ -201,13 +205,13 @@ class GHXArray:
         """
 
         try:
-            print("Importing loads")
+            if self.print_output==True: print("Importing loads")
             self.load_pairs = np.genfromtxt(load_path, delimiter=',', names=True)
             self.update_load_lists()
-            print("....Success")
+            if self.print_output==True: print("....Success")
         except:
-            print("Error importing loads")
-            print("Program exiting")
+            if self.print_output==True: print("Error importing loads")
+            if self.print_output==True: print("Program exiting")
             sys.exit(1)
 
     def dens(self, temp_in_c):
@@ -244,10 +248,10 @@ class GHXArray:
 
             self.g_func_present = True
             self.update_g_func_interp_lists()
-            print("....Success")
+            if self.print_output==True: print("....Success")
         except:
-            print("Error calculating g-functions")
-            print("Program exiting")
+            if self.print_output==True: print("Error calculating g-functions")
+            if self.print_output==True: print("Program exiting")
             sys.exit(1)
 
     def update_g_func_interp_lists(self):
@@ -293,8 +297,8 @@ class GHXArray:
 
         # check whether requested val is inside the range
         if x < self.g_func_x[lower_index] or x > self.g_func_x[upper_index]:
-            print("G-function value requested beyond range of data")
-            print("Program exiting")
+            if self.print_output==True: print("G-function value requested beyond range of data")
+            if self.print_output==True: print("Program exiting")
             sys.exit(1)
 
         return np.interp(x, self.g_func_x, self.g_func_y)
@@ -310,13 +314,13 @@ class GHXArray:
 
         # calculate g-functions if not present
         if self.g_func_present == False:
-            print("G-functions not present")
+            if self.print_output==True: print("G-functions not present")
             self.calc_g_func()
 
-        for cur_time in self.sim_hours:
-            print(cur_time)
+        # for cur_time in self.sim_hours:
+            # print(cur_time)
 
-        print("Simulation complete")
+        if self.print_output==True: print("Simulation complete")
 
 class GHX:
 

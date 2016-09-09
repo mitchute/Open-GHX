@@ -19,7 +19,7 @@ class TestGHXArray(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path)
+        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         # check data
         self.assertEqual(A.name, "Vertical GHE 1x2 Std")
@@ -51,7 +51,7 @@ class TestGHXArray(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path)
+        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
@@ -71,7 +71,7 @@ class TestGHXArray(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path)
+        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
@@ -92,7 +92,7 @@ class TestGHXArray(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path)
+        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
