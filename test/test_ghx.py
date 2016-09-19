@@ -96,8 +96,14 @@ class TestGHXArray(unittest.TestCase):
 
         tolerance = 0.1
 
-        # expect passing test
+        # extrapolate down
+        self.assertAlmostEqual(A.g_func(-17.0), -4.38, delta=tolerance)
+
+        # in-range
         self.assertAlmostEqual(A.g_func(0.0), 7.70, delta=tolerance)
+
+        # extrapolate up
+        self.assertAlmostEqual(A.g_func(5.0), 8.29, delta=tolerance)
 
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':

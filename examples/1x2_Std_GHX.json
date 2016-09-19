@@ -1,11 +1,12 @@
 {
     "Name":"Vertical GHE 1x2 Std",
-    "Num BH":2,
+    "Number BH":2,
     "Flow Rate":0.000303,
-    "Grnd Cond":2.493,
-    "Grnd Cp":2.4957E06,
-    "Grnd Temp":13.0,
+    "Ground Cond":2.493,
+    "Ground Heat Capacity":2.4957E06,
+    "Ground Temp":13.0,
     "Fluid":"Water",
+    "Simulation Years":20,
     "GHXs":
         [
             {
