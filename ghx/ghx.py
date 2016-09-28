@@ -1,8 +1,36 @@
-
+# imports
 import sys
+import os
 import numpy as np
 import simplejson as json
 import CoolProp.CoolProp as CP
+from collections import deque
+
+# *hopefully* small number of globals
+months_in_year = 12
+hours_in_month = 730
+hours_in_year = months_in_year * hours_in_month
+
+
+def range_incl(start, end):
+    """
+    Returns a list with the end day inclusive
+    :param start: first inclusive element in list
+    :param end: last inclusive element in list
+    :return: list with start and end inclusive
+    """
+
+    return range(start, end + 1)
+
+
+def last_day_of_month(month):
+    """
+    Returns the last day of the given month
+    :param month: month of year (0-11)
+    :return: last day of given month
+    """
+
+    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
 
 
 class GHXArray:
@@ -14,12 +42,14 @@ class GHXArray:
     def __init__(self, json_path, loads_path, print_output=True):
 
         """
-        Constructor for the class. Call it wil the path to the json input file and the csv loads file.
+        Constructor for the class. Call it with the path to the json input file and the csv loads file.
 
         Calls get_input and get_loads to load data into structs.
 
         GHXArray(<json_path>, <loads_path>)
         """
+
+        ## Class data
 
         self.name = ""
         self.num_bh = 0
@@ -29,6 +59,7 @@ class GHXArray:
         self.ground_temp = 0.0
         self.fluid = ""
         self.sim_years = 0
+        self.aggregation_type = ""
         self.ghx_list = []
         self.g_func_pairs = []
         self.g_func_present = False
@@ -45,9 +76,20 @@ class GHXArray:
         self.ground_thermal_diff = 0.0
 
         self.ts = 0.0
-        self.temp_bh = []
+        self.temp_bh = deque()
 
-        # ghx data
+        self.agg_load_objects = []
+
+        self.g_func_hourly = deque()
+        self.hourly_loads = deque()
+
+        self.agg_load_intervals = []
+        self.agg_hour = 0
+        self.sim_hour = 0
+
+        ## initialize methods
+
+        # get ghx data
         self.get_input(json_path)
 
         # get loads
@@ -55,6 +97,12 @@ class GHXArray:
 
         # calc ts
         self.calc_ts()
+
+        # set load aggregation intervals
+        self.set_load_aggregation()
+
+        # set first aggregated load, which is zero. Need this for later
+        self.agg_load_objects.append(AggregatedLoad([0], 0))
 
     def get_input(self, json_path):
 
@@ -75,7 +123,7 @@ class GHXArray:
 
             if self.print_output: print("....Success")
 
-        except:
+        except ValueError:
             if self.print_output: print("Error reading JSON data file---check file path")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -88,57 +136,63 @@ class GHXArray:
 
             try:
                 self.name = json_data['Name']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Name' key not found")
                 pass
 
             try:
                 self.num_bh = json_data['Number BH']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Number BH' key not found")
                 pass
 
             try:
                 self.flow_rate = json_data['Flow Rate']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Flow Rate' key not found")
                 pass
 
             try:
                 self.ground_cond = json_data['Ground Cond']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Ground Cond' key not found")
                 pass
 
             try:
                 self.ground_heat_capacity = json_data['Ground Heat Capacity']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Ground Heat Capacity' key not found")
                 pass
 
             try:
                 self.ground_temp = json_data['Ground Temp']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Ground Temp' key not found")
                 pass
 
             try:
                 self.fluid = json_data['Fluid']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Fluid' key not found")
                 pass
 
             try:
                 self.sim_years = json_data['Simulation Years']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Simulation Years' key not found")
+                pass
+
+            try:
+                self.aggregation_type = json_data['Aggregation Type']
+            except ValueError:
+                if self.print_output: print("\t'Aggregation Type' key not found")
                 pass
 
             try:
                 self.g_func_pairs = json_data['G-func Pairs']
                 self.g_func_present = True
                 self.update_g_func_interp_lists()
-            except:
+            except ValueError:
                 if self.print_output: print("\t'G-func Pairs' key not found")
                 pass
 
@@ -147,7 +201,7 @@ class GHXArray:
 
             # success
             if self.print_output: print("....Success")
-        except:
+        except ValueError:
             if self.print_output: print("Error loading data into data structs")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -172,55 +226,55 @@ class GHXArray:
             # import GHX data
             try:
                 self.ghx_list[i].name = json_data['GHXs'][i]['Name']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Name' key not found")
                 pass
 
             try:
                 self.ghx_list[i].location = json_data['GHXs'][i]['Location']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Location' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_length = json_data['GHXs'][i]['BH Length']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'BH Length' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_radius = json_data['GHXs'][i]['BH Radius']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'BH Radius' key not found")
                 pass
 
             try:
                 self.ghx_list[i].grout_cond = json_data['GHXs'][i]['Grout Cond']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Grout Cond' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_cond = json_data['GHXs'][i]['Pipe Cond']
-            except:
+            except ValueError:
                 print("\t'Pipe Cond' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_out_dia = json_data['GHXs'][i]['Pipe Dia']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Pipe Dia' key not found")
                 pass
 
             try:
                 self.ghx_list[i].shank_space = json_data['GHXs'][i]['Shank Space']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Shank Space' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_thickness = json_data['GHXs'][i]['Pipe Thickness']
-            except:
+            except ValueError:
                 if self.print_output: print("\t'Pipe Thickness' key not found")
                 pass
 
@@ -237,10 +291,23 @@ class GHXArray:
             self.load_pairs = np.genfromtxt(load_path, delimiter=',', names=True)
             self.update_load_lists()
             if self.print_output: print("....Success")
-        except:
+        except ValueError:
             if self.print_output: print("Error importing loads")
             if self.print_output: print("Program exiting")
             sys.exit(1)
+
+    def set_load_aggregation(self):
+
+        """
+        Sets the load aggregation intervals based on the type specified by the user
+        """
+
+        if self.aggregation_type == "Monthly":
+            self.agg_load_intervals = [730]
+        elif self.aggregation_type == "Testing":
+            self.agg_load_intervals = [5, 10, 20, 40]
+        else:
+            self.agg_load_intervals = [1]
 
     def dens(self, temp_in_c):
 
@@ -250,7 +317,6 @@ class GHXArray:
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
         :param temp_in_c: temperature in Celsius
-        :returns: float
         """
         return CP.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
@@ -279,7 +345,7 @@ class GHXArray:
             self.g_func_present = True
             self.update_g_func_interp_lists()
             if self.print_output: print("....Success")
-        except:
+        except ValueError:
             if self.print_output: print("Error calculating g-functions")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -323,28 +389,38 @@ class GHXArray:
 
         if ln_t_ts < self.g_func_lntts[lower_index]:
             # if value is below range, extrapolate down
-            return ((ln_t_ts - self.g_func_lntts[lower_index]) / (self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
+            return ((ln_t_ts - self.g_func_lntts[lower_index]) / (
+            self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (
+                   self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
         elif ln_t_ts > self.g_func_lntts[upper_index]:
             # if value is above range, extrapolate up
-            return ((ln_t_ts - self.g_func_lntts[upper_index]) / (self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
+            return ((ln_t_ts - self.g_func_lntts[upper_index]) / (
+            self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (
+                   self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
         else:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
 
-    def calc_aggregate_load(self):
+    def aggregate_load(self, sim_hour):
 
         """
-        Calculates aggregated load
+        Creates aggregated load object
         """
 
-        return 0
+        self.agg_load_objects.append(AggregatedLoad(self.hourly_loads, sim_hour))
+        self.collapse_aggregate_loads()
+        self.agg_hour = 0
+
+    def collapse_aggregate_loads(self):
+
+        """
+        Collapses aggregated loads
+        """
 
     def calc_ts(self):
 
         """
-        Calculates non-dimensional time.
-
-        Selects length scale based on deepest GHX
+        Calculates non-dimensional time. Selects length scale based on deepest GHX
         """
 
         max_h = 0.0
@@ -355,7 +431,33 @@ class GHXArray:
             if max_h < self.ghx_list[i].bh_length:
                 max_h = self.ghx_list[i].bh_length
 
-        self.ts = max_h**2 / (9 * self.ground_thermal_diff)
+        self.ts = max_h ** 2 / (9 * self.ground_thermal_diff)
+
+    def generate_output_reports(self):
+
+        """
+        Generates output results
+        """
+
+        cwd = os.getcwd()
+        path_to_run_dir = os.path.join(cwd, "run")
+
+        if not os.path.exists(path_to_run_dir):
+            os.makedirs(path_to_run_dir)
+
+        # open files
+        out_file = open(os.path.join(path_to_run_dir, "GHX.csv"), 'w')
+
+        # write headers
+        out_file.write("Hour, BH Temp [C]\n")
+
+        sim_hour = 0
+        for temp in self.temp_bh:
+            sim_hour += 1
+            out_file.write("%d, %0.2f\n" %(sim_hour, temp))
+
+        # close files
+        out_file.close()
 
     def simulate(self):
 
@@ -371,27 +473,65 @@ class GHXArray:
             if self.print_output: print("G-functions not present")
             self.calc_g_func()
 
-        for i in range(len(self.raw_sim_hours)):
-            temp_bh = 0.0
+        # pre-load first month of hourly g-functions
+        for hour in range(hours_in_month):
+            ln_t_ts = np.log((hour+1) * 3600 / self.ts)
+            self.g_func_hourly.append(self.g_func(ln_t_ts))
 
-            self.calc_aggregate_load()
+        # set aggregate load container max length
+        # length is equal to the shortest interval + 1 so we can compare against the previous load
+        self.hourly_loads = deque([0]*(self.agg_load_intervals[0]+1), maxlen=self.agg_load_intervals[0]+1)
 
-            if i == 0:
-                ln_t_ts = np.log((i + 1) * 3600 / self.ts)
-                g = self.g_func(ln_t_ts)
-                temp_bh = self.raw_sim_loads[0] / (2 * np.pi * self.ground_cond * self.ghx_list[0].bh_length) * g
-            else:
-                for j in range(i):
-                    ln_t_ts = np.log((j + 1) * 3600 / self.ts)
-                    g = self.g_func(ln_t_ts)
-                    temp_bh += (self.raw_sim_loads[i] - self.raw_sim_loads[i-1]) / (2 * np.pi * self.ground_cond * self.ghx_list[0].bh_length) * g
+        for year in range(self.sim_years):
+            for month in range(months_in_year):
 
-            # don't forget to add the ground temp in
-            temp_bh += self.ground_temp
+                print("....Year/Month: %d/%d" %(year+1, month+1))
 
-            self.temp_bh.append(temp_bh)
+                for hour in range(hours_in_month):
 
-            print("Hour: %4d\tTemp: %0.4f" %(i+1, temp_bh))
+                    self.agg_hour += 1
+                    self.sim_hour += 1
+
+                    # get raw hourly load and append to hourly list
+                    load_index = month * hours_in_month + hour
+                    self.hourly_loads.append(self.raw_sim_loads[load_index])
+
+                    # calculate borehole temp
+                    # hourly effects
+                    temp_bh_hourly = []
+                    for i in range(self.agg_hour):
+                        index_cur_hour = self.agg_load_intervals[0] - i
+                        index_prev_hour = self.agg_load_intervals[0]- i - 1
+
+                        q_cur_hour = self.hourly_loads[index_cur_hour]
+                        q_prev_hour = self.hourly_loads[index_prev_hour]
+                        g = self.g_func_hourly[i]
+                        temp_bh_hourly.append((q_cur_hour - q_prev_hour) / (2 * np.pi * self.ground_cond * self.num_bh * self.ghx_list[0].bh_length) * g)
+
+                    # aggregated load effects
+                    temp_bh_agg = []
+                    for i in range(len(self.agg_load_objects)):
+                        if i == 0:
+                            continue
+                        curr_obj = self.agg_load_objects[i]
+                        prev_obj = self.agg_load_objects[i-1]
+
+                        t = self.sim_hour - ((curr_obj.time() + prev_obj.time()) / 2.0)
+                        ln_t_ts = np.log(t * 3600 / self.ts)
+
+                        g = self.g_func(ln_t_ts)
+
+                        temp_bh_agg.append((curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.num_bh * self.ghx_list[0].bh_length) * g)
+
+                    # final bh temp
+                    self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
+
+                    # aggregate load
+                    if self.agg_hour == self.agg_load_intervals[0]:
+                        self.hourly_loads.popleft()
+                        self.aggregate_load(self.sim_hour)
+
+        self.generate_output_reports()
 
         if self.print_output: print("Simulation complete")
 
@@ -438,3 +578,27 @@ class GHX:
 
         self.calc_inside_convection_res()
 
+
+class AggregatedLoad:
+
+    """
+    Class that contains a block of aggregated loads
+    """
+
+    def __init__(self, loads, sim_hour):
+
+        """
+        Constructor for the class
+        """
+
+        self.loads = deque(loads,maxlen=len(loads))
+        self.sim_hour = sim_hour
+        self.q = np.mean(self.loads)
+
+    def time(self):
+
+        """
+        :returns absolute time (in hours) when load occurred
+        """
+
+        return self.sim_hour

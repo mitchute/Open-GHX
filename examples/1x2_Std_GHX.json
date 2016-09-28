@@ -6,7 +6,8 @@
     "Ground Heat Capacity":2.4957E06,
     "Ground Temp":13.0,
     "Fluid":"Water",
-    "Simulation Years":20,
+    "Simulation Years":1,
+    "Aggregation Type":"Testing",
     "GHXs":
         [
             {

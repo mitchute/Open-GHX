@@ -25,9 +25,9 @@ class TestGHXArray(unittest.TestCase):
         self.assertEqual(A.name, "Vertical GHE 1x2 Std")
         self.assertEqual(A.num_bh, 2)
         self.assertEqual(A.flow_rate, 0.000303)
-        self.assertEqual(A.grnd_cond, 2.493)
-        self.assertEqual(A.grnd_cp, 2.4957E06)
-        self.assertEqual(A.grnd_temp, 13.0)
+        self.assertEqual(A.ground_cond, 2.493)
+        self.assertEqual(A.ground_heat_capacity, 2.4957E06)
+        self.assertEqual(A.ground_temp, 13.0)
         self.assertEqual(A.fluid, "Water")
         self.assertTrue(A.g_func_present)
 
