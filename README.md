@@ -10,6 +10,6 @@ Documentation is hosted on [ReadTheDocs](http://open-ghx.readthedocs.io/en/lates
 
 Tests are executed by [Travis CI](https://travis-ci.org/mitchute/Open-GHX)
 
-## Coverage [![Coverage Status](https://coveralls.io/repos/github/mitchute/Open-GHX/badge.svg?branch=master)](https://coveralls.io/github/mitchute/Open-GHX?branch=master)
+## Coverage [![Coverage Status](https://coveralls.io/repos/github/mitchute/Open-GHX/badge.svg)](https://coveralls.io/github/mitchute/Open-GHX)
 
 Coverage tests are run by [Coveralls](https://coveralls.io/)
