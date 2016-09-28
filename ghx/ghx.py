@@ -12,18 +12,8 @@ hours_in_month = 730
 hours_in_year = months_in_year * hours_in_month
 
 
-def range_incl(start, end):
-    """
-    Returns a list with the end day inclusive
-    :param start: first inclusive element in list
-    :param end: last inclusive element in list
-    :return: list with start and end inclusive
-    """
-
-    return range(start, end + 1)
-
-
 def last_day_of_month(month):
+
     """
     Returns the last day of the given month
     :param month: month of year (0-11)
@@ -34,6 +24,7 @@ def last_day_of_month(month):
 
 
 class GHXArray:
+
     """
     GHXArray is the class object that holds the information that defines a ground heat exchanger array.
     This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
@@ -123,7 +114,7 @@ class GHXArray:
 
             if self.print_output: print("....Success")
 
-        except ValueError:
+        except ValueError: # pragma: no cover
             if self.print_output: print("Error reading JSON data file---check file path")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -136,55 +127,55 @@ class GHXArray:
 
             try:
                 self.name = json_data['Name']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Name' key not found")
                 pass
 
             try:
                 self.num_bh = json_data['Number BH']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Number BH' key not found")
                 pass
 
             try:
                 self.flow_rate = json_data['Flow Rate']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Flow Rate' key not found")
                 pass
 
             try:
                 self.ground_cond = json_data['Ground Cond']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Ground Cond' key not found")
                 pass
 
             try:
                 self.ground_heat_capacity = json_data['Ground Heat Capacity']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Ground Heat Capacity' key not found")
                 pass
 
             try:
                 self.ground_temp = json_data['Ground Temp']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Ground Temp' key not found")
                 pass
 
             try:
                 self.fluid = json_data['Fluid']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Fluid' key not found")
                 pass
 
             try:
                 self.sim_years = json_data['Simulation Years']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Simulation Years' key not found")
                 pass
 
             try:
                 self.aggregation_type = json_data['Aggregation Type']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Aggregation Type' key not found")
                 pass
 
@@ -192,7 +183,7 @@ class GHXArray:
                 self.g_func_pairs = json_data['G-func Pairs']
                 self.g_func_present = True
                 self.update_g_func_interp_lists()
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'G-func Pairs' key not found")
                 pass
 
@@ -201,7 +192,7 @@ class GHXArray:
 
             # success
             if self.print_output: print("....Success")
-        except ValueError:
+        except ValueError: # pragma: no cover
             if self.print_output: print("Error loading data into data structs")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -226,55 +217,55 @@ class GHXArray:
             # import GHX data
             try:
                 self.ghx_list[i].name = json_data['GHXs'][i]['Name']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Name' key not found")
                 pass
 
             try:
                 self.ghx_list[i].location = json_data['GHXs'][i]['Location']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Location' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_length = json_data['GHXs'][i]['BH Length']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'BH Length' key not found")
                 pass
 
             try:
                 self.ghx_list[i].bh_radius = json_data['GHXs'][i]['BH Radius']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'BH Radius' key not found")
                 pass
 
             try:
                 self.ghx_list[i].grout_cond = json_data['GHXs'][i]['Grout Cond']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Grout Cond' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_cond = json_data['GHXs'][i]['Pipe Cond']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 print("\t'Pipe Cond' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_out_dia = json_data['GHXs'][i]['Pipe Dia']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Pipe Dia' key not found")
                 pass
 
             try:
                 self.ghx_list[i].shank_space = json_data['GHXs'][i]['Shank Space']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Shank Space' key not found")
                 pass
 
             try:
                 self.ghx_list[i].pipe_thickness = json_data['GHXs'][i]['Pipe Thickness']
-            except ValueError:
+            except ValueError: # pragma: no cover
                 if self.print_output: print("\t'Pipe Thickness' key not found")
                 pass
 
@@ -291,7 +282,7 @@ class GHXArray:
             self.load_pairs = np.genfromtxt(load_path, delimiter=',', names=True)
             self.update_load_lists()
             if self.print_output: print("....Success")
-        except ValueError:
+        except ValueError: # pragma: no cover
             if self.print_output: print("Error importing loads")
             if self.print_output: print("Program exiting")
             sys.exit(1)
@@ -345,7 +336,7 @@ class GHXArray:
             self.g_func_present = True
             self.update_g_func_interp_lists()
             if self.print_output: print("....Success")
-        except ValueError:
+        except ValueError: # pragma: no cover
             if self.print_output: print("Error calculating g-functions")
             if self.print_output: print("Program exiting")
             sys.exit(1)

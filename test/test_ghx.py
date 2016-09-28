@@ -105,6 +105,21 @@ class TestGHXArray(unittest.TestCase):
         # extrapolate up
         self.assertAlmostEqual(A.g_func(5.0), 8.29, delta=tolerance)
 
+    def test_AggregatedLoad_class(self):
+
+        """
+        Tests AggregatedLoad Class
+        """
+
+        # init
+        A = ghx.AggregatedLoad([0,1,2,3,4,5,6,7,8,9], 10)
+
+        # check average load
+        self.assertEqual(A.q, 4.5)
+
+        # check time
+        self.assertEqual(A.time(), 10)
+
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':
 	unittest.main()
