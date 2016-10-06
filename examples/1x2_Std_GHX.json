@@ -8,6 +8,7 @@
     "Fluid":"Water",
     "Simulation Years":1,
     "Aggregation Type":"Testing",
+    "Min Hourly History": 192,
     "GHXs":
         [
             {
