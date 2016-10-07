@@ -18,8 +18,45 @@ tab2 = "        "
 tab3 = "            "
 tab4 = "                "
 
+# store the command line arguments
+path_to_idf = sys.argv[1]
+path_to_json = sys.argv[2]
+
+# num g-func pairs
+num_pairs = 0
+pair_counter = 0
+
+tokens = []
+
+keys = ['Object type',
+        'Name',
+        'Inlet Node',
+        'Outlet Node',
+        'Flow Rate',
+        'Number BH',
+        'BH Length',
+        'BH Radius',
+        'Ground Cond',
+        'Ground Heat Capacity',
+        'Ground Temp',
+        'Design Flow Rate',
+        'Grout Cond',
+        'Pipe Cond',
+        'Pipe Dia',
+        'Shank Space',
+        'Pipe Thickness',
+        'Max Simulation Length',
+        'Reference Ratio',
+        'Num Pairs']
+
+for i in range(100):
+    keys.append("LNTTS %d" %(i+1))
+    keys.append("G-Val %d" %(i+1))
+
+dict = {}
+
 # format the string once
-def formatted_str(tabs, key, val):
+def formatted_str(tabs, key, val, val_is_str=False):
 
     if tabs == 1:
         tab_val = tab1
@@ -27,105 +64,135 @@ def formatted_str(tabs, key, val):
         tab_val = tab2
     elif tabs == 3:
         tab_val = tab3
+    elif tabs == 4:
+        tab_val = tab4
 
-    return tab_val + "\"" + key + "\":" + val + ",\n"
+    if val_is_str:
+        return tab_val + "\"" + key + "\":\"" + val + "\",\n"
+    else:
+        return tab_val + "\"" + key + "\":" + str(val) + ",\n"
 
-# store the command line arguments
-path_to_idf = sys.argv[1]
-path_to_json = sys.argv[2]
+def read_idf():
 
-# open files
-in_file = open(path_to_idf, 'r')
-out_file = open(path_to_json, 'w')
+    # open idf file
+    in_file = open(path_to_idf, 'r')
 
-# write prelim json brackets
-out_file.write("{\"GHXs\":\n")
-out_file.write(tab1 + "[\n")
-out_file.write(tab2 + "{\n")
+    for line in in_file:
+        line = line.replace(";", ",")
+        line = line.split(",")
+        for token in line:
+            if "!" in token:
+                continue
+            elif "\n" in token:
+                continue
 
-# num g-func pairs
-num_pairs = 0
-pair_counter = 0
+            if "+" in token:
+                token = token.replace("+", "")
+            token = token.lstrip()
+            tokens.append(token)
 
-# write json object
-for line in in_file:
+    for i in range(len(tokens)):
+        dict[keys[i]] = tokens[i]
 
-    # strip white space
-    line = line.strip()
+    # close file
+    in_file.close()
 
-    # eliminate "+" for FORTRAN exponents
-    line = line.replace("+", "")
+def write_json():
 
-    # split line into tokens
-    if "," in line:
-        tokens = line.split(",")
-    elif ";" in line:
-        tokens = line.split(";")
+    # open json file
+    out_file = open(path_to_json, 'w')
 
-    if "!- Name" in line:
-        out_file.write(formatted_str(3, "Name", "\"" + tokens[0] + "\""))
-        out_file.write(formatted_str(3, "Location", "[0,0]"))
+    out_file.write("{\n")
 
-    if "Design Flow Rate" in line:
-        out_file.write(formatted_str(3, "Flow Rate", tokens[0]))
+    key = "Name"
+    out_file.write(formatted_str(1, key, dict[key], True))
 
-    if "Number of Bore Holes" in line:
-        out_file.write(formatted_str(3, "Num BH", tokens[0]))
+    key = "Number BH"
+    out_file.write(formatted_str(1, key, dict[key]))
 
-    if "Bore Hole Length" in line:
-        out_file.write(formatted_str(3, "BH Length", tokens[0]))
+    key = "Flow Rate"
+    out_file.write(formatted_str(1, key , dict[key]))
 
-    if "Bore Hole Radius" in line:
-        out_file.write(formatted_str(3, "BH Radius", tokens[0]))
+    key = "Ground Cond"
+    out_file.write(formatted_str(1, key , dict[key]))
 
-    if "Ground Thermal Conductivity" in line:
-        out_file.write(formatted_str(3, "Grnd Cond", tokens[0]))
+    key = "Ground Heat Capacity"
+    out_file.write(formatted_str(1, key , dict[key]))
 
-    if "Ground Thermal Heat Capacity" in line:
-        out_file.write(formatted_str(3, "Grnd Cp", tokens[0]))
+    key = "Ground Temp"
+    out_file.write(formatted_str(1, key , dict[key]))
 
-    if "Ground Temperature" in line:
-        out_file.write(formatted_str(3, "Grnd Temp", tokens[0]))
+    key = "Fluid"
+    out_file.write(formatted_str(1, key , "Water", True))
 
-    if "Grout Thermal Conductivity" in line:
-        out_file.write(formatted_str(3, "Grout Cond", tokens[0]))
+    key = "Simulation Years"
+    out_file.write(formatted_str(1, key , 1))
 
-    if "Pipe Thermal Conductivity" in line:
-        out_file.write(formatted_str(3, "Pipe Cond", tokens[0]))
+    key = "Aggregation Type"
+    out_file.write(formatted_str(1, key , "Monthly", True))
 
-    if "Pipe Out Diameter" in line:
-        out_file.write(formatted_str(3, "Pipe Dia", tokens[0]))
+    key = "Min Hourly History"
+    out_file.write(formatted_str(1, key, 192))
 
-    if "U-Tube Distance" in line:
-        out_file.write(formatted_str(3, "Shank Space", tokens[0]))
+    out_file.write(tab1 + "\"GHXs\":\n")
+    out_file.write(tab2 + "[\n")
+    out_file.write(tab3 + "{\n")
 
-    if "Pipe Thickness" in line:
-        out_file.write(formatted_str(3, "Pipe Thickness", tokens[0]))
+    for i in range(int(dict['Number BH'])):
 
-    if "G-Function Reference Ratio" in line:
-        out_file.write(formatted_str(3, "Ref Ratio", tokens[0]))
+        key = "Name"
+        out_file.write(formatted_str(4, key , "BH %d" %(i+1), True))
 
-    if "Number of Data Pairs of the G Function" in line:
-        num_pairs = int(tokens[0])
-        out_file.write(tab3 + "\"G-func Pairs\": [\n")
+        key = "Location"
+        out_file.write(formatted_str(4, key , "[0,0]", True))
 
-    if "G-Function Ln(T/Ts) Value" in line:
-        pair_counter += 1
-        out_file.write(tab4 + "[" + tokens[0] + ",")
+        key = "BH Length"
+        out_file.write(formatted_str(4, key , dict[key]))
 
-    if "G-Function G Value" in line:
-        if pair_counter == num_pairs:
-            out_file.write(tokens[0] + "]\n")
+        key = "BH Radius"
+        out_file.write(formatted_str(4, key , dict[key]))
+
+        key = "Grout Cond"
+        out_file.write(formatted_str(4, key , dict[key]))
+
+        key = "Pipe Cond"
+        out_file.write(formatted_str(4, key , dict[key]))
+
+        key = "Pipe Dia"
+        out_file.write(formatted_str(4, key , dict[key]))
+
+        key = "Shank Space"
+        out_file.write(formatted_str(4, key , dict[key]))
+
+        key = "Pipe Thickness"
+        out_file.write(tab4 + "\"" + key + "\": " + dict[key] + "\n")
+
+        if i == (int(dict['Number BH'])-1):
+            out_file.write(tab3 + "}\n")
         else:
-            out_file.write(tokens[0] + "],\n")
+            out_file.write(tab3 + "},\n")
+            out_file.write(tab3 + "{\n")
 
-# write closing json brackets
-out_file.write(tab3 + "]\n")
-out_file.write(tab2 + "}\n")
-out_file.write(tab1 + "]\n")
-out_file.write("}\n")
+    out_file.write(tab2 + "],\n")
+    out_file.write(tab1 + "\"G-func Pairs\": [\n")
 
-# don't forget to close the file
-out_file.close()
+    for i in range(int(dict['Num Pairs'])):
+        out_file.write(tab2 + "[")
+        L_key = ("LNTTS %d" %(i+1))
+        G_key = ("G-Val %d" %(i+1))
+        out_file.write("%s," %(dict[L_key]))
+        out_file.write("%s" %(dict[G_key]))
 
+        if i == (int(dict['Num Pairs'])-1):
+            out_file.write("]\n")
+        else:
+            out_file.write("],\n")
 
+    out_file.write(tab1 + "]\n")
+    out_file.write("}\n")
+
+    # close file
+    out_file.close()
+
+read_idf()
+write_json()
