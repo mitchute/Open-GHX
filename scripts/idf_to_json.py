@@ -39,7 +39,6 @@ keys = ['Object type',
         'Ground Cond',
         'Ground Heat Capacity',
         'Ground Temp',
-        'Design Flow Rate',
         'Grout Cond',
         'Pipe Cond',
         'Pipe Dia',
@@ -122,17 +121,11 @@ def write_json():
     key = "Ground Temp"
     out_file.write(formatted_str(1, key , dict[key]))
 
+    key = "Grout Cond"
+    out_file.write(formatted_str(1, key , dict[key]))
+
     key = "Fluid"
     out_file.write(formatted_str(1, key , "Water", True))
-
-    key = "Simulation Years"
-    out_file.write(formatted_str(1, key , 1))
-
-    key = "Aggregation Type"
-    out_file.write(formatted_str(1, key , "Monthly", True))
-
-    key = "Min Hourly History"
-    out_file.write(formatted_str(1, key, 192))
 
     out_file.write(tab1 + "\"GHXs\":\n")
     out_file.write(tab2 + "[\n")
@@ -144,15 +137,12 @@ def write_json():
         out_file.write(formatted_str(4, key , "BH %d" %(i+1), True))
 
         key = "Location"
-        out_file.write(formatted_str(4, key , "[0,0]", True))
+        out_file.write(formatted_str(4, key , [0,0]))
 
         key = "BH Length"
         out_file.write(formatted_str(4, key , dict[key]))
 
         key = "BH Radius"
-        out_file.write(formatted_str(4, key , dict[key]))
-
-        key = "Grout Cond"
         out_file.write(formatted_str(4, key , dict[key]))
 
         key = "Pipe Cond"
@@ -165,7 +155,7 @@ def write_json():
         out_file.write(formatted_str(4, key , dict[key]))
 
         key = "Pipe Thickness"
-        out_file.write(tab4 + "\"" + key + "\": " + dict[key] + "\n")
+        out_file.write(tab4 + "\"" + key + "\":" + dict[key] + "\n")
 
         if i == (int(dict['Number BH'])-1):
             out_file.write(tab3 + "}\n")

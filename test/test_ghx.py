@@ -11,16 +11,17 @@ import ghx
 
 class TestGHXArray(unittest.TestCase):
 
-    def test_initGHXArray(self):
+    def test_GHXArray_init(self):
 
         """
         Tests input processing
         """
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         # check data
         self.assertEqual(A.name, "Vertical GHE 1x2 Std")
@@ -29,6 +30,7 @@ class TestGHXArray(unittest.TestCase):
         self.assertEqual(A.ground_cond, 2.493)
         self.assertEqual(A.ground_heat_capacity, 2.4957E06)
         self.assertEqual(A.ground_temp, 13.0)
+        self.assertEqual(A.grout_cond, 0.744)
         self.assertEqual(A.fluid, "Water")
         self.assertTrue(A.g_func_present)
 
@@ -37,22 +39,26 @@ class TestGHXArray(unittest.TestCase):
             self.assertEqual(A.ghx_list[i].location, [0,0])
             self.assertEqual(A.ghx_list[i].bh_length, 76.2)
             self.assertEqual(A.ghx_list[i].bh_radius, 0.05715)
-            self.assertEqual(A.ghx_list[i].grout_cond, 0.744)
             self.assertEqual(A.ghx_list[i].pipe_cond, 0.389)
             self.assertEqual(A.ghx_list[i].pipe_out_dia, 0.0267)
             self.assertEqual(A.ghx_list[i].shank_space, 0.0254)
             self.assertEqual(A.ghx_list[i].pipe_thickness, 0.00243)
+
+        self.assertEqual(A.sim_years, 1)
+        self.assertEqual(A.aggregation_type, "Testing")
+        self.assertEqual(A.min_hourly_history, 192)
 
     def test_dens(self):
 
         """
         Tests fluid density calculation routine
         """
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
@@ -64,11 +70,12 @@ class TestGHXArray(unittest.TestCase):
         """
         Tests fluid specific heat calculation routine
         """
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
@@ -80,11 +87,12 @@ class TestGHXArray(unittest.TestCase):
         """
         Tests g-function interpolation
         """
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         tolerance = 0.1
 
@@ -103,11 +111,12 @@ class TestGHXArray(unittest.TestCase):
         Tests calc_ts which sets timescale
         """
 
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         A.calc_ts()
 
@@ -136,11 +145,12 @@ class TestGHXArray(unittest.TestCase):
         Tests merge_agg_load_objs, which merges AggregatedLoad objects into a single object
         """
 
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         # make a few dummy AggregatedLoad classes
         obj_1 = ghx.AggregatedLoad([1,2,3,4,5,6,7,8,9,10], 0)
@@ -164,11 +174,12 @@ class TestGHXArray(unittest.TestCase):
         Tests aggregate_load which aggregates and merges aggregated objects
         """
 
-        json_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.json')
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', '1x2_Std_GHX.csv')
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        A = ghx.GHXArray(json_file_path, csv_file_path, False) # pass 'False' to suppress output
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
 
         # should initialize empty first object for comparative purposes
         # [0]

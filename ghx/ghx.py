@@ -13,17 +13,6 @@ hours_in_month = 730
 hours_in_year = months_in_year * hours_in_month
 
 
-def last_day_of_month(month):
-
-    """
-    Returns the last day of the given month
-    :param month: month of year (0-11)
-    :return: last day of given month
-    """
-
-    return [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month]
-
-
 class GHXArray:
 
     """
@@ -31,15 +20,18 @@ class GHXArray:
     This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
     """
 
-    def __init__(self, json_path, loads_path, print_output=True):
+    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
 
         """
-        Constructor for the class. Call it with the path to the json input file and the csv loads file.
+        Constructor for the class. Call it with the path to the ghx input, sim conf, and the csv loads files.
 
         Calls get_input and get_loads to load data into structs.
 
-        GHXArray(<json_path>, <loads_path>)
+        GHXArray(<ghx_input_json_path>, <sim_conf_json_path> <loads_path>)
         """
+
+        # TODO: Move all pipe and grout inputs up from the GHX class.
+        # TODO: Add sim_conf.json file to inputs so simulation configuration is separate from GHXArray input.
 
         # class data
         self.timer_start = timeit.default_timer()
@@ -49,9 +41,11 @@ class GHXArray:
         self.ground_cond = 0.0
         self.ground_heat_capacity = 0.0
         self.ground_temp = 0.0
+        self.grout_cond = 0.0
         self.fluid = ""
         self.sim_years = 0
         self.aggregation_type = ""
+        self.min_hourly_history = 0
         self.ghx_list = []
         self.g_func_pairs = []
         self.g_func_present = False
@@ -78,14 +72,21 @@ class GHXArray:
         self.agg_load_intervals = []
         self.agg_hour = 0
         self.sim_hour = 0
-        self.min_hourly_history = 0
 
         self.total_bh_length = 0
+
+        self.resist_pipe = 0
+        self.resist_bh_ave = 0
+        self.resist_bh_total_internal = 0
+        self.resist_bh_effective = 0
 
         # initialize methods
 
         # get ghx data
-        self.get_input(json_path)
+        self.get_input(ghx_input_json_path)
+
+        # get sim configuration
+        self.get_sim_config(sim_conf_json_path)
 
         # get loads
         self.get_loads(loads_path)
@@ -99,33 +100,33 @@ class GHXArray:
         # set first aggregated load, which is zero. Need this for later
         self.agg_load_objects.append(AggregatedLoad([0], 0, True))
 
-    def get_input(self, json_path):
+    def get_input(self, ghx_input_json_path):
 
         """
         Reads data from the json file using the simplejson python library.
         If the json data is loaded successfully, the GHXArray data structure is populated.
         If data load is not successful, program exits.
 
-        :param json_path: path to the json input file containing information about the GHX array
+        :param ghx_input_json_path: path to the json input file containing information about the GHX array
         """
 
         # read from JSON file
         try:
-            if self.print_output: print("Reading JSON input")
+            if self.print_output: print("Reading GHX input")
 
-            with open(json_path) as json_file:
+            with open(ghx_input_json_path) as json_file:
                 json_data = json.load(json_file)
 
             if self.print_output: print("....Success")
 
         except ValueError:  # pragma: no cover
-            if self.print_output: print("Error reading JSON data file---check file path")
+            if self.print_output: print("Error reading GHX data file---check file path")
             if self.print_output: print("Program exiting")
             sys.exit(1)
 
         # load data into data structs
         try:
-            if self.print_output: print("Loading data into structs")
+            if self.print_output: print("Loading GHX data")
 
             # load GHX Array level inputs first
 
@@ -166,27 +167,15 @@ class GHXArray:
                 pass
 
             try:
+                self.grout_cond = json_data['Grout Cond']
+            except ValueError:  # pragma: no cover
+                if self.print_output: print("....'Grout Cond' key not found")
+                pass
+
+            try:
                 self.fluid = json_data['Fluid']
             except ValueError:  # pragma: no cover
                 if self.print_output: print("\t'Fluid' key not found")
-                pass
-
-            try:
-                self.sim_years = json_data['Simulation Years']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Simulation Years' key not found")
-                pass
-
-            try:
-                self.aggregation_type = json_data['Aggregation Type']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Aggregation Type' key not found")
-                pass
-
-            try:
-                self.min_hourly_history = json_data['Min Hourly History']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Min Hourly History' key not found")
                 pass
 
             try:
@@ -202,6 +191,7 @@ class GHXArray:
 
             # success
             if self.print_output: print("....Success")
+
         except ValueError:  # pragma: no cover
             if self.print_output: print("Error loading data into data structs")
             if self.print_output: print("Program exiting")
@@ -251,12 +241,6 @@ class GHXArray:
                 pass
 
             try:
-                self.ghx_list[i].grout_cond = json_data['GHXs'][i]['Grout Cond']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Grout Cond' key not found")
-                pass
-
-            try:
                 self.ghx_list[i].pipe_cond = json_data['GHXs'][i]['Pipe Cond']
             except ValueError:  # pragma: no cover
                 if self.print_output: print("....'Pipe Cond' key not found")
@@ -279,6 +263,58 @@ class GHXArray:
             except ValueError:  # pragma: no cover
                 if self.print_output: print("....'Pipe Thickness' key not found")
                 pass
+
+    def get_sim_config(self, sim_config_path):
+
+        """
+        Reads the simulation configuration. If not successful, program exits.
+
+        :param sim_config_path: path of json file containing the simulation configuration
+        """
+
+        # read from JSON file
+        try:
+            if self.print_output: print("Reading simulation configuration")
+
+            with open(sim_config_path) as json_file:
+                json_data = json.load(json_file)
+
+            if self.print_output: print("....Success")
+
+        except ValueError:  # pragma: no cover
+            if self.print_output: print("Error reading simulation configuration---check file path")
+            if self.print_output: print("Program exiting")
+            sys.exit(1)
+
+        try:
+
+            if self.print_output: print("Loading simulation configuration")
+
+            try:
+                self.sim_years = json_data['Simulation Years']
+            except ValueError:  # pragma: no cover
+                if self.print_output: print("\t'Simulation Years' key not found")
+                pass
+
+            try:
+                self.aggregation_type = json_data['Aggregation Type']
+            except ValueError:  # pragma: no cover
+                if self.print_output: print("....'Aggregation Type' key not found")
+                pass
+
+            try:
+                self.min_hourly_history = json_data['Min Hourly History']
+            except ValueError:  # pragma: no cover
+                if self.print_output: print("....'Min Hourly History' key not found")
+                pass
+
+            # success
+            if self.print_output: print("....Success")
+
+        except ValueError:  # pragma: no cover
+            if self.print_output: print("Error loading data")
+            if self.print_output: print("Program exiting")
+            sys.exit(1)
 
     def get_loads(self, load_path):
 
@@ -516,6 +552,86 @@ class GHXArray:
 
         return AggregatedLoad(loads, min_hour)
 
+    def calc_pipe_resistance(self):
+
+        """
+        Calculates the thermal resistance of a pipe.
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+        """
+
+        d_o = self.ghx_list[0].pipe_out_dia
+        d_i = self.ghx_list[0].pipe_out_dia - 2 * self.ghx_list[0].pipe_thickness
+        self.resist_pipe = np.log(d_o/d_i) / (2 * np.pi * self.ghx_list[0].ground_cond)
+
+    def calc_average_thermal_resistance(self):
+
+        """
+        Calculates the average thermal resistance of the borehole using the first-order multipole method.
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+        """
+
+    def calc_total_internal_thermal_resistance(self):
+
+        """
+        Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+        """
+
+        grout_cond = self.ghx_list[0].grout_cond
+
+        theta_1 = self.ghx_list[0].shank_space / (2 * self.ghx_list[0].bh_radius)
+
+        theta_2 = self.ghx_list[0].bh_radius / self.ghx_list[0].pipe_out_dia
+
+        theta_3 = 1 / (2 * theta_1* theta_2)
+
+        sigma = (self.ghx_list[0].grout_cond - self.ground_cond)/(self.ghx_list[0].grout_cond + self.ground_cond)
+
+        beta = 2 * np.pi * grout_cond * self.resist_pipe
+
+        final_term_1 = np.log(((1 + theta_1**2)**sigma)/(theta_3 * (1 - theta_1**2)**sigma))
+
+        num_term_2 = theta_3**2 * (1 - theta_1**4 + 4 * sigma * theta_1**2)**2
+
+        den_term_2_pt_1 = (1 + beta)/(1 - beta) * (1- theta_1**4)**2
+
+        den_term_2_pt_2 = theta_3**2 * (1 - theta_1**4)**2
+
+        den_term_2_pt_3 = 8 * sigma * theta_1**2 * theta_3**2 * (1 + theta_1**4)
+
+        den_term_2 = den_term_2_pt_1 - den_term_2_pt_2 + den_term_2_pt_3
+
+        final_term_2 = num_term_2 / den_term_2
+
+        self.resist_bh_total_internal = (1/np.pi * grout_cond) * (beta + final_term_1 - final_term_2)
+
+    def calc_effective_thermal_resistance(self):
+
+        """
+        Calculates the effective thermal resistance of the borehole assuming a uniform heat flux.
+
+        Javed, S. & Spitler, J.D. Calculation of Borehole Thermal Resistance. In 'Advances in
+        Ground-Source Heat Pump Systems,' pp. 84. Rees, S.J. ed. Cambridge, MA. Elsevier Ltd. 2016.
+
+        Eq: 3-67
+        """
+
+        self.calc_average_thermal_resistance()
+        self.calc_total_internal_thermal_resistance()
+
+        H = self.ghx_list[0].bh_length
+        fluid_temp = self.temp_bh[-1]
+        fluid_thermal_cap = self.dens(fluid_temp) * self.cp(fluid_temp) * self.flow_rate
+
+        resist_short_circuiting = (1/(3 * self.resist_bh_total_internal)) * (H/fluid_thermal_cap)**2
+        self.resist_bh_effective = self.resist_bh_ave + resist_short_circuiting
+
     def generate_output_reports(self):
 
         """
@@ -592,7 +708,7 @@ class GHXArray:
                     # hourly effects
                     temp_bh_hourly = []
                     start_hourly = len(self.hourly_loads) - 1
-                    end_hourly  = start_hourly - self.agg_hour
+                    end_hourly = start_hourly - self.agg_hour
                     g_func_index = -1
                     for i in range(start_hourly, end_hourly, -1):
                         g_func_index += 1
@@ -629,10 +745,7 @@ class GHXArray:
                         self.agg_hour = self.agg_hour - self.agg_load_intervals[0]
 
                     # final bh temp
-                    T_BH_ave = sum(temp_bh_agg)
-                    T_BH_hour = sum(temp_bh_hourly)
-                    T_BH = self.ground_temp + T_BH_hour + T_BH_ave
-                    self.temp_bh.append(T_BH)
+                    self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
 
         self.generate_output_reports()
 
@@ -656,7 +769,6 @@ class GHX:
         self.location = []
         self.bh_length = 0.0
         self.bh_radius = 0.0
-        self.grout_cond = 0.0
         self.pipe_cond = 0.0
         self.pipe_out_dia = 0.0
         self.shank_space = 0.0
