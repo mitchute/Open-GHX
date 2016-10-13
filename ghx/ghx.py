@@ -101,10 +101,6 @@ class GHXArray:
         # set first aggregated load, which is zero. Need this for later
         self.agg_load_objects.append(AggregatedLoad([0], 0, True))
 
-        cwd = os.getcwd()
-        path_to_run_dir = os.path.join(cwd, "run")
-        self.debug_file = open(os.path.join(path_to_run_dir, "debug.csv"), 'w')
-
     def get_input(self, ghx_input_json_path):
 
         """
@@ -705,7 +701,6 @@ class GHXArray:
 
             # close files
             out_file.close()
-            self.debug_file.close()
 
             if self.print_output: print("....Success")
 
@@ -769,18 +764,6 @@ class GHXArray:
                         temp_bh_hourly.append((q_curr - q_prev) /
                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
-                        #self.write_debug_file(self.sim_hour,
-                        #                      q_curr,
-                        #                      q_prev,
-                        #                      (q_curr - q_prev),
-                        #                      (q_curr - q_prev) / self.total_bh_length,
-                        #                      (q_curr - q_prev) / (
-                        #                      2 * np.pi * self.ground_cond * self.total_bh_length),
-                        #                      g,
-                        #                      g_func_index + 1,
-                        #                      (q_curr - q_prev) /
-                        #                      (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
-
                     # aggregated load effects
                     temp_bh_agg = []
                     if self.agg_loads_flag:
@@ -794,18 +777,6 @@ class GHXArray:
                             ln_t_ts = np.log(t_agg * 3600 / self.ts)
                             g = self.g_func(ln_t_ts)
                             temp_bh_agg.append((curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
-
-                            #self.write_debug_file(self.sim_hour,
-                            #                      curr_obj.q,
-                            #                      prev_obj.q,
-                            #                      (curr_obj.q - prev_obj.q),
-                            #                      (curr_obj.q - prev_obj.q)/self.total_bh_length,
-                            #                      (curr_obj.q - prev_obj.q) /
-                            #                      (2 * np.pi * self.ground_cond * self.total_bh_length),
-                            #                      g,
-                            #                      t_agg,
-                            #                      (curr_obj.q - prev_obj.q) /
-                            #                      (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
                         # aggregate load
                         if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
