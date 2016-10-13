@@ -1,3 +1,4 @@
 simplejson
 CoolProp
 numpy
+termcolor
