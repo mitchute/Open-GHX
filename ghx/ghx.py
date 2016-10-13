@@ -6,12 +6,15 @@ import simplejson as json
 import CoolProp.CoolProp as CP
 from collections import deque
 import timeit
+from termcolor import cprint
 
 # *hopefully* small number of globals
 months_in_year = 12
 hours_in_month = 730
 hours_in_year = months_in_year * hours_in_month
-
+color_fail = 'red'
+color_warn = 'yellow'
+color_success = 'green'
 
 class GHXArray:
 
@@ -29,9 +32,6 @@ class GHXArray:
 
         GHXArray(<ghx_input_json_path>, <sim_conf_json_path> <loads_path>)
         """
-
-        # TODO: Move all pipe and grout inputs up from the GHX class.
-        # TODO: Add sim_conf.json file to inputs so simulation configuration is separate from GHXArray input.
 
         # class data
         self.timer_start = timeit.default_timer()
@@ -69,6 +69,7 @@ class GHXArray:
         self.g_func_hourly = deque()
         self.hourly_loads = deque()
 
+        self.agg_loads_flag = True
         self.agg_load_intervals = []
         self.agg_hour = 0
         self.sim_hour = 0
@@ -100,6 +101,10 @@ class GHXArray:
         # set first aggregated load, which is zero. Need this for later
         self.agg_load_objects.append(AggregatedLoad([0], 0, True))
 
+        cwd = os.getcwd()
+        path_to_run_dir = os.path.join(cwd, "run")
+        self.debug_file = open(os.path.join(path_to_run_dir, "debug.csv"), 'w')
+
     def get_input(self, ghx_input_json_path):
 
         """
@@ -110,6 +115,8 @@ class GHXArray:
         :param ghx_input_json_path: path to the json input file containing information about the GHX array
         """
 
+        errors_found = False
+
         # read from JSON file
         try:
             if self.print_output: print("Reading GHX input")
@@ -119,9 +126,9 @@ class GHXArray:
 
             if self.print_output: print("....Success")
 
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error reading GHX data file---check file path")
-            if self.print_output: print("Program exiting")
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error reading GHX data file---check file path", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
         # load data into data structs
@@ -132,69 +139,83 @@ class GHXArray:
 
             try:
                 self.name = json_data['Name']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Name' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Name' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.num_bh = json_data['Number BH']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Number BH' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Number BH' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.flow_rate = json_data['Flow Rate']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Flow Rate' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Flow Rate' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ground_cond = json_data['Ground Cond']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Ground Cond' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Ground Cond' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ground_heat_capacity = json_data['Ground Heat Capacity']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Ground Heat Capacity' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Ground Heat Capacity' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ground_temp = json_data['Ground Temp']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Ground Temp' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Ground Temp' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.grout_cond = json_data['Grout Cond']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Grout Cond' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Grout Cond' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.fluid = json_data['Fluid']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Fluid' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Fluid' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.g_func_pairs = json_data['G-func Pairs']
                 self.g_func_present = True
                 self.update_g_func_interp_lists()
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'G-func Pairs' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'G-func Pairs' key not found", color_warn)
+                errors_found = True
                 pass
 
             # load data for each GHX
             self.load_ghx_data(json_data)
 
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error loading data into data structs", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
+
+        if not errors_found:
             # success
             if self.print_output: print("....Success")
-
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error loading data into data structs")
-            if self.print_output: print("Program exiting")
+        else:
+            if self.print_output: cprint("Error loading data into data structs", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
     def load_ghx_data(self, json_data):
@@ -205,6 +226,8 @@ class GHXArray:
 
         :param json_data: json data loaded from input file
         """
+
+        errors_found = False
 
         # num ghx's
         num_ghx = len(json_data['GHXs'])
@@ -217,52 +240,65 @@ class GHXArray:
             # import GHX data
             try:
                 self.ghx_list[i].name = json_data['GHXs'][i]['Name']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Name' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Name' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].location = json_data['GHXs'][i]['Location']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Location' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Location' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].bh_length = json_data['GHXs'][i]['BH Length']
                 self.total_bh_length += json_data['GHXs'][i]['BH Length']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'BH Length' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'BH Length' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].bh_radius = json_data['GHXs'][i]['BH Radius']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'BH Radius' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'BH Radius' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].pipe_cond = json_data['GHXs'][i]['Pipe Cond']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Pipe Cond' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Pipe Cond' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].pipe_out_dia = json_data['GHXs'][i]['Pipe Dia']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Pipe Dia' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Pipe Dia' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].shank_space = json_data['GHXs'][i]['Shank Space']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Shank Space' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Shank Space' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.ghx_list[i].pipe_thickness = json_data['GHXs'][i]['Pipe Thickness']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Pipe Thickness' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Pipe Thickness' key not found", color_warn)
+                errors_found = True
                 pass
+
+        if errors_found:
+            if self.print_output: cprint("Error loading GHX data", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
 
     def get_sim_config(self, sim_config_path):
 
@@ -271,6 +307,8 @@ class GHXArray:
 
         :param sim_config_path: path of json file containing the simulation configuration
         """
+
+        errors_found = False
 
         # read from JSON file
         try:
@@ -281,39 +319,46 @@ class GHXArray:
 
             if self.print_output: print("....Success")
 
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error reading simulation configuration---check file path")
-            if self.print_output: print("Program exiting")
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error reading simulation configuration---check file path", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
         try:
-
             if self.print_output: print("Loading simulation configuration")
 
             try:
                 self.sim_years = json_data['Simulation Years']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("\t'Simulation Years' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("\t'Simulation Years' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.aggregation_type = json_data['Aggregation Type']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Aggregation Type' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Aggregation Type' key not found", color_warn)
+                errors_found = True
                 pass
 
             try:
                 self.min_hourly_history = json_data['Min Hourly History']
-            except ValueError:  # pragma: no cover
-                if self.print_output: print("....'Min Hourly History' key not found")
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Min Hourly History' key not found", color_warn)
+                errors_found = True
                 pass
 
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error loading data", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
+
+        if not errors_found:
             # success
             if self.print_output: print("....Success")
-
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error loading data")
-            if self.print_output: print("Program exiting")
+        else:
+            if self.print_output: cprint("Error loading data", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
     def get_loads(self, load_path):
@@ -329,9 +374,9 @@ class GHXArray:
             self.load_pairs = np.genfromtxt(load_path, delimiter=',', names=True)
             self.update_load_lists()
             if self.print_output: print("....Success")
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error importing loads")
-            if self.print_output: print("Program exiting")
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error importing loads", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
     def calc_ts(self):
@@ -350,9 +395,9 @@ class GHXArray:
 
             self.ts = max_h ** 2 / (9 * self.ground_thermal_diff)
 
-        except ValueError: # pragma: no cover
-            if self.print_output: print("Error calculating simulation time scale \"ts\"")
-            if self.print_output: print("Program exiting")
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error calculating simulation time scale \"ts\"", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
     def set_load_aggregation(self):
@@ -372,11 +417,12 @@ class GHXArray:
         elif self.aggregation_type == "Testing":
             self.agg_load_intervals = [5, 10, 20, 40]
         elif self.aggregation_type == "None":
+            self.agg_loads_flag = False
             self.agg_load_intervals = [hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
-            if self.print_output: print("Load aggregation interval not recognized")
-            if self.print_output: print("....Defaulting to monthly intervals")
+            if self.print_output: cprint("Load aggregation interval not recognized", color_warn)
+            if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
             self.agg_load_intervals = [730]
 
     def dens(self, temp_in_c):
@@ -415,9 +461,9 @@ class GHXArray:
             self.g_func_present = True
             self.update_g_func_interp_lists()
             if self.print_output: print("....Success")
-        except ValueError:  # pragma: no cover
-            if self.print_output: print("Error calculating g-functions")
-            if self.print_output: print("Program exiting")
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error calculating g-functions", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
     def update_g_func_interp_lists(self):
@@ -659,13 +705,18 @@ class GHXArray:
 
             # close files
             out_file.close()
+            self.debug_file.close()
 
             if self.print_output: print("....Success")
 
         except:
-            if self.print_output: print("Error writing output results")
-            if self.print_output: print("Program exiting")
+            if self.print_output: cprint("Error writing output results", 'red')
+            if self.print_output: cprint("Program exiting", 'red')
             sys.exit(1)
+
+    def write_debug_file(self, sim_tim, Q1, Q0, Q1Q0, q, q2pik, g, time, total):
+
+        self.debug_file.write("%d,%f,%f,%f,%f,%f,%f,%d,%f\n" %(sim_tim, Q1, Q0, Q1Q0, q, q2pik, g, time, total))
 
     def simulate(self):
 
@@ -678,7 +729,7 @@ class GHXArray:
 
         # calculate g-functions if not present
         if not self.g_func_present:
-            if self.print_output: print("G-functions not present")
+            if self.print_output: cprint("G-functions not present", color_warn)
             self.calc_g_func()
 
         # pre-load hourly g-functions
@@ -718,38 +769,62 @@ class GHXArray:
                         temp_bh_hourly.append((q_curr - q_prev) /
                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
+                        #self.write_debug_file(self.sim_hour,
+                        #                      q_curr,
+                        #                      q_prev,
+                        #                      (q_curr - q_prev),
+                        #                      (q_curr - q_prev) / self.total_bh_length,
+                        #                      (q_curr - q_prev) / (
+                        #                      2 * np.pi * self.ground_cond * self.total_bh_length),
+                        #                      g,
+                        #                      g_func_index + 1,
+                        #                      (q_curr - q_prev) /
+                        #                      (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+
                     # aggregated load effects
                     temp_bh_agg = []
-                    for i in range(len(self.agg_load_objects)):
-                        if i == 0:
-                            continue
-                        curr_obj = self.agg_load_objects[i]
-                        prev_obj = self.agg_load_objects[i-1]
+                    if self.agg_loads_flag:
+                        for i in range(len(self.agg_load_objects)):
+                            if i == 0:
+                                continue
+                            curr_obj = self.agg_load_objects[i]
+                            prev_obj = self.agg_load_objects[i-1]
 
-                        t_agg = self.sim_hour - curr_obj.time()
-                        ln_t_ts = np.log(t_agg * 3600 / self.ts)
-                        g = self.g_func(ln_t_ts)
-                        temp_bh_agg.append((curr_obj.q - prev_obj.q) /
-                                           (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+                            t_agg = self.sim_hour - curr_obj.time()
+                            ln_t_ts = np.log(t_agg * 3600 / self.ts)
+                            g = self.g_func(ln_t_ts)
+                            temp_bh_agg.append((curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
-                    # aggregate load
-                    if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
-                        # this has one extra value for comparative purposes
-                        # need to get rid of it here
-                        self.hourly_loads.popleft()
+                            #self.write_debug_file(self.sim_hour,
+                            #                      curr_obj.q,
+                            #                      prev_obj.q,
+                            #                      (curr_obj.q - prev_obj.q),
+                            #                      (curr_obj.q - prev_obj.q)/self.total_bh_length,
+                            #                      (curr_obj.q - prev_obj.q) /
+                            #                      (2 * np.pi * self.ground_cond * self.total_bh_length),
+                            #                      g,
+                            #                      t_agg,
+                            #                      (curr_obj.q - prev_obj.q) /
+                            #                      (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
-                        # create new aggregated load object
-                        self.aggregate_load()
+                        # aggregate load
+                        if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
+                            # this has one extra value for comparative purposes
+                            # need to get rid of it here
+                            self.hourly_loads.popleft()
 
-                        # reset aggregation hour to '0'
-                        self.agg_hour = self.agg_hour - self.agg_load_intervals[0]
+                            # create new aggregated load object
+                            self.aggregate_load()
+
+                            # reset aggregation hour to '0'
+                            self.agg_hour = self.agg_hour - self.agg_load_intervals[0]
 
                     # final bh temp
                     self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
 
         self.generate_output_reports()
 
-        if self.print_output: print("Simulation complete")
+        if self.print_output: cprint("Simulation complete", color_success)
         if self.print_output: print("Simulation time: %0.3f sec" %(timeit.default_timer() - self.timer_start))
 
 
@@ -773,26 +848,6 @@ class GHX:
         self.pipe_out_dia = 0.0
         self.shank_space = 0.0
         self.pipe_thickness = 0.0
-
-    def calc_inside_convection_res(self):
-
-        """
-        Calculates the inside convection resistance.
-
-        More docs to come...
-        """
-
-        return 0
-
-    def calc_resistance(self):
-
-        """
-        Calc total thermal resistance of the borehole
-
-        More docs to come...
-        """
-
-        self.calc_inside_convection_res()
 
 
 class AggregatedLoad:
