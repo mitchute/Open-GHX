@@ -69,7 +69,7 @@ class Base:
         outfile.write("Hour, Load\n")
 
         for i in range(8760):
-            outfile.write("%d,%0.2f\n" %(i, self.Q(i)))
+            outfile.write("%d,%0.2f\n" %(i+1, self.Q(i)))
 
         outfile.close()
 
@@ -98,4 +98,4 @@ class Symmetric(Base):
         self.G = 0.0
         self.print_output = print_output
 
-Symmetric(2000).make_loads()
+Asymmetric(2000).make_loads()
