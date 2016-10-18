@@ -1,12 +1,13 @@
 # imports
+from __future__ import division
+from collections import deque
+from termcolor import cprint
 import sys
 import os
 import numpy as np
 import simplejson as json
 import CoolProp.CoolProp as CP
-from collections import deque
 import timeit
-from termcolor import cprint
 
 # *hopefully* small number of globals
 months_in_year = 12
@@ -402,6 +403,9 @@ class GHXArray:
         Sets the load aggregation intervals based on the type specified by the user.
 
         Intervals must be integer multiples.
+
+        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
+        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
         """
 
         if self.aggregation_type == "Monthly":
@@ -410,6 +414,8 @@ class GHXArray:
             self.agg_load_intervals = [730, 8760]
         elif self.aggregation_type == "Weekly-Monthly-Annual":
             self.agg_load_intervals = [146, 730, 8760]
+        elif self.aggregation_type == "Pseudo-MLAA":  # Kinda-sorta similar to Bernier et al. 2004
+            self.agg_load_intervals = [48, 144, 288]
         elif self.aggregation_type == "Testing":
             self.agg_load_intervals = [5, 10, 20, 40]
         elif self.aggregation_type == "None":

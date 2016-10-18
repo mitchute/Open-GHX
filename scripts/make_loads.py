@@ -1,22 +1,101 @@
 
-months = 12
-end_of_months = [31,28,31,30,31,30,31,31,30,31,30,31]
-hours_in_day = 24
+from __future__ import division
+import numpy as np
 
-load = 10000
 
-out_file = open("ghx_loads.csv", 'w')
+class Base:
 
-cumulative_hour = 1
+    """
+    Pinel, P. 2003. Amelioration, Validation et Implantation D'un Algorithme de Calcul pour Evaluer le Transfert Thermique Dans les Puits Verticaux de Systemes de Pompes a Chaleur Geothermiques. M.S.Sc. Thesis. Ecole Polytechnique Montreal
 
-# out_file.write("Date-Time,Hour,Load\n")
-out_file.write("Hour,Load\n")
+    ** Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
 
-for month in range(months):
-    for day in range(end_of_months[month]):
-        for hour in range(hours_in_day):
-                # out_file.write("2016-%02d-%02d %02d:00:00,%d,%d\n" %(month+1, day+1, hour, cumulative_hour, load))
-                out_file.write("%d,%d\n" %(cumulative_hour, load))
-                cumulative_hour += 1
+    ** Equation is referenced here, but it has typos
+    """
 
-out_file.close()
+    def q1(self, t):
+        term_1 = self.A * np.sin(np.pi * (t-self.B) / 12)
+        term_2 = np.sin(self.F * np.pi * (t-self.B) / 8760)
+
+        result = term_1 * term_2
+        if self.print_output: print("q1: %f" %(result))
+
+        return result
+
+    def q2(self, t):
+        term_1 = (168-self.C) / 168
+        term_2 = 0.0
+        for i in range(1,4):
+            term_2 += (np.cos(i * np.pi * self.C / 84)-1) * (np.sin(i * np.pi * (t-self.B) / 84)) / (i * np.pi)
+
+        result = term_1 + term_2
+        if self.print_output: print("q2: %f" %(result))
+
+        return result
+
+    def FL(self, t):
+        result = np.floor(self.F * (t-self.B) / 8760)
+        if self.print_output: print("FL: %f" %(result))
+
+        return result
+
+    def signum(self, t):
+        term_1 = np.cos(self.F * np.pi * (t-self.G) / 4380) + self.E
+
+        if self.print_output: print("SN T1: %f" %(term_1))
+
+        if term_1 >= 0:
+            if self.print_output: print("SN: %f" %(1))
+            return 1
+        else:
+            if self.print_output: print("SN: %f" %(-1))
+            return -1
+
+    def Q(self, t):
+        q1 = self.q1(t)
+        q2 = self.q2(t)
+        FL = self.FL(t)
+        SN = self.signum(t)
+
+        if self.print_output: print("q1 x q2: %f" %(q1 * q2))
+        if self.print_output: print("pow(-1.0, FL): %f" %(pow(-1.0, FL)))
+        if self.print_output: print("abs(q1 x q2): %f" %(np.abs(q1 * q2)))
+        if self.print_output: print("D x pow(-1.0, FL) x SN: %f" %(self.D * pow(-1.0, FL) * SN))
+
+        return (q1 * q2) + pow(-1.0, FL) * np.abs(q1 * q2) + self.D * pow(-1.0, FL) * SN
+
+    def make_loads(self):
+        outfile = open("loads.csv", 'w')
+        outfile.write("Hour, Load\n")
+
+        for i in range(8760):
+            outfile.write("%d,%0.2f\n" %(i, self.Q(i)))
+
+        outfile.close()
+
+class Asymmetric(Base):
+
+    def __init__(self, amplitude, print_output=False):
+        self.A = amplitude
+        self.B = 1000
+        self.C = 80
+        self.D = 0.01
+        self.E = 0.95
+        self.F = 4.0/3.0
+        self.G = 2190
+        self.print_output = print_output
+
+
+class Symmetric(Base):
+
+    def __init__(self, amplitude, print_output=False):
+        self.A = amplitude
+        self.B = 2190
+        self.C = 80
+        self.D = 0.01
+        self.E = 0.95
+        self.F = 2.0
+        self.G = 0.0
+        self.print_output = print_output
+
+Symmetric(2000).make_loads()
