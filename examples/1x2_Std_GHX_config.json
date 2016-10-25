@@ -1,5 +1,5 @@
 {
     "Simulation Years":1,
-    "Aggregation Type":"Weekly-Monthly-Annual",
+    "Aggregation Type":"Monthly",
     "Min Hourly History":192
 }

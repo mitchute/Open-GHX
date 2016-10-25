@@ -6,7 +6,7 @@ import sys
 import os
 import numpy as np
 import simplejson as json
-import CoolProp.CoolProp as CP
+import CoolProp.CoolProp as cp
 import timeit
 
 # *hopefully* small number of globals
@@ -16,6 +16,7 @@ hours_in_year = months_in_year * hours_in_month
 color_fail = 'red'
 color_warn = 'yellow'
 color_success = 'green'
+
 
 class GHXArray:
 
@@ -64,6 +65,7 @@ class GHXArray:
 
         self.ts = 0.0
         self.temp_bh = deque()
+        self.temp_mft = deque()
 
         self.agg_load_objects = []
 
@@ -75,12 +77,21 @@ class GHXArray:
         self.agg_hour = 0
         self.sim_hour = 0
 
-        self.total_bh_length = 0
+        self.total_bh_length = 0.0
+        self.ave_bh_length = 0.0
+        self.ave_bh_radius = 0.0
+        self.ave_pipe_cond = 0.0
+        self.ave_pipe_out_dia = 0.0
+        self.ave_shank_space = 0.0
+        self.ave_pipe_thickness = 0.0
 
-        self.resist_pipe = 0
-        self.resist_bh_ave = 0
-        self.resist_bh_total_internal = 0
-        self.resist_bh_effective = 0
+        self.resist_pipe = 0.0
+        self.resist_bh_ave = 0.0
+        self.resist_bh_total_internal = 0.0
+        self.resist_bh_effective = 0.0
+
+        self.sliding_agg_blocks_flag = False
+        self.static_agg_blocks_flag = False
 
         # initialize methods
 
@@ -199,8 +210,9 @@ class GHXArray:
                 errors_found = True
                 pass
 
-            # load data for each GHX
             self.load_ghx_data(json_data)
+            self.calc_ave_ghx_props()
+            self.validate_input()
 
         except:  # pragma: no cover
             if self.print_output: cprint("Error loading data into data structs", color_fail)
@@ -210,7 +222,7 @@ class GHXArray:
         if not errors_found:
             # success
             if self.print_output: print("....Success")
-        else:
+        else:  # pragma: no cover
             if self.print_output: cprint("Error loading data into data structs", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
@@ -292,8 +304,46 @@ class GHXArray:
                 errors_found = True
                 pass
 
-        if errors_found:
+        if errors_found:  # pragma: no cover
             if self.print_output: cprint("Error loading GHX data", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
+
+    def calc_ave_ghx_props(self):
+
+        """
+        Calculates the average properties from all individual ground heat exchangers
+        """
+
+        for ghx in self.ghx_list:
+            self.ave_bh_length += ghx.bh_length
+            self.ave_bh_radius += ghx.bh_radius
+            self.ave_pipe_cond += ghx.pipe_cond
+            self.ave_pipe_out_dia += ghx.pipe_out_dia
+            self.ave_shank_space += ghx.shank_space
+            self.ave_pipe_thickness += ghx.pipe_thickness
+
+        self.ave_bh_length /= len(self.ghx_list)
+        self.ave_bh_radius /= len(self.ghx_list)
+        self.ave_pipe_cond /= len(self.ghx_list)
+        self.ave_pipe_out_dia /= len(self.ghx_list)
+        self.ave_shank_space /= len(self.ghx_list)
+        self.ave_pipe_thickness /= len(self.ghx_list)
+
+    def validate_input(self):
+
+        """
+        Validates the inputs, where possible
+        """
+
+        errors_found = False
+
+        for ghx in self.ghx_list:
+            if ghx.shank_space > (2 * ghx.bh_radius - ghx.pipe_out_dia) or ghx.shank_space < ghx.pipe_out_dia:
+                errors_found = True
+
+        if errors_found:  # pragma: no cover
+            if self.print_output: cprint("Invalid data--check inputs", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
 
@@ -353,7 +403,7 @@ class GHXArray:
         if not errors_found:
             # success
             if self.print_output: print("....Success")
-        else:
+        else:  # pragma: no cover
             if self.print_output: cprint("Error loading data", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
@@ -368,7 +418,7 @@ class GHXArray:
 
         try:
             if self.print_output: print("Importing loads")
-            self.load_pairs = np.genfromtxt(load_path, delimiter=',', names=True)
+            self.load_pairs = np.genfromtxt(load_path, delimiter=',', skip_header=1)
             self.update_load_lists()
             if self.print_output: print("....Success")
         except:  # pragma: no cover
@@ -409,19 +459,19 @@ class GHXArray:
         """
 
         if self.aggregation_type == "Monthly":
-            self.agg_load_intervals = [730]
-        elif self.aggregation_type == "Monthly-Annual":
-            self.agg_load_intervals = [730, 8760]
-        elif self.aggregation_type == "Weekly-Monthly-Annual":
             self.agg_load_intervals = [146, 730, 8760]
+            self.sliding_agg_blocks_flag = True
         elif self.aggregation_type == "Pseudo-MLAA":  # Kinda-sorta similar to Bernier et al. 2004
             self.agg_load_intervals = [48, 144, 288]
+            self.sliding_agg_blocks_flag = True
         elif self.aggregation_type == "Testing":
             self.agg_load_intervals = [5, 10, 20, 40]
+            self.sliding_agg_blocks_flag = True
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
             self.agg_load_intervals = [hours_in_year * self.sim_years]
             self.min_hourly_history = 0
+            self.sliding_agg_blocks_flag = True
         else:
             if self.print_output: cprint("Load aggregation interval not recognized", color_warn)
             if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
@@ -435,8 +485,9 @@ class GHXArray:
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
         :param temp_in_c: temperature in Celsius
+        :returns fluid density in [kg/m3]
         """
-        return CP.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
     def cp(self, temp_in_c):
 
@@ -446,9 +497,10 @@ class GHXArray:
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
         :param temp_in_c: temperature in Celsius
+        :returns fluid specific heat in [J/kg-K]
         """
 
-        return CP.PropsSI('C', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('C', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
     def calc_g_func(self):
 
@@ -508,13 +560,13 @@ class GHXArray:
         if ln_t_ts < self.g_func_lntts[lower_index]:
             # if value is below range, extrapolate down
             return ((ln_t_ts - self.g_func_lntts[lower_index]) / (
-            self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (
-                   self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
+                self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (
+                self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
         elif ln_t_ts > self.g_func_lntts[upper_index]:
             # if value is above range, extrapolate up
             return ((ln_t_ts - self.g_func_lntts[upper_index]) / (
-            self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (
-                   self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
+                self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (
+                self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
         else:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
@@ -575,7 +627,6 @@ class GHXArray:
                                 agg_load_objects_update.append(temp_objs[l])
                     k -= 1
 
-
         self.agg_load_objects = agg_load_objects_update
 
     def merge_agg_load_objs(self, obj_list):
@@ -609,57 +660,53 @@ class GHXArray:
         for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
         """
 
-        d_o = self.ghx_list[0].pipe_out_dia
-        d_i = self.ghx_list[0].pipe_out_dia - 2 * self.ghx_list[0].pipe_thickness
-        self.resist_pipe = np.log(d_o/d_i) / (2 * np.pi * self.ghx_list[0].ground_cond)
+        d_o = self.ave_pipe_out_dia
+        d_i = self.ave_pipe_out_dia - 2 * self.ave_pipe_thickness
 
-    def calc_average_thermal_resistance(self):
+        self.resist_pipe = np.log(d_o/d_i) / (2 * np.pi * self.ave_pipe_cond)
+
+    def calc_average_thermal_resistance(self, theta_1, theta_2, theta_3, sigma, beta):
 
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
 
         Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
         for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+
+        Equation 13
         """
 
-    def calc_total_internal_thermal_resistance(self):
+        final_term_1 = np.log(theta_2/(2 * theta_1 * (1 - theta_1**4)**sigma))
+        num_final_term_2 = theta_3**2 * (1 - (4 * sigma * theta_1**4)/(1 - theta_1**4))**2
+        den_final_term_2_pt_1 = (1 + beta)/(1 - beta)
+        den_final_term_2_pt_2 = theta_3**2 * (1 + (16 * sigma * theta_1**4)/(1 - theta_1**4)**2)
+        den_final_term_2 = den_final_term_2_pt_1 + den_final_term_2_pt_2
+        final_term_2 = num_final_term_2 / den_final_term_2
+
+        self.resist_bh_ave = (1/(4 * np.pi * self.grout_cond)) * (beta + final_term_1 - final_term_2)
+
+    def calc_total_internal_thermal_resistance(self, theta_1, theta_3, sigma, beta):
 
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
 
         Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
         for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+
+        Equation 26
         """
 
-        grout_cond = self.ghx_list[0].grout_cond
-
-        theta_1 = self.ghx_list[0].shank_space / (2 * self.ghx_list[0].bh_radius)
-
-        theta_2 = self.ghx_list[0].bh_radius / self.ghx_list[0].pipe_out_dia
-
-        theta_3 = 1 / (2 * theta_1* theta_2)
-
-        sigma = (self.ghx_list[0].grout_cond - self.ground_cond)/(self.ghx_list[0].grout_cond + self.ground_cond)
-
-        beta = 2 * np.pi * grout_cond * self.resist_pipe
-
         final_term_1 = np.log(((1 + theta_1**2)**sigma)/(theta_3 * (1 - theta_1**2)**sigma))
-
         num_term_2 = theta_3**2 * (1 - theta_1**4 + 4 * sigma * theta_1**2)**2
-
-        den_term_2_pt_1 = (1 + beta)/(1 - beta) * (1- theta_1**4)**2
-
+        den_term_2_pt_1 = (1 + beta)/(1 - beta) * (1 - theta_1**4)**2
         den_term_2_pt_2 = theta_3**2 * (1 - theta_1**4)**2
-
         den_term_2_pt_3 = 8 * sigma * theta_1**2 * theta_3**2 * (1 + theta_1**4)
-
         den_term_2 = den_term_2_pt_1 - den_term_2_pt_2 + den_term_2_pt_3
-
         final_term_2 = num_term_2 / den_term_2
 
-        self.resist_bh_total_internal = (1/np.pi * grout_cond) * (beta + final_term_1 - final_term_2)
+        self.resist_bh_total_internal = (1/(np.pi * self.grout_cond)) * (beta + final_term_1 - final_term_2)
 
-    def calc_effective_thermal_resistance(self):
+    def calc_bh_effective_resistance(self):
 
         """
         Calculates the effective thermal resistance of the borehole assuming a uniform heat flux.
@@ -668,16 +715,37 @@ class GHXArray:
         Ground-Source Heat Pump Systems,' pp. 84. Rees, S.J. ed. Cambridge, MA. Elsevier Ltd. 2016.
 
         Eq: 3-67
+
+        Coefficients for equations 13 and 26 from Javed & Spitler 2016 calculated here.
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+
+        Equation 14
         """
 
-        self.calc_average_thermal_resistance()
-        self.calc_total_internal_thermal_resistance()
+        self.calc_pipe_resistance()
 
-        H = self.ghx_list[0].bh_length
-        fluid_temp = self.temp_bh[-1]
-        fluid_thermal_cap = self.dens(fluid_temp) * self.cp(fluid_temp) * self.flow_rate
+        theta_1 = self.ave_shank_space / (2 * self.ave_bh_radius)
+        theta_2 = self.ave_bh_radius / self.ave_pipe_out_dia
+        theta_3 = 1 / (2 * theta_1 * theta_2)
+        sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
+        beta = 2 * np.pi * self.grout_cond * self.resist_pipe
 
-        resist_short_circuiting = (1/(3 * self.resist_bh_total_internal)) * (H/fluid_thermal_cap)**2
+        self.calc_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
+        self.calc_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
+
+        h = self.ave_bh_length
+        try:
+            fluid_temp = self.temp_mft[-1]
+        except:
+            fluid_temp = self.ground_temp
+
+        mass_flow_rate = self.flow_rate * self.dens(fluid_temp)
+        fluid_thermal_cap = self.cp(fluid_temp) * mass_flow_rate
+
+        resist_short_circuiting = (1/(3 * self.resist_bh_total_internal)) * (h/fluid_thermal_cap)**2
+
         self.resist_bh_effective = self.resist_bh_ave + resist_short_circuiting
 
     def generate_output_reports(self):
@@ -698,14 +766,14 @@ class GHXArray:
             out_file = open(os.path.join(path_to_run_dir, "GHX.csv"), 'w')
 
             # write headers
-            out_file.write("Hour, BH Temp [C]\n")
+            out_file.write("Hour, BH Temp [C], MFT [C]\n")
 
-            sim_hour = 0
-            for temp in self.temp_bh:
-                sim_hour += 1
-                out_file.write("%d, %0.4f\n" %(sim_hour, temp))
+            for i in range(len(self.temp_bh)):
+                out_file.write("%d, %0.4f, %0.4f\n" %(i+1,
+                                                      self.temp_bh[i],
+                                                      self.temp_mft[i]))
 
-            # close files
+            # close file
             out_file.close()
 
             if self.print_output: print("....Success")
@@ -715,23 +783,11 @@ class GHXArray:
             if self.print_output: cprint("Program exiting", 'red')
             sys.exit(1)
 
-    def write_debug_file(self, sim_tim, Q1, Q0, Q1Q0, q, q2pik, g, time, total):
-
-        self.debug_file.write("%d,%f,%f,%f,%f,%f,%f,%d,%f\n" %(sim_tim, Q1, Q0, Q1Q0, q, q2pik, g, time, total))
-
-    def simulate(self):
+    def init_simulate_sliding_agg_blocks(self):
 
         """
-        Main simulation routine. Simulates the GHXArray object.
-
-        More docs to come...
+        Initialize the 'simulate_sliding_agg_blocks' method
         """
-        if self.print_output: print("Beginning simulation")
-
-        # calculate g-functions if not present
-        if not self.g_func_present:
-            if self.print_output: cprint("G-functions not present", color_warn)
-            self.calc_g_func()
 
         # pre-load hourly g-functions
         for hour in range(self.agg_load_intervals[0] + self.min_hourly_history):
@@ -741,6 +797,20 @@ class GHXArray:
         # set aggregate load container max length
         len_hourly_loads = self.min_hourly_history + self.agg_load_intervals[0]
         self.hourly_loads = deque([0]*len_hourly_loads, maxlen=len_hourly_loads)
+
+    def init_simulate_static_agg_blocks(self):
+
+        """
+        Initialize the 'simulate_static_agg_blocks' method
+        """
+
+    def simulate_sliding_agg_blocks(self):
+
+        """
+        More docs to come...
+        """
+
+        self.init_simulate_sliding_agg_blocks()
 
         for year in range(self.sim_years):
             for month in range(months_in_year):
@@ -756,9 +826,13 @@ class GHXArray:
                     load_index = month * hours_in_month + hour
                     self.hourly_loads.append(self.raw_sim_loads[load_index])
 
+                    # calculate borehole resistance
+                    self.calc_bh_effective_resistance()
+
                     # calculate borehole temp
                     # hourly effects
                     temp_bh_hourly = []
+                    temp_mft_hourly = []
                     start_hourly = len(self.hourly_loads) - 1
                     end_hourly = start_hourly - self.agg_hour
                     g_func_index = -1
@@ -767,11 +841,23 @@ class GHXArray:
                         q_curr = self.hourly_loads[i]
                         q_prev = self.hourly_loads[i - 1]
                         g = self.g_func_hourly[g_func_index]
+                        # calculate average bh temp
                         temp_bh_hourly.append((q_curr - q_prev) /
                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
 
+                        # calculate mean fluid temp
+                        g_rb = g + self.resist_bh_effective
+
+                        if g_rb < 0:
+                            g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
+                            g_rb = g + self.resist_bh_effective
+
+                        temp_mft_hourly.append((q_curr - q_prev) /
+                                              (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
+
                     # aggregated load effects
                     temp_bh_agg = []
+                    temp_mft_agg = []
                     if self.agg_loads_flag:
                         for i in range(len(self.agg_load_objects)):
                             if i == 0:
@@ -782,7 +868,19 @@ class GHXArray:
                             t_agg = self.sim_hour - curr_obj.time()
                             ln_t_ts = np.log(t_agg * 3600 / self.ts)
                             g = self.g_func(ln_t_ts)
-                            temp_bh_agg.append((curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+                            # calculate the average borehole temp
+                            temp_bh_agg.append((curr_obj.q - prev_obj.q) /
+                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+
+                            # calculate the mean fluid temp
+                            g_rb = g + self.resist_bh_effective
+
+                            if g_rb < 0:
+                                g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
+                                g_rb = g + self.resist_bh_effective
+
+                            temp_mft_agg.append((curr_obj.q - prev_obj.q) /
+                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
 
                         # aggregate load
                         if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
@@ -798,6 +896,43 @@ class GHXArray:
 
                     # final bh temp
                     self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
+
+                    # final mean fluid temp
+                    self.temp_mft.append(self.ground_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
+
+    def simulate_static_agg_blocks(self):
+
+        """
+        More docs to come...
+        """
+
+        for year in range(self.sim_years):
+            for month in range(months_in_year):
+
+                if self.print_output: print("....Year/Month: %d/%d" % (year + 1, month + 1))
+
+                for hour in range(hours_in_month):
+
+                    return 0
+
+    def simulate(self):
+
+        """
+        Main simulation routine. Simulates the GHXArray object.
+
+        More docs to come...
+        """
+        if self.print_output: print("Beginning simulation")
+
+        # calculate g-functions if not present
+        if not self.g_func_present:
+            if self.print_output: cprint("G-functions not present", color_warn)
+            self.calc_g_func()
+
+        if self.sliding_agg_blocks_flag:
+            self.simulate_sliding_agg_blocks()
+        elif self.static_agg_blocks_flag:
+            self.simulate_static_agg_blocks()
 
         self.generate_output_reports()
 
