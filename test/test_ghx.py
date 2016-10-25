@@ -41,7 +41,7 @@ class TestGHXArray(unittest.TestCase):
             self.assertEqual(A.ghx_list[i].bh_radius, 0.05715)
             self.assertEqual(A.ghx_list[i].pipe_cond, 0.389)
             self.assertEqual(A.ghx_list[i].pipe_out_dia, 0.0267)
-            self.assertEqual(A.ghx_list[i].shank_space, 0.0254)
+            self.assertEqual(A.ghx_list[i].shank_space, 0.0521)
             self.assertEqual(A.ghx_list[i].pipe_thickness, 0.00243)
 
         self.assertEqual(A.sim_years, 1)
