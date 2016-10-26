@@ -2,12 +2,13 @@
 import os
 import sys
 import numpy as np
-import unittest
-import ghx
 from collections import deque
 
 # add the source directory to the path so the unit test framework can find it
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
+
+import unittest
+import ghx
 
 
 class TestGHXArray(unittest.TestCase):
