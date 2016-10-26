@@ -1,13 +1,14 @@
 
 import os
 import sys
+import numpy as np
+import unittest
+import ghx
 from collections import deque
 
 # add the source directory to the path so the unit test framework can find it
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
-import unittest
-import ghx
 
 class TestGHXArray(unittest.TestCase):
 
@@ -17,7 +18,8 @@ class TestGHXArray(unittest.TestCase):
         Tests input processing
         """
         ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
-        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
@@ -54,7 +56,8 @@ class TestGHXArray(unittest.TestCase):
         Tests fluid density calculation routine
         """
         ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
-        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
@@ -112,7 +115,8 @@ class TestGHXArray(unittest.TestCase):
         """
 
         ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
-        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
@@ -146,7 +150,8 @@ class TestGHXArray(unittest.TestCase):
         """
 
         ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
-        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
@@ -175,7 +180,8 @@ class TestGHXArray(unittest.TestCase):
         """
 
         ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
-        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing_config.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
@@ -299,6 +305,123 @@ class TestGHXArray(unittest.TestCase):
         self.assertEqual(A.agg_load_objects[1].q, 2.5)
         self.assertEqual(A.agg_load_objects[2].q, 5.0)
         self.assertEqual(A.agg_load_objects[3].q, 6.0)
+
+    def test_calc_pipe_resistance(self):
+
+        """
+        Tests the 1-D radial thermal resistance calculation
+        """
+
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+
+        # init
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
+
+        A.calc_pipe_resistance()
+
+        tolerance = 0.00001
+
+        self.assertAlmostEqual(A.resist_pipe, 0.082204, delta=tolerance)
+
+    def test_calc_bh_average_thermal_resistance(self):
+
+        """
+        Tests average borehole thermal resistance calculation, Eq 13 from:
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+        """
+
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+
+        # init
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False)  # pass 'False' to suppress output
+
+        A.calc_pipe_resistance()
+
+        theta_1 = A.ave_shank_space / (2 * A.ave_bh_radius)
+        theta_2 = A.ave_bh_radius / A.ave_pipe_out_dia
+        theta_3 = 1 / (2 * theta_1 * theta_2)
+        sigma = (A.grout_cond - A.ground_cond) / (A.grout_cond + A.ground_cond)
+        beta = 2 * np.pi * A.grout_cond * A.resist_pipe
+
+        tolerance = 0.0000001
+
+        self.assertAlmostEqual(theta_1, 0.455818022747, delta=tolerance)
+        self.assertAlmostEqual(theta_2, 2.1404494382, delta=tolerance)
+        self.assertAlmostEqual(theta_3, 0.512476007678, delta=tolerance)
+        self.assertAlmostEqual(sigma, -0.54031510658, delta=tolerance)
+        self.assertAlmostEqual(beta, 0.384279661722, delta=tolerance)
+
+        A.calc_bh_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
+
+        self.assertAlmostEqual(A.resist_bh_ave, 0.115768625391, delta=tolerance)
+
+    def test_calc_bh_total_internal_thermal_resistance(self):
+
+        """
+        Tests total borehole internal thermal resistance calculation, Eq 26 from:
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+        """
+
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+
+        # init
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False)  # pass 'False' to suppress output
+
+        A.calc_pipe_resistance()
+
+        theta_1 = A.ave_shank_space / (2 * A.ave_bh_radius)
+        theta_2 = A.ave_bh_radius / A.ave_pipe_out_dia
+        theta_3 = 1 / (2 * theta_1 * theta_2)
+        sigma = (A.grout_cond - A.ground_cond) / (A.grout_cond + A.ground_cond)
+        beta = 2 * np.pi * A.grout_cond * A.resist_pipe
+
+        tolerance = 0.0000001
+
+        self.assertAlmostEqual(theta_1, 0.455818022747, delta=tolerance)
+        self.assertAlmostEqual(theta_2, 2.1404494382, delta=tolerance)
+        self.assertAlmostEqual(theta_3, 0.512476007678, delta=tolerance)
+        self.assertAlmostEqual(sigma, -0.54031510658, delta=tolerance)
+        self.assertAlmostEqual(beta, 0.384279661722, delta=tolerance)
+
+        A.calc_bh_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
+
+        self.assertAlmostEqual(A.resist_bh_total_internal, 0.334506985755, delta=tolerance)
+
+    def test_calc_bh_effective_resistance(self):
+
+        """
+        Tests effective borehole resistance calculation, Eq 3-67 from:
+
+        Javed, S. & Spitler, J.D. Calculation of Borehole Thermal Resistance. In 'Advances in
+        Ground-Source Heat Pump Systems,' pp. 84. Rees, S.J. ed. Cambridge, MA. Elsevier Ltd. 2016.
+        """
+
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'testing_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+
+        # init
+        A = ghx.GHXArray(ghx_file_path, config_file_path, csv_file_path, False) # pass 'False' to suppress output
+
+        tolerance = 0.0000001
+
+        A.calc_bh_effective_resistance()
+
+        self.assertAlmostEqual(A.resist_bh_effective, 0.119361468501, delta=tolerance)
 
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':

@@ -665,7 +665,7 @@ class GHXArray:
 
         self.resist_pipe = np.log(d_o/d_i) / (2 * np.pi * self.ave_pipe_cond)
 
-    def calc_average_thermal_resistance(self, theta_1, theta_2, theta_3, sigma, beta):
+    def calc_bh_average_thermal_resistance(self, theta_1, theta_2, theta_3, sigma, beta):
 
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
@@ -685,7 +685,7 @@ class GHXArray:
 
         self.resist_bh_ave = (1/(4 * np.pi * self.grout_cond)) * (beta + final_term_1 - final_term_2)
 
-    def calc_total_internal_thermal_resistance(self, theta_1, theta_3, sigma, beta):
+    def calc_bh_total_internal_thermal_resistance(self, theta_1, theta_3, sigma, beta):
 
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
@@ -732,8 +732,8 @@ class GHXArray:
         sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
         beta = 2 * np.pi * self.grout_cond * self.resist_pipe
 
-        self.calc_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
-        self.calc_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
+        self.calc_bh_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
+        self.calc_bh_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
 
         h = self.ave_bh_length
         try:
@@ -748,7 +748,7 @@ class GHXArray:
 
         self.resist_bh_effective = self.resist_bh_ave + resist_short_circuiting
 
-    def generate_output_reports(self):
+    def generate_output_reports(self):  # pragma: no cover
 
         """
         Generates output results
