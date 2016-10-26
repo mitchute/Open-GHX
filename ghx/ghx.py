@@ -18,25 +18,18 @@ color_warn = 'yellow'
 color_success = 'green'
 
 
-class GHXArray:
+class BaseGHX:
 
     """
-    GHXArray is the class object that holds the information that defines a ground heat exchanger array.
-    This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
+    Base class for GHXArray
     """
 
     def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
 
         """
-        Constructor for the class. Call it with the path to the ghx input, sim conf, and the csv loads files.
-
-        Calls get_input and get_loads to load data into structs.
-
-        GHXArray(<ghx_input_json_path>, <sim_conf_json_path> <loads_path>)
+        Class constructor
         """
 
-        # class data
-        self.timer_start = timeit.default_timer()
         self.name = ""
         self.num_bh = 0
         self.flow_rate = 0.0
@@ -90,9 +83,6 @@ class GHXArray:
         self.resist_bh_total_internal = 0.0
         self.resist_bh_effective = 0.0
 
-        self.sliding_agg_blocks_flag = False
-        self.static_agg_blocks_flag = False
-
         # initialize methods
 
         # get ghx data
@@ -107,14 +97,7 @@ class GHXArray:
         # calc ts
         self.calc_ts()
 
-        # set load aggregation intervals
-        self.set_load_aggregation()
-
-        # set first aggregated load, which is zero. Need this for later
-        self.agg_load_objects.append(AggregatedLoad([0], 0, True))
-
     def get_input(self, ghx_input_json_path):
-
         """
         Reads data from the json file using the simplejson python library.
         If the json data is loaded successfully, the GHXArray data structure is populated.
@@ -228,7 +211,6 @@ class GHXArray:
             sys.exit(1)
 
     def load_ghx_data(self, json_data):
-
         """
         Instantiate and load data into GHX class for individual ground heat exchangers.
         If key values are not found in input file, messages output to the user.
@@ -310,7 +292,6 @@ class GHXArray:
             sys.exit(1)
 
     def calc_ave_ghx_props(self):
-
         """
         Calculates the average properties from all individual ground heat exchangers
         """
@@ -331,7 +312,6 @@ class GHXArray:
         self.ave_pipe_thickness /= len(self.ghx_list)
 
     def validate_input(self):
-
         """
         Validates the inputs, where possible
         """
@@ -348,7 +328,6 @@ class GHXArray:
             sys.exit(1)
 
     def get_sim_config(self, sim_config_path):
-
         """
         Reads the simulation configuration. If not successful, program exits.
 
@@ -409,7 +388,6 @@ class GHXArray:
             sys.exit(1)
 
     def get_loads(self, load_path):
-
         """
         Reads loads from the load input file. If data load is not successful, program exits.
 
@@ -427,7 +405,6 @@ class GHXArray:
             sys.exit(1)
 
     def calc_ts(self):
-
         """
         Calculates non-dimensional time. Selects length scale based on deepest GHX
         """
@@ -446,36 +423,6 @@ class GHXArray:
             if self.print_output: cprint("Error calculating simulation time scale \"ts\"", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
             sys.exit(1)
-
-    def set_load_aggregation(self):
-
-        """
-        Sets the load aggregation intervals based on the type specified by the user.
-
-        Intervals must be integer multiples.
-
-        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
-        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
-        """
-
-        if self.aggregation_type == "Monthly":
-            self.agg_load_intervals = [146, 730, 8760]
-            self.sliding_agg_blocks_flag = True
-        elif self.aggregation_type == "Pseudo-MLAA":  # Kinda-sorta similar to Bernier et al. 2004
-            self.agg_load_intervals = [48, 144, 288]
-            self.sliding_agg_blocks_flag = True
-        elif self.aggregation_type == "Testing":
-            self.agg_load_intervals = [5, 10, 20, 40]
-            self.sliding_agg_blocks_flag = True
-        elif self.aggregation_type == "None":
-            self.agg_loads_flag = False
-            self.agg_load_intervals = [hours_in_year * self.sim_years]
-            self.min_hourly_history = 0
-            self.sliding_agg_blocks_flag = True
-        else:
-            if self.print_output: cprint("Load aggregation interval not recognized", color_warn)
-            if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
-            self.agg_load_intervals = [730]
 
     def dens(self, temp_in_c):
 
@@ -570,86 +517,6 @@ class GHXArray:
         else:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
-
-    def aggregate_load(self):
-
-        """
-        Creates aggregated load object
-        """
-
-        if len(self.agg_load_intervals) > 1:
-            self.collapse_aggregate_loads()
-
-        prev_sim_hour = self.agg_load_objects[-1].last_sim_hour
-
-        agg_loads = []
-
-        for i in range(self.agg_load_intervals[0]):
-            agg_loads.append(self.hourly_loads[i])
-
-        self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour))
-
-    def collapse_aggregate_loads(self):
-
-        """
-        Collapses aggregated loads
-        """
-
-        agg_load_objects_update = []
-
-        i = 0
-        while i < len(self.agg_load_objects):
-            if i == 0:  # keep '0' time object
-                agg_load_objects_update.append(self.agg_load_objects[i])
-                i += 1
-                continue
-            elif len(self.agg_load_objects[i].loads) == self.agg_load_intervals[-1]:  # already max agg interval
-                agg_load_objects_update.append(self.agg_load_objects[i])
-                i += 1
-                continue
-            else:
-                k = len(self.agg_load_intervals) - 1
-                while k >= 0:
-                    temp_objs = []
-                    agg_int = self.agg_load_intervals[k]
-                    for j in range(i, len(self.agg_load_objects)):
-                        if len(self.agg_load_objects[j].loads) == agg_int:
-                            temp_objs.append(self.agg_load_objects[j])
-                        else:
-                            continue
-                    num_objs = len(temp_objs)
-                    i += num_objs
-                    if num_objs > 0:
-                        if num_objs*agg_int >= self.agg_load_intervals[k+1]:
-                            agg_load_objects_update.append(self.merge_agg_load_objs(temp_objs))
-                        else:
-                            for l in range(len(temp_objs)):
-                                agg_load_objects_update.append(temp_objs[l])
-                    k -= 1
-
-        self.agg_load_objects = agg_load_objects_update
-
-    def merge_agg_load_objs(self, obj_list):
-
-        """
-        Merges AggregatedLoad objects into a single AggregatedLoad object
-
-        :return: merged AggregatedLoad object
-        """
-
-        loads = []
-        min_hour = hours_in_year * self.sim_years
-        max_hour = 0
-
-        for this_obj in obj_list:
-            for i in range(len(this_obj.loads)):
-                loads.append(this_obj.loads[i])
-            if min_hour > this_obj.first_sim_hour:
-                min_hour = this_obj.first_sim_hour
-            if max_hour < this_obj.last_sim_hour:
-                max_hour = this_obj.last_sim_hour
-
-        return AggregatedLoad(loads, min_hour)
 
     def calc_pipe_resistance(self):
 
@@ -769,7 +636,7 @@ class GHXArray:
             out_file.write("Hour, BH Temp [C], MFT [C]\n")
 
             for i in range(len(self.temp_bh)):
-                out_file.write("%d, %0.4f, %0.4f\n" %(i+1,
+                out_file.write("%d, %0.4f, %0.4f\n" % (i+1,
                                                       self.temp_bh[i],
                                                       self.temp_mft[i]))
 
@@ -783,11 +650,149 @@ class GHXArray:
             if self.print_output: cprint("Program exiting", 'red')
             sys.exit(1)
 
-    def init_simulate_sliding_agg_blocks(self):
+
+class GHXArrayDynamicAggBlocks(BaseGHX):
+
+    """
+    GHXArrayDynamicAggBlocks is the class object that holds the information that defines a ground heat exchanger array.
+    This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
+    Aggregation load blocks are "dynamic" relative to "present" simulation time, meaning, at every time step
+    the load block shift one time step further from the "present" simulation time.
+    """
+
+    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
 
         """
-        Initialize the 'simulate_sliding_agg_blocks' method
+        Constructor for the class.
         """
+
+        # init base class
+        BaseGHX.__init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output)
+
+        # class data
+
+        # set load aggregation intervals
+        self.set_load_aggregation()
+
+        # set first aggregated load, which is zero. Need this for later
+        self.agg_load_objects.append(AggregatedLoad([0], 0, True))
+
+    def set_load_aggregation(self):
+
+        """
+        Sets the load aggregation intervals based on the type specified by the user.
+
+        Intervals must be integer multiples.
+
+        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
+        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
+        """
+
+        if self.aggregation_type == "Monthly":
+            self.agg_load_intervals = [146, 730, 8760]
+        elif self.aggregation_type == "Pseudo-MLAA":  # Kinda-sorta similar to Bernier et al. 2004
+            self.agg_load_intervals = [48, 144, 288]
+        elif self.aggregation_type == "Testing":
+            self.agg_load_intervals = [5, 10, 20, 40]
+        elif self.aggregation_type == "None":
+            self.agg_loads_flag = False
+            self.agg_load_intervals = [hours_in_year * self.sim_years]
+            self.min_hourly_history = 0
+        else:
+            if self.print_output: cprint("Load aggregation interval not recognized", color_warn)
+            if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
+            self.agg_load_intervals = [730]
+
+    def aggregate_load(self):
+
+        """
+        Creates aggregated load object
+        """
+
+        if len(self.agg_load_intervals) > 1:
+            self.collapse_aggregate_loads()
+
+        prev_sim_hour = self.agg_load_objects[-1].last_sim_hour
+
+        agg_loads = []
+
+        for i in range(self.agg_load_intervals[0]):
+            agg_loads.append(self.hourly_loads[i])
+
+        self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour))
+
+    def collapse_aggregate_loads(self):
+
+        """
+        Collapses aggregated loads
+        """
+
+        agg_load_objects_update = []
+
+        i = 0
+        while i < len(self.agg_load_objects):
+            if i == 0:  # keep '0' time object
+                agg_load_objects_update.append(self.agg_load_objects[i])
+                i += 1
+                continue
+            elif len(self.agg_load_objects[i].loads) == self.agg_load_intervals[-1]:  # already max agg interval
+                agg_load_objects_update.append(self.agg_load_objects[i])
+                i += 1
+                continue
+            else:
+                k = len(self.agg_load_intervals) - 1
+                while k >= 0:
+                    temp_objs = []
+                    agg_int = self.agg_load_intervals[k]
+                    for j in range(i, len(self.agg_load_objects)):
+                        if len(self.agg_load_objects[j].loads) == agg_int:
+                            temp_objs.append(self.agg_load_objects[j])
+                        else:
+                            continue
+                    num_objs = len(temp_objs)
+                    i += num_objs
+                    if num_objs > 0:
+                        if num_objs*agg_int >= self.agg_load_intervals[k+1]:
+                            agg_load_objects_update.append(self.merge_agg_load_objs(temp_objs))
+                        else:
+                            for l in range(len(temp_objs)):
+                                agg_load_objects_update.append(temp_objs[l])
+                    k -= 1
+
+        self.agg_load_objects = agg_load_objects_update
+
+    def merge_agg_load_objs(self, obj_list):
+
+        """
+        Merges AggregatedLoad objects into a single AggregatedLoad object
+
+        :return: merged AggregatedLoad object
+        """
+
+        loads = []
+        min_hour = hours_in_year * self.sim_years
+        max_hour = 0
+
+        for this_obj in obj_list:
+            for i in range(len(this_obj.loads)):
+                loads.append(this_obj.loads[i])
+            if min_hour > this_obj.first_sim_hour:
+                min_hour = this_obj.first_sim_hour
+            if max_hour < this_obj.last_sim_hour:
+                max_hour = this_obj.last_sim_hour
+
+        return AggregatedLoad(loads, min_hour)
+
+    def simulate(self):
+
+        """
+        More docs to come...
+        """
+
+        # calculate g-functions if not present
+        if not self.g_func_present:
+            if self.print_output: cprint("G-functions not present", color_warn)
+            self.calc_g_func()
 
         # pre-load hourly g-functions
         for hour in range(self.agg_load_intervals[0] + self.min_hourly_history):
@@ -798,24 +803,10 @@ class GHXArray:
         len_hourly_loads = self.min_hourly_history + self.agg_load_intervals[0]
         self.hourly_loads = deque([0]*len_hourly_loads, maxlen=len_hourly_loads)
 
-    def init_simulate_static_agg_blocks(self):
-
-        """
-        Initialize the 'simulate_static_agg_blocks' method
-        """
-
-    def simulate_sliding_agg_blocks(self):
-
-        """
-        More docs to come...
-        """
-
-        self.init_simulate_sliding_agg_blocks()
-
         for year in range(self.sim_years):
             for month in range(months_in_year):
 
-                if self.print_output: print("....Year/Month: %d/%d" %(year+1, month+1))
+                if self.print_output: print("....Year/Month: %d/%d" % (year+1, month+1))
 
                 for hour in range(hours_in_month):
 
@@ -853,7 +844,7 @@ class GHXArray:
                             g_rb = g + self.resist_bh_effective
 
                         temp_mft_hourly.append((q_curr - q_prev) /
-                                              (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
+                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
 
                     # aggregated load effects
                     temp_bh_agg = []
@@ -880,7 +871,7 @@ class GHXArray:
                                 g_rb = g + self.resist_bh_effective
 
                             temp_mft_agg.append((curr_obj.q - prev_obj.q) /
-                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
+                                                (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
 
                         # aggregate load
                         if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
@@ -892,7 +883,7 @@ class GHXArray:
                             self.aggregate_load()
 
                             # reset aggregation hour to '0'
-                            self.agg_hour = self.agg_hour - self.agg_load_intervals[0]
+                            self.agg_hour -= self.agg_load_intervals[0]
 
                     # final bh temp
                     self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
@@ -900,7 +891,23 @@ class GHXArray:
                     # final mean fluid temp
                     self.temp_mft.append(self.ground_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
 
-    def simulate_static_agg_blocks(self):
+        self.generate_output_reports()
+
+
+class GHXArrayStaticAggBlocks(BaseGHX):
+
+    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
+
+        """
+        Class constructor
+        """
+
+        # init base class
+        BaseGHX.__init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output)
+
+        # class data
+
+    def simulate(self):
 
         """
         More docs to come...
@@ -913,7 +920,75 @@ class GHXArray:
 
                 for hour in range(hours_in_month):
 
-                    return 0
+                    self.sim_hour += 1
+
+                    # get raw hourly load and append to hourly list
+                    load_index = month * hours_in_month + hour
+                    self.hourly_loads.append(self.raw_sim_loads[load_index])
+
+        self.generate_output_reports()
+
+
+class GHXArray:
+
+    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
+
+        """
+        Class constructor
+        """
+
+        self.timer_start = timeit.default_timer()
+
+        self.ghx_input_json_path = ghx_input_json_path
+        self.sim_conf_json_path = sim_conf_json_path
+        self.loads_path = loads_path
+        self.print_output = print_output
+
+        self.dynamic_agg_types = ['Monthly', 'Pseudo-MLAA', 'Testing', 'None']
+        self.static_agg_types = ['MLAA']
+
+        self.aggregation_type = ''
+
+        self.get_sim_config(self.sim_conf_json_path)
+
+    def get_sim_config(self, sim_config_path):
+        """
+        Reads the simulation configuration. If not successful, program exits.
+
+        :param sim_config_path: path of json file containing the simulation configuration
+        """
+
+        errors_found = False
+
+        # read from JSON file
+        try:
+            with open(sim_config_path) as json_file:
+                json_data = json.load(json_file)
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error reading simulation configuration---check file path", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
+
+        try:
+            try:
+                self.aggregation_type = json_data['Aggregation Type']
+            except:  # pragma: no cover
+                if self.print_output: cprint("....'Aggregation Type' key not found", color_warn)
+                errors_found = True
+                pass
+
+        except:  # pragma: no cover
+            if self.print_output: cprint("Error reading simulation configuration", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
+
+        if not errors_found:
+            # success
+            if self.print_output: print("....Success")
+        else:  # pragma: no cover
+            if self.print_output: cprint("Error loading data", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
 
     def simulate(self):
 
@@ -924,20 +999,23 @@ class GHXArray:
         """
         if self.print_output: print("Beginning simulation")
 
-        # calculate g-functions if not present
-        if not self.g_func_present:
-            if self.print_output: cprint("G-functions not present", color_warn)
-            self.calc_g_func()
-
-        if self.sliding_agg_blocks_flag:
-            self.simulate_sliding_agg_blocks()
-        elif self.static_agg_blocks_flag:
-            self.simulate_static_agg_blocks()
-
-        self.generate_output_reports()
+        if self.aggregation_type in self.dynamic_agg_types:
+            GHXArrayDynamicAggBlocks(self.ghx_input_json_path,
+                                     self.sim_conf_json_path,
+                                     self.loads_path,
+                                     self.print_output).simulate()
+        elif self.aggregation_type in self.static_agg_types:
+            GHXArrayStaticAggBlocks(self.ghx_input_json_path,
+                                    self.sim_conf_json_path,
+                                    self.loads_path,
+                                    self.print_output).simulate()
+        else:
+            if self.print_output: cprint("Error starting program", color_fail)
+            if self.print_output: cprint("Program exiting", color_fail)
+            sys.exit(1)
 
         if self.print_output: cprint("Simulation complete", color_success)
-        if self.print_output: print("Simulation time: %0.3f sec" %(timeit.default_timer() - self.timer_start))
+        if self.print_output: print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
 
 
 class GHX:
