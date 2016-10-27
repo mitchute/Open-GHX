@@ -1,5 +1,5 @@
 {
     "Simulation Years":1,
-    "Aggregation Type":"Testing",
+    "Aggregation Type":"Test Static Blocks",
     "Min Hourly History":192
 }

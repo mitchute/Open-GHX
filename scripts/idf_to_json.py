@@ -1,10 +1,11 @@
-
 import sys
+
 
 # nice usage function
 def usage():
     print("""Call this script with two command line arguments:
     $ idf_to_json.py <path to idf> <path to json output>""")
+
 
 # check the command line arguments
 if not len(sys.argv) == 3:
@@ -49,14 +50,14 @@ keys = ['Object type',
         'Num Pairs']
 
 for i in range(100):
-    keys.append("LNTTS %d" %(i+1))
-    keys.append("G-Val %d" %(i+1))
+    keys.append("LNTTS %d" % (i + 1))
+    keys.append("G-Val %d" % (i + 1))
 
 dict = {}
 
+
 # format the string once
 def formatted_str(tabs, key, val, val_is_str=False):
-
     if tabs == 1:
         tab_val = tab1
     elif tabs == 2:
@@ -71,8 +72,8 @@ def formatted_str(tabs, key, val, val_is_str=False):
     else:
         return tab_val + "\"" + key + "\":" + str(val) + ",\n"
 
-def read_idf():
 
+def read_idf():
     # open idf file
     in_file = open(path_to_idf, 'r')
 
@@ -96,8 +97,8 @@ def read_idf():
     # close file
     in_file.close()
 
-def write_json():
 
+def write_json():
     # open json file
     out_file = open(path_to_json, 'w')
 
@@ -110,22 +111,22 @@ def write_json():
     out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Flow Rate"
-    out_file.write(formatted_str(1, key , dict[key]))
+    out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Ground Cond"
-    out_file.write(formatted_str(1, key , dict[key]))
+    out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Ground Heat Capacity"
-    out_file.write(formatted_str(1, key , dict[key]))
+    out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Ground Temp"
-    out_file.write(formatted_str(1, key , dict[key]))
+    out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Grout Cond"
-    out_file.write(formatted_str(1, key , dict[key]))
+    out_file.write(formatted_str(1, key, dict[key]))
 
     key = "Fluid"
-    out_file.write(formatted_str(1, key , "Water", True))
+    out_file.write(formatted_str(1, key, "Water", True))
 
     out_file.write(tab1 + "\"GHXs\":\n")
     out_file.write(tab2 + "[\n")
@@ -134,30 +135,30 @@ def write_json():
     for i in range(int(dict['Number BH'])):
 
         key = "Name"
-        out_file.write(formatted_str(4, key , "BH %d" %(i+1), True))
+        out_file.write(formatted_str(4, key, "BH %d" % (i + 1), True))
 
         key = "Location"
-        out_file.write(formatted_str(4, key , [0,0]))
+        out_file.write(formatted_str(4, key, [0, 0]))
 
         key = "BH Length"
-        out_file.write(formatted_str(4, key , dict[key]))
+        out_file.write(formatted_str(4, key, dict[key]))
 
         key = "BH Radius"
-        out_file.write(formatted_str(4, key , dict[key]))
+        out_file.write(formatted_str(4, key, dict[key]))
 
         key = "Pipe Cond"
-        out_file.write(formatted_str(4, key , dict[key]))
+        out_file.write(formatted_str(4, key, dict[key]))
 
         key = "Pipe Dia"
-        out_file.write(formatted_str(4, key , dict[key]))
+        out_file.write(formatted_str(4, key, dict[key]))
 
         key = "Shank Space"
-        out_file.write(formatted_str(4, key , dict[key]))
+        out_file.write(formatted_str(4, key, dict[key]))
 
         key = "Pipe Thickness"
         out_file.write(tab4 + "\"" + key + "\":" + dict[key] + "\n")
 
-        if i == (int(dict['Number BH'])-1):
+        if i == (int(dict['Number BH']) - 1):
             out_file.write(tab3 + "}\n")
         else:
             out_file.write(tab3 + "},\n")
@@ -168,12 +169,12 @@ def write_json():
 
     for i in range(int(dict['Num Pairs'])):
         out_file.write(tab2 + "[")
-        L_key = ("LNTTS %d" %(i+1))
-        G_key = ("G-Val %d" %(i+1))
-        out_file.write("%s," %(dict[L_key]))
-        out_file.write("%s" %(dict[G_key]))
+        L_key = ("LNTTS %d" % (i + 1))
+        G_key = ("G-Val %d" % (i + 1))
+        out_file.write("%s," % (dict[L_key]))
+        out_file.write("%s" % (dict[G_key]))
 
-        if i == (int(dict['Num Pairs'])-1):
+        if i == (int(dict['Num Pairs']) - 1):
             out_file.write("]\n")
         else:
             out_file.write("],\n")
@@ -183,6 +184,7 @@ def write_json():
 
     # close file
     out_file.close()
+
 
 read_idf()
 write_json()

@@ -97,6 +97,9 @@ class BaseGHX:
         # calc ts
         self.calc_ts()
 
+        # init bh resistance calculations
+        self.init_bh_resistance_calcs()
+
     def get_input(self, ghx_input_json_path):
         """
         Reads data from the json file using the simplejson python library.
@@ -320,6 +323,8 @@ class BaseGHX:
 
         for ghx in self.ghx_list:
             if ghx.shank_space > (2 * ghx.bh_radius - ghx.pipe_out_dia) or ghx.shank_space < ghx.pipe_out_dia:
+                if self.print_output: cprint("Invalid shank spacing", color_warn)
+                if self.print_output: cprint("Check shank spacing, pipe diameter, and borehole radius", color_warn)
                 errors_found = True
 
         if errors_found:  # pragma: no cover
@@ -518,6 +523,23 @@ class BaseGHX:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
 
+    def init_bh_resistance_calcs(self):
+
+        """
+        Initializes the  borehole resistance calculations. Only needs to be called once.
+        """
+
+        self.calc_pipe_resistance()
+
+        theta_1 = self.ave_shank_space / (2 * self.ave_bh_radius)
+        theta_2 = self.ave_bh_radius / self.ave_pipe_out_dia
+        theta_3 = 1 / (2 * theta_1 * theta_2)
+        sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
+        beta = 2 * np.pi * self.grout_cond * self.resist_pipe
+
+        self.calc_bh_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
+        self.calc_bh_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
+
     def calc_pipe_resistance(self):
 
         """
@@ -591,23 +613,12 @@ class BaseGHX:
         Equation 14
         """
 
-        self.calc_pipe_resistance()
-
-        theta_1 = self.ave_shank_space / (2 * self.ave_bh_radius)
-        theta_2 = self.ave_bh_radius / self.ave_pipe_out_dia
-        theta_3 = 1 / (2 * theta_1 * theta_2)
-        sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
-        beta = 2 * np.pi * self.grout_cond * self.resist_pipe
-
-        self.calc_bh_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
-        self.calc_bh_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
-
-        h = self.ave_bh_length
         try:
             fluid_temp = self.temp_mft[-1]
         except:
             fluid_temp = self.ground_temp
 
+        h = self.ave_bh_length
         mass_flow_rate = self.flow_rate * self.dens(fluid_temp)
         fluid_thermal_cap = self.cp(fluid_temp) * mass_flow_rate
 
@@ -637,8 +648,8 @@ class BaseGHX:
 
             for i in range(len(self.temp_bh)):
                 out_file.write("%d, %0.4f, %0.4f\n" % (i+1,
-                                                      self.temp_bh[i],
-                                                      self.temp_mft[i]))
+                                                       self.temp_bh[i],
+                                                       self.temp_mft[i]))
 
             # close file
             out_file.close()
@@ -675,7 +686,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         self.set_load_aggregation()
 
         # set first aggregated load, which is zero. Need this for later
-        self.agg_load_objects.append(AggregatedLoad([0], 0, True))
+        self.agg_load_objects.append(AggregatedLoad([0], 0, 1, True))
 
     def set_load_aggregation(self):
 
@@ -683,25 +694,23 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         Sets the load aggregation intervals based on the type specified by the user.
 
         Intervals must be integer multiples.
-
-        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
-        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
         """
 
+        monthly = [12, 24, 48, 96, 192, 384, 768]
+        testing = [5, 10, 20, 40]
+
         if self.aggregation_type == "Monthly":
-            self.agg_load_intervals = [146, 730, 8760]
-        elif self.aggregation_type == "Pseudo-MLAA":  # Kinda-sorta similar to Bernier et al. 2004
-            self.agg_load_intervals = [48, 144, 288]
-        elif self.aggregation_type == "Testing":
-            self.agg_load_intervals = [5, 10, 20, 40]
+            self.agg_load_intervals = monthly
+        elif self.aggregation_type == "Test Dynamic Blocks":
+            self.agg_load_intervals = testing
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
             self.agg_load_intervals = [hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
-            if self.print_output: cprint("Load aggregation interval not recognized", color_warn)
+            if self.print_output: cprint("Load aggregation scheme not recognized", color_warn)
             if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
-            self.agg_load_intervals = [730]
+            self.agg_load_intervals = monthly
 
     def aggregate_load(self):
 
@@ -719,7 +728,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         for i in range(self.agg_load_intervals[0]):
             agg_loads.append(self.hourly_loads[i])
 
-        self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour))
+        self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour, len(agg_loads)))
 
     def collapse_aggregate_loads(self):
 
@@ -781,7 +790,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
             if max_hour < this_obj.last_sim_hour:
                 max_hour = this_obj.last_sim_hour
 
-        return AggregatedLoad(loads, min_hour)
+        return AggregatedLoad(loads, min_hour, len(loads))
 
     def simulate(self):
 
@@ -833,8 +842,8 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
                         q_prev = self.hourly_loads[i - 1]
                         g = self.g_func_hourly[g_func_index]
                         # calculate average bh temp
-                        temp_bh_hourly.append((q_curr - q_prev) /
-                                              (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+                        delta_q = (q_curr - q_prev) / (2 * np.pi * self.ground_cond * self.total_bh_length)
+                        temp_bh_hourly.append(delta_q * g)
 
                         # calculate mean fluid temp
                         g_rb = g + self.resist_bh_effective
@@ -843,8 +852,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
                             g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
                             g_rb = g + self.resist_bh_effective
 
-                        temp_mft_hourly.append((q_curr - q_prev) /
-                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
+                        temp_mft_hourly.append(delta_q * g_rb)
 
                     # aggregated load effects
                     temp_bh_agg = []
@@ -860,8 +868,8 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
                             ln_t_ts = np.log(t_agg * 3600 / self.ts)
                             g = self.g_func(ln_t_ts)
                             # calculate the average borehole temp
-                            temp_bh_agg.append((curr_obj.q - prev_obj.q) /
-                                               (2 * np.pi * self.ground_cond * self.total_bh_length) * g)
+                            delta_q = (curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.total_bh_length)
+                            temp_bh_agg.append(delta_q * g)
 
                             # calculate the mean fluid temp
                             g_rb = g + self.resist_bh_effective
@@ -870,8 +878,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
                                 g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
                                 g_rb = g + self.resist_bh_effective
 
-                            temp_mft_agg.append((curr_obj.q - prev_obj.q) /
-                                                (2 * np.pi * self.ground_cond * self.total_bh_length) * g_rb)
+                            temp_mft_agg.append(delta_q * g_rb)
 
                         # aggregate load
                         if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
@@ -907,6 +914,65 @@ class GHXArrayStaticAggBlocks(BaseGHX):
 
         # class data
 
+        # set load aggregation intervals
+        self.set_load_aggregation()
+
+    def set_load_aggregation(self):
+
+        """
+        Sets the load aggregation intervals based on the type specified by the user.
+
+        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
+        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
+        """
+
+        MLAA = [12, 48, 168, 360]
+        testing = [2, 2, 4, 8]
+
+        if self.aggregation_type == "MLAA":  # Bernier et al. 2004
+            self.agg_load_intervals = MLAA
+        elif self.aggregation_type == "Test Static Blocks":
+            self.agg_load_intervals = testing
+        else:
+            if self.print_output: cprint("Load aggregation scheme not recognized", color_warn)
+            if self.print_output: cprint("....Defaulting to MLAA algorithm", color_warn)
+            self.agg_load_intervals = MLAA
+
+        # need to add one extra entry to the first interval to account for the '0' hour
+        # self.agg_load_intervals[0] += 1
+
+        # set first load, which is zero--need this for later
+        self.agg_load_objects.append(AggregatedLoad([0], 0, self.agg_load_intervals[0], True))
+
+    def shift_loads(self, curr_load):
+
+        """
+        Manages shifting loads between aggregation blocks
+        :param curr_load: current load on GHX
+        """
+
+        length_new_object = 0
+
+        # append new aggregated load object if the last one is full
+        last_object_index = min(len(self.agg_load_objects), len(self.agg_load_intervals)) - 1
+
+        if len(self.agg_load_objects[-1].loads) == self.agg_load_objects[-1].max_length:
+            if last_object_index >= len(self.agg_load_intervals) - 1:
+                length_new_object = self.agg_load_intervals[-1]
+            else:
+                length_new_object = self.agg_load_intervals[last_object_index + 1]
+
+            self.agg_load_objects.append(AggregatedLoad([], 0, length_new_object, True))
+
+        for i in range(len(self.agg_load_objects) - 1, 0, -1):
+            self.agg_load_objects[i].loads.append(self.agg_load_objects[i - 1].loads[0])
+            self.agg_load_objects[i - 1].loads.popleft()
+
+        self.agg_load_objects[0].loads.append(curr_load)
+
+        for obj in self.agg_load_objects:
+            obj.calc_q()
+
     def simulate(self):
 
         """
@@ -924,7 +990,9 @@ class GHXArrayStaticAggBlocks(BaseGHX):
 
                     # get raw hourly load and append to hourly list
                     load_index = month * hours_in_month + hour
-                    self.hourly_loads.append(self.raw_sim_loads[load_index])
+                    curr_load = self.raw_sim_loads[load_index]
+
+                    self.shift_loads(curr_load)
 
         self.generate_output_reports()
 
@@ -944,8 +1012,8 @@ class GHXArray:
         self.loads_path = loads_path
         self.print_output = print_output
 
-        self.dynamic_agg_types = ['Monthly', 'Pseudo-MLAA', 'Testing', 'None']
-        self.static_agg_types = ['MLAA']
+        self.dynamic_agg_types = ['Monthly', 'Test Dynamic Blocks', 'None']
+        self.static_agg_types = ['MLAA', 'Test Static Blocks']
 
         self.aggregation_type = ''
 
@@ -1046,19 +1114,24 @@ class AggregatedLoad:
     Class that contains a block of aggregated loads
     """
 
-    def __init__(self, loads, first_sim_hour, init=False):
+    def __init__(self, loads, first_sim_hour, max_length, init=False):
 
         """
         Constructor for the class
         """
 
-        self.loads = deque(loads, maxlen=len(loads))
+        # class data
+
+        self.max_length = max_length
+        self.loads = deque(loads, maxlen=max_length)
+        self.q = 0.0
+        self.first_sim_hour = first_sim_hour
+
         if init:
             self.last_sim_hour = 0
         else:
             self.last_sim_hour = len(loads) + first_sim_hour
-        self.first_sim_hour = first_sim_hour
-        self.q = np.mean(self.loads)
+            self.calc_q()
 
     def time(self):
 
@@ -1067,3 +1140,11 @@ class AggregatedLoad:
         """
 
         return self.first_sim_hour
+
+    def calc_q(self):
+
+        """
+        Calculates the mean q value for the aggregation period
+        """
+
+        self.q = np.mean(self.loads)

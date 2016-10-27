@@ -1,11 +1,12 @@
-
 import sys
 import ghx.ghx as ghx
+
 
 # nice usage function
 def usage():
     print("""Call this script with three command line arguments:
     $ main.py <path to ghx input> <path to sim conf> <path to loads>""")
+
 
 # check the command line arguments
 if not len(sys.argv) == 4:
