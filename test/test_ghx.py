@@ -472,60 +472,96 @@ class TestGHXArrayStaticAggBlocks(unittest.TestCase):
         # init
         curr_tst = ghx.GHXArrayStaticAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
 
-        l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+        l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
-        curr_tst.shift_loads(l[1])
+        i = 1
+        curr_tst.shift_loads(l[i])
         self.assertEqual(len(curr_tst.agg_load_objects), 1)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[0], l[1]]))
+        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[i - 1], l[i]]))
 
-        curr_tst.shift_loads(l[2])
-        self.assertEqual(len(curr_tst.agg_load_objects), 2)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[1], l[2]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[0]]))
+        for i in range(2, 4):
+            curr_tst.shift_loads(l[i])
+            self.assertEqual(len(curr_tst.agg_load_objects), 2)
+            self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[i - 1], l[i]]))
+            if i == 2:
+                self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[i - 2]]))
+            elif i ==3:
+                self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[i - 3], l[i - 2]]))
 
-        curr_tst.shift_loads(l[3])
-        self.assertEqual(len(curr_tst.agg_load_objects), 2)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[2], l[3]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[0], l[1]]))
+        for i in range(4, 8):
+            curr_tst.shift_loads(i)
+            self.assertEqual(len(curr_tst.agg_load_objects), 3)
+            self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[i - 1], l[i]]))
+            self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[i - 3], l[i - 2]]))
+            if i == 4:
+                self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 4]]))
+            elif i == 5:
+                self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 5], l[i - 4]]))
+            elif i == 6:
+                self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 6], l[i - 5], l[i - 4]]))
+            elif i == 7:
+                self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 7], l[i - 6], l[i - 5], l[i - 4]]))
 
-        curr_tst.shift_loads(l[4])
-        self.assertEqual(len(curr_tst.agg_load_objects), 3)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[3], l[4]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[1], l[2]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[0]]))
+        for i in range(8, 16):
+            curr_tst.shift_loads(i)
+            self.assertEqual(len(curr_tst.agg_load_objects), 4)
+            self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[i - 1], l[i]]))
+            self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[i - 3], l[i - 2]]))
+            self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 7], l[i - 6], l[i - 5], l[i - 4]]))
+            if i == 8:
+                self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[i - 8]]))
+            elif i == 9:
+                self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[i - 9], l[i - 8]]))
+            elif i == 10:
+                self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[i - 10], l[i - 9], l[i - 8]]))
+            elif i == 11:
+                self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
+            elif i == 12:
+                self.assertEqual(curr_tst.agg_load_objects[3].q,
+                                 np.mean([l[i - 12], l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
+            elif i == 13:
+                self.assertEqual(curr_tst.agg_load_objects[3].q,
+                                 np.mean([l[i - 13], l[i - 12], l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
+            elif i == 14:
+                self.assertEqual(curr_tst.agg_load_objects[3].q,
+                                 np.mean([l[i - 14], l[i - 13], l[i - 12], l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
+            elif i == 15:
+                self.assertEqual(curr_tst.agg_load_objects[3].q,
+                                 np.mean([l[i - 15], l[i - 14], l[i - 13], l[i - 12],
+                                          l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
 
-        curr_tst.shift_loads(l[5])
-        self.assertEqual(len(curr_tst.agg_load_objects), 3)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[4], l[5]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[2], l[3]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[0], l[1]]))
-
-        curr_tst.shift_loads(l[6])
-        self.assertEqual(len(curr_tst.agg_load_objects), 3)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[5], l[6]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[3], l[4]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[0], l[1], l[2]]))
-
-        curr_tst.shift_loads(l[7])
-        self.assertEqual(len(curr_tst.agg_load_objects), 3)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[6], l[7]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[4], l[5]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[0], l[1], l[2], l[3]]))
-
-        curr_tst.shift_loads(l[8])
-        self.assertEqual(len(curr_tst.agg_load_objects), 4)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[7], l[8]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[5], l[6]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[1], l[2], l[3], l[4]]))
-        self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[0]]))
-
-        curr_tst.shift_loads(l[9])
-        self.assertEqual(len(curr_tst.agg_load_objects), 4)
-        self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[8], l[9]]))
-        self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[6], l[7]]))
-        self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[2], l[3], l[4], l[5]]))
-        self.assertEqual(curr_tst.agg_load_objects[3].q, np.mean([l[0], l[1]]))
-
+        for i in range(16, 24):
+            curr_tst.shift_loads(i)
+            self.assertEqual(len(curr_tst.agg_load_objects), 5)
+            self.assertEqual(curr_tst.agg_load_objects[0].q, np.mean([l[i - 1], l[i]]))
+            self.assertEqual(curr_tst.agg_load_objects[1].q, np.mean([l[i - 3], l[i - 2]]))
+            self.assertEqual(curr_tst.agg_load_objects[2].q, np.mean([l[i - 7], l[i - 6], l[i - 5], l[i - 4]]))
+            self.assertEqual(curr_tst.agg_load_objects[3].q,
+                             np.mean([l[i - 15], l[i - 14], l[i - 13], l[i - 12],
+                                      l[i - 11], l[i - 10], l[i - 9], l[i - 8]]))
+            if i == 16:
+                self.assertEqual(curr_tst.agg_load_objects[4].q, np.mean([l[i - 16]]))
+            elif i == 17:
+                self.assertEqual(curr_tst.agg_load_objects[4].q, np.mean([l[i - 17], l[i - 16]]))
+            elif i == 18:
+                self.assertEqual(curr_tst.agg_load_objects[4].q, np.mean([l[i - 18], l[i - 17], l[i - 16]]))
+            elif i == 19:
+                self.assertEqual(curr_tst.agg_load_objects[4].q,
+                                 np.mean([l[i - 19], l[i - 18], l[i - 17], l[i - 16]]))
+            elif i == 20:
+                self.assertEqual(curr_tst.agg_load_objects[4].q,
+                                 np.mean([l[i - 20], l[i - 19], l[i - 18], l[i - 17], l[i - 16]]))
+            elif i == 21:
+                self.assertEqual(curr_tst.agg_load_objects[4].q,
+                                 np.mean([l[i - 21], l[i - 20], l[i - 19], l[i - 18], l[i - 17], l[i - 16]]))
+            elif i == 22:
+                self.assertEqual(curr_tst.agg_load_objects[4].q,
+                                 np.mean([l[i - 22], l[i - 21], l[i - 20], l[i - 19],
+                                          l[i - 18], l[i - 17], l[i - 16]]))
+            elif i == 23:
+                self.assertEqual(curr_tst.agg_load_objects[4].q,
+                                 np.mean([l[i - 23], l[i - 22], l[i - 21], l[i - 20],
+                                          l[i - 19], l[i - 18], l[i - 17], l[i - 16]]))
 
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':
