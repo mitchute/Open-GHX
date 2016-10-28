@@ -563,6 +563,36 @@ class TestGHXArrayStaticAggBlocks(unittest.TestCase):
                                  np.mean([l[i - 23], l[i - 22], l[i - 21], l[i - 20],
                                           l[i - 19], l[i - 18], l[i - 17], l[i - 16]]))
 
+    def test_shift_loads_for_q_est(self):
+        """
+        q_estimate method
+        """
+
+        ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                     'testing.json')
+        config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                        'test_static_config.json')
+        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
+                                     'testing.csv')
+
+        # init
+        curr_tst = ghx.GHXArrayStaticAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
+
+        l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
+
+        for i in range(1, 10):
+            curr_tst.shift_loads(l[i])
+            if i == 2:
+                self.assertEqual(curr_tst.agg_load_objects[1].q_est, 0)
+            elif i == 3:
+                self.assertEqual(curr_tst.agg_load_objects[1].q_est, 0.5)
+            elif i == 4:
+                self.assertEqual(curr_tst.agg_load_objects[1].q_est, 1.25)
+                self.assertEqual(curr_tst.agg_load_objects[2].q_est, 0.5)
+            elif i == 5:
+                self.assertEqual(curr_tst.agg_load_objects[1].q_est, 2.125)
+                self.assertEqual(curr_tst.agg_load_objects[2].q_est, 0.875)
+
 # allow execution directly as python tests/test_ghx.py
 if __name__ == '__main__':
     unittest.main()

@@ -914,6 +914,15 @@ class GHXArrayStaticAggBlocks(BaseGHX):
 
         # class data
 
+        cwd = os.getcwd()
+        path_to_run_dir = os.path.join(cwd, "run")
+
+        if not os.path.exists(path_to_run_dir):
+            os.makedirs(path_to_run_dir)
+
+        # open files
+        self.debug_file = open(os.path.join(path_to_run_dir, "debug.csv"), 'w')
+
         # set load aggregation intervals
         self.set_load_aggregation()
 
@@ -966,12 +975,26 @@ class GHXArrayStaticAggBlocks(BaseGHX):
 
         for i in range(len(self.agg_load_objects) - 1, 0, -1):
             self.agg_load_objects[i].loads.append(self.agg_load_objects[i - 1].loads[0])
+            if i == 1:
+                self.agg_load_objects[i].new_q_val = self.agg_load_objects[i - 1].loads[0]
+            else:
+                self.agg_load_objects[i].new_q_val = self.agg_load_objects[i - 1].q_est
             self.agg_load_objects[i - 1].loads.popleft()
 
         self.agg_load_objects[0].loads.append(curr_load)
 
         for obj in self.agg_load_objects:
             obj.calc_q()
+            obj.estimate_q()
+
+    def debug(self):
+
+        self.debug_file.write("%d" % (self.sim_hour))
+
+        for i in range(1,len(self.agg_load_objects)):
+            self.debug_file.write(", %f, %f" % (self.agg_load_objects[i].q, self.agg_load_objects[i].q_est))
+
+        self.debug_file.write("\n")
 
     def simulate(self):
 
@@ -993,6 +1016,8 @@ class GHXArrayStaticAggBlocks(BaseGHX):
                     curr_load = self.raw_sim_loads[load_index]
 
                     self.shift_loads(curr_load)
+
+                    self.debug()
 
         self.generate_output_reports()
 
@@ -1122,9 +1147,12 @@ class AggregatedLoad:
 
         # class data
 
+        self.length = 0
         self.max_length = max_length
         self.loads = deque(loads, maxlen=max_length)
         self.q = 0.0
+        self.new_q_val = 0.0
+        self.q_est = 0.0
         self.first_sim_hour = first_sim_hour
 
         if init:
@@ -1148,3 +1176,11 @@ class AggregatedLoad:
         """
 
         self.q = np.mean(self.loads)
+
+    def estimate_q(self):
+
+        """
+        Estimates the average q value for the period using the modified moving average formula
+        """
+        self.length = len(self.loads)
+        self.q_est = ((self.length - 1) * self.q_est + self.new_q_val) / self.length
