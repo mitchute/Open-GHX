@@ -75,13 +75,22 @@ class BaseGHX:
         self.ave_bh_radius = 0.0
         self.ave_pipe_cond = 0.0
         self.ave_pipe_out_dia = 0.0
+        self.ave_pipe_in_dia = 0.0
         self.ave_shank_space = 0.0
         self.ave_pipe_thickness = 0.0
 
+        self.resist_pipe_conduction = 0.0
+        self.resist_pipe_convection = 0.0
         self.resist_pipe = 0.0
         self.resist_bh_ave = 0.0
         self.resist_bh_total_internal = 0.0
         self.resist_bh_effective = 0.0
+
+        self.theta_1 = 0.0
+        self.theta_2 = 0.0
+        self.theta_3 = 0.0
+        self.sigma = 0.0
+        self.beta = 0.0
 
         # initialize methods
 
@@ -314,6 +323,8 @@ class BaseGHX:
         self.ave_shank_space /= len(self.ghx_list)
         self.ave_pipe_thickness /= len(self.ghx_list)
 
+        self.ave_pipe_in_dia = self.ave_pipe_out_dia - (2 * self.ave_pipe_thickness)
+
     def validate_input(self):
         """
         Validates the inputs, where possible
@@ -430,19 +441,18 @@ class BaseGHX:
             sys.exit(1)
 
     def dens(self, temp_in_c):
-
         """
         Determines the fluid density as a function of temperature, in Celsius.
-        Uses the CoolProp python library to find the fluid density.
+        Uses the CoolProp python library.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
         :param temp_in_c: temperature in Celsius
         :returns fluid density in [kg/m3]
         """
+
         return cp.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
     def cp(self, temp_in_c):
-
         """
         Determines the fluid specific heat as a function of temperature, in Celsius.
         Uses the CoolProp python library to find the fluid specific heat.
@@ -454,8 +464,43 @@ class BaseGHX:
 
         return cp.PropsSI('C', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
 
-    def calc_g_func(self):
+    def visc(self, temp_in_c):
+        """
+        Determines the fluid viscosity as a function of temperature, in Celsius.
+        Uses the CoolProp python library.
+        Fluid type is determined from the type of fluid specified for the GHX array object.
 
+        :param temp_in_c: temperature in Celsius
+        :returns fluid viscosity in [Pa-s]
+        """
+
+        return cp.PropsSI('V', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+
+    def cond(self, temp_in_c):
+        """
+        Determines the fluid conductivity as a function of temperature, in Celsius.
+        Uses the CoolProp python library.
+        Fluid type is determined from the type of fluid specified for the GHX array object.
+
+        :param temp_in_c: temperature in Celsius
+        :returns fluid conductivity in [W/m-K]
+        """
+
+        return cp.PropsSI('L', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+
+    def pr(self, temp_in_c):
+        """
+        Determines the fluid Prandtl as a function of temperature, in Celsius.
+        Uses the CoolProp python library.
+        Fluid type is determined from the type of fluid specified for the GHX array object.
+
+        :param temp_in_c: temperature in Celsius
+        :returns fluid Prandtl number
+        """
+
+        return self.cp(temp_in_c) * self.visc(temp_in_c) / self.cond(temp_in_c)
+
+    def calc_g_func(self):
         """
         Attempts to calculate g-functions for given ground heat exchangers. If not successful, program exits.
 
@@ -473,7 +518,6 @@ class BaseGHX:
             sys.exit(1)
 
     def update_g_func_interp_lists(self):
-
         """
         Because g-functions are read in as pairs, we need to convert the t/ts and g-func values into individual lists
         so we can use the built in python interpolation routines.
@@ -489,7 +533,6 @@ class BaseGHX:
             self.g_func_val.append(self.g_func_pairs[i][1])
 
     def update_load_lists(self):
-
         """
         Converts the loads data into single lists.
         """
@@ -500,7 +543,6 @@ class BaseGHX:
             self.raw_sim_loads.append(self.load_pairs[i][1])
 
     def g_func(self, ln_t_ts):
-
         """
         Interpolates to the correct g-function value
         """
@@ -523,38 +565,97 @@ class BaseGHX:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
 
+    def friction_factor(self, re):
+        """
+        Calculates the friction factor in smooth tubes
+
+        Petukov, B.S. 1970. 'Heat transfer and friction in turbulent pipe flow with variable physical properties.'
+        In Advances in Heat Transfer, ed. T.F. Irvine and J.P. Hartnett, Vol. 6. New York Academic Press.
+        """
+
+        # limits picked be within about 1% of actual values
+        lower_limit = 1500
+        upper_limit = 5000
+
+        if re < lower_limit:
+            return 64.0 / re  # pure laminar flow
+        elif lower_limit <= re < upper_limit:
+            f_low = 64.0 / re  # pure laminar flow
+            f_high = (0.79 * np.log(re) - 1.64)**(-2.0)  # pure turbulent flow
+            sf = 1 / (1 + np.exp(-(re - 3000.0) / 450.0))  # smoothing function
+            return (1 - sf) * f_low + sf * f_high
+        else:
+            return (0.79 * np.log(re) - 1.64)**(-2.0)  # pure turbulent flow
+
     def init_bh_resistance_calcs(self):
 
         """
         Initializes the  borehole resistance calculations. Only needs to be called once.
         """
 
-        self.calc_pipe_resistance()
+        self.theta_1 = self.ave_shank_space / (2 * self.ave_bh_radius)
+        self.theta_2 = self.ave_bh_radius / (self.ave_pipe_out_dia/2.0)
+        self.theta_3 = 1 / (2 * self.theta_1 * self.theta_2)
+        self.sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
 
-        theta_1 = self.ave_shank_space / (2 * self.ave_bh_radius)
-        theta_2 = self.ave_bh_radius / self.ave_pipe_out_dia
-        theta_3 = 1 / (2 * theta_1 * theta_2)
-        sigma = (self.grout_cond - self.ground_cond)/(self.grout_cond + self.ground_cond)
-        beta = 2 * np.pi * self.grout_cond * self.resist_pipe
+        self.calc_pipe_conduction_resistance()
 
-        self.calc_bh_average_thermal_resistance(theta_1, theta_2, theta_3, sigma, beta)
-        self.calc_bh_total_internal_thermal_resistance(theta_1, theta_3, sigma, beta)
-
-    def calc_pipe_resistance(self):
+    def calc_pipe_conduction_resistance(self):
 
         """
-        Calculates the thermal resistance of a pipe.
+        Calculates the thermal resistance of a pipe, in [K/(W/m)].
 
         Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
         for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
         """
 
-        d_o = self.ave_pipe_out_dia
-        d_i = self.ave_pipe_out_dia - 2 * self.ave_pipe_thickness
+        self.resist_pipe_conduction = np.log(self.ave_pipe_out_dia/self.ave_pipe_in_dia) / \
+                                      (2 * np.pi * self.ave_pipe_cond)
 
-        self.resist_pipe = np.log(d_o/d_i) / (2 * np.pi * self.ave_pipe_cond)
+    def calc_pipe_convection_resistance(self):
 
-    def calc_bh_average_thermal_resistance(self, theta_1, theta_2, theta_3, sigma, beta):
+        """
+        Calculates the convection resistance using Gnielinski and Petukov, in [k/(W/m)]
+
+        Gneilinski, V. 1976. 'New equations for heat and mass transfer in turbulent pipe and channel flow.'
+        International Chemical Engineering 16(1976), pp. 359-368.
+        """
+
+        try:
+            fluid_temp = self.temp_mft[-1]
+        except:
+            fluid_temp = self.ground_temp
+
+        mass_flow_rate = self.flow_rate * self.dens(fluid_temp)
+        re = 4 * mass_flow_rate / (self.visc(fluid_temp) * np.pi * self.ave_pipe_in_dia)
+
+        if re < 3000:
+            nu = np.mean([4.36, 3.66])
+        else:
+            f = self.friction_factor(re)
+            pr = self.pr(fluid_temp)
+            nu = (f/8) * (re - 1000) * pr / (1 + 12.7 * (f/8)**0.5 * (pr**(2/3) - 1))
+
+        h = nu * self.cond(fluid_temp) / self.ave_pipe_in_dia
+
+        self.resist_pipe_convection = 1 / (h * np.pi * self.ave_pipe_in_dia)
+
+    def calc_pipe_resistance(self):
+
+        """
+        Calculates the combined conduction and convection pipe resistance
+
+        Javed, S. & Spitler, J.D. 2016. 'Accuracy of Borehole Thermal Resistance Calculation Methods
+        for Grouted Single U-tube Ground Heat Exchangers.' J. Energy Engineering. Draft in progress.
+
+        Equation 3
+        """
+
+        self.calc_pipe_convection_resistance()
+
+        self.resist_pipe = self.resist_pipe_conduction + self.resist_pipe_convection
+
+    def calc_bh_average_thermal_resistance(self):
 
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
@@ -565,17 +666,16 @@ class BaseGHX:
         Equation 13
         """
 
-        final_term_1 = np.log(theta_2/(2 * theta_1 * (1 - theta_1**4)**sigma))
-        num_final_term_2 = theta_3**2 * (1 - (4 * sigma * theta_1**4)/(1 - theta_1**4))**2
-        den_final_term_2_pt_1 = (1 + beta)/(1 - beta)
-        den_final_term_2_pt_2 = theta_3**2 * (1 + (16 * sigma * theta_1**4)/(1 - theta_1**4)**2)
+        final_term_1 = np.log(self.theta_2/(2 * self.theta_1 * (1 - self.theta_1**4)**self.sigma))
+        num_final_term_2 = self.theta_3**2 * (1 - (4 * self.sigma * self.theta_1**4)/(1 - self.theta_1**4))**2
+        den_final_term_2_pt_1 = (1 + self.beta)/(1 - self.beta)
+        den_final_term_2_pt_2 = self.theta_3**2 * (1 + (16 * self.sigma * self.theta_1**4)/(1 - self.theta_1**4)**2)
         den_final_term_2 = den_final_term_2_pt_1 + den_final_term_2_pt_2
         final_term_2 = num_final_term_2 / den_final_term_2
 
-        self.resist_bh_ave = (1/(4 * np.pi * self.grout_cond)) * (beta + final_term_1 - final_term_2)
+        self.resist_bh_ave = (1/(4 * np.pi * self.grout_cond)) * (self.beta + final_term_1 - final_term_2)
 
-    def calc_bh_total_internal_thermal_resistance(self, theta_1, theta_3, sigma, beta):
-
+    def calc_bh_total_internal_thermal_resistance(self):
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
 
@@ -585,18 +685,17 @@ class BaseGHX:
         Equation 26
         """
 
-        final_term_1 = np.log(((1 + theta_1**2)**sigma)/(theta_3 * (1 - theta_1**2)**sigma))
-        num_term_2 = theta_3**2 * (1 - theta_1**4 + 4 * sigma * theta_1**2)**2
-        den_term_2_pt_1 = (1 + beta)/(1 - beta) * (1 - theta_1**4)**2
-        den_term_2_pt_2 = theta_3**2 * (1 - theta_1**4)**2
-        den_term_2_pt_3 = 8 * sigma * theta_1**2 * theta_3**2 * (1 + theta_1**4)
+        final_term_1 = np.log(((1 + self.theta_1**2)**self.sigma)/(self.theta_3 * (1 - self.theta_1**2)**self.sigma))
+        num_term_2 = self.theta_3**2 * (1 - self.theta_1**4 + 4 * self.sigma * self.theta_1**2)**2
+        den_term_2_pt_1 = (1 + self.beta)/(1 - self.beta) * (1 - self.theta_1**4)**2
+        den_term_2_pt_2 = self.theta_3**2 * (1 - self.theta_1**4)**2
+        den_term_2_pt_3 = 8 * self.sigma * self.theta_1**2 * self.theta_3**2 * (1 + self.theta_1**4)
         den_term_2 = den_term_2_pt_1 - den_term_2_pt_2 + den_term_2_pt_3
         final_term_2 = num_term_2 / den_term_2
 
-        self.resist_bh_total_internal = (1/(np.pi * self.grout_cond)) * (beta + final_term_1 - final_term_2)
+        self.resist_bh_total_internal = (1/(np.pi * self.grout_cond)) * (self.beta + final_term_1 - final_term_2)
 
     def calc_bh_effective_resistance(self):
-
         """
         Calculates the effective thermal resistance of the borehole assuming a uniform heat flux.
 
@@ -612,6 +711,11 @@ class BaseGHX:
 
         Equation 14
         """
+
+        self.calc_pipe_resistance()
+        self.beta = 2 * np.pi * self.grout_cond * self.resist_pipe
+        self.calc_bh_total_internal_thermal_resistance()
+        self.calc_bh_average_thermal_resistance()
 
         try:
             fluid_temp = self.temp_mft[-1]
@@ -689,7 +793,6 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         self.agg_load_objects.append(AggregatedLoad([0], 0, 1, True))
 
     def set_load_aggregation(self):
-
         """
         Sets the load aggregation intervals based on the type specified by the user.
 
@@ -713,7 +816,6 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
             self.agg_load_intervals = monthly
 
     def aggregate_load(self):
-
         """
         Creates aggregated load object
         """
@@ -731,7 +833,6 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour, len(agg_loads)))
 
     def collapse_aggregate_loads(self):
-
         """
         Collapses aggregated loads
         """
@@ -771,7 +872,6 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         self.agg_load_objects = agg_load_objects_update
 
     def merge_agg_load_objs(self, obj_list):
-
         """
         Merges AggregatedLoad objects into a single AggregatedLoad object
 
@@ -927,7 +1027,6 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         self.set_load_aggregation()
 
     def set_load_aggregation(self):
-
         """
         Sets the load aggregation intervals based on the type specified by the user.
 
@@ -954,7 +1053,6 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         self.agg_load_objects.append(AggregatedLoad([0], 0, self.agg_load_intervals[0], True))
 
     def shift_loads(self, curr_load):
-
         """
         Manages shifting loads between aggregation blocks
         :param curr_load: current load on GHX
@@ -997,7 +1095,6 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         self.debug_file.write("\n")
 
     def simulate(self):
-
         """
         More docs to come...
         """
@@ -1018,6 +1115,13 @@ class GHXArrayStaticAggBlocks(BaseGHX):
                     self.shift_loads(curr_load)
 
                     self.debug()
+
+                    #for i in range(len(self.agg_load_objects)):
+                    #    if i == 0:
+                    #        for j in range(len(self.agg_load_objects[0].loads), 0, -1):
+                    #
+                    #    else:
+                     #       return 1
 
         self.generate_output_reports()
 
@@ -1084,7 +1188,6 @@ class GHXArray:
             sys.exit(1)
 
     def simulate(self):
-
         """
         Main simulation routine. Simulates the GHXArray object.
 
@@ -1162,7 +1265,6 @@ class AggregatedLoad:
             self.calc_q()
 
     def time(self):
-
         """
         :returns absolute time (in hours) when load occurred
         """
@@ -1170,7 +1272,6 @@ class AggregatedLoad:
         return self.first_sim_hour
 
     def calc_q(self):
-
         """
         Calculates the mean q value for the aggregation period
         """
@@ -1178,7 +1279,6 @@ class AggregatedLoad:
         self.q = np.mean(self.loads)
 
     def estimate_q(self):
-
         """
         Estimates the average q value for the period using the modified moving average formula
         """

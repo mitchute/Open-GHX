@@ -93,3 +93,10 @@ ENV/
 
 # Run directory
 run
+
+# LaTeX stuff
+.aux
+.pdf
+.gz
+.bbl
+.blg
