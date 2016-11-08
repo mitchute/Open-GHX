@@ -122,12 +122,12 @@ class BaseGHX:
 
         # read from JSON file
         try:
-            if self.print_output: print("Reading GHX input")
+            self.my_print("Reading GHX input")
 
             with open(ghx_input_json_path) as json_file:
                 json_data = json.load(json_file)
 
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
 
         except:  # pragma: no cover
             if self.print_output: cprint("Error reading GHX data file---check file path", color_fail)
@@ -136,7 +136,7 @@ class BaseGHX:
 
         # load data into data structs
         try:
-            if self.print_output: print("Loading GHX data")
+            self.my_print("Loading GHX data")
 
             # load GHX Array level inputs first
 
@@ -216,7 +216,7 @@ class BaseGHX:
 
         if not errors_found:
             # success
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
         else:  # pragma: no cover
             if self.print_output: cprint("Error loading data into data structs", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
@@ -354,12 +354,12 @@ class BaseGHX:
 
         # read from JSON file
         try:
-            if self.print_output: print("Reading simulation configuration")
+            self.my_print("Reading simulation configuration")
 
             with open(sim_config_path) as json_file:
                 json_data = json.load(json_file)
 
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
 
         except:  # pragma: no cover
             if self.print_output: cprint("Error reading simulation configuration---check file path", color_fail)
@@ -367,7 +367,7 @@ class BaseGHX:
             sys.exit(1)
 
         try:
-            if self.print_output: print("Loading simulation configuration")
+            self.my_print("Loading simulation configuration")
 
             try:
                 self.sim_years = json_data['Simulation Years']
@@ -397,7 +397,7 @@ class BaseGHX:
 
         if not errors_found:
             # success
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
         else:  # pragma: no cover
             if self.print_output: cprint("Error loading data", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
@@ -411,10 +411,10 @@ class BaseGHX:
         """
 
         try:
-            if self.print_output: print("Importing loads")
+            self.my_print("Importing loads")
             self.load_pairs = np.genfromtxt(load_path, delimiter=',', skip_header=1)
             self.update_load_lists()
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
         except:  # pragma: no cover
             if self.print_output: cprint("Error importing loads", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
@@ -508,10 +508,10 @@ class BaseGHX:
         """
 
         try:
-            if self.print_output: print("Calculating g-functions")
+            self.my_print("Calculating g-functions")
             self.g_func_present = True
             self.update_g_func_interp_lists()
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
         except:  # pragma: no cover
             if self.print_output: cprint("Error calculating g-functions", color_fail)
             if self.print_output: cprint("Program exiting", color_fail)
@@ -737,7 +737,7 @@ class BaseGHX:
         """
 
         try:
-            if self.print_output: print("Writing output results")
+            self.my_print("Writing output results")
             cwd = os.getcwd()
             path_to_run_dir = os.path.join(cwd, "run")
 
@@ -758,12 +758,25 @@ class BaseGHX:
             # close file
             out_file.close()
 
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
 
         except:
-            if self.print_output: cprint("Error writing output results", 'red')
-            if self.print_output: cprint("Program exiting", 'red')
+            self.my_print("Error writing output results", color_fail)
+            self.my_print("Program exiting", color_fail)
             sys.exit(1)
+
+    def my_print(self, message, color='black'):
+        """
+        prints the message if self.print_output
+        default color is black, unless overridden
+        """
+
+        if self.print_output:
+            if color != 'black':
+                cprint(message, color)
+            else:
+                print(message)
+
 
 
 class GHXArrayDynamicAggBlocks(BaseGHX):
@@ -811,8 +824,8 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
             self.agg_load_intervals = [hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
-            if self.print_output: cprint("Load aggregation scheme not recognized", color_warn)
-            if self.print_output: cprint("....Defaulting to monthly intervals", color_warn)
+            self.my_print("Load aggregation scheme not recognized", color_warn)
+            self.my_print("....Defaulting to monthly intervals", color_warn)
             self.agg_load_intervals = monthly
 
     def aggregate_load(self):
@@ -900,7 +913,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
 
         # calculate g-functions if not present
         if not self.g_func_present:
-            if self.print_output: cprint("G-functions not present", color_warn)
+            self.my_print("G-functions not present", color_warn)
             self.calc_g_func()
 
         # pre-load hourly g-functions
@@ -915,7 +928,7 @@ class GHXArrayDynamicAggBlocks(BaseGHX):
         for year in range(self.sim_years):
             for month in range(months_in_year):
 
-                if self.print_output: print("....Year/Month: %d/%d" % (year+1, month+1))
+                self.my_print("....Year/Month: %d/%d" % (year+1, month+1))
 
                 for hour in range(hours_in_month):
 
@@ -1042,8 +1055,8 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         elif self.aggregation_type == "Test Static Blocks":
             self.agg_load_intervals = testing
         else:
-            if self.print_output: cprint("Load aggregation scheme not recognized", color_warn)
-            if self.print_output: cprint("....Defaulting to MLAA algorithm", color_warn)
+            self.my_print("Load aggregation scheme not recognized", color_warn)
+            self.my_print("....Defaulting to MLAA algorithm", color_warn)
             self.agg_load_intervals = MLAA
 
         # need to add one extra entry to the first interval to account for the '0' hour
@@ -1102,7 +1115,7 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         for year in range(self.sim_years):
             for month in range(months_in_year):
 
-                if self.print_output: print("....Year/Month: %d/%d" % (year + 1, month + 1))
+                self.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
 
                 for hour in range(hours_in_month):
 
@@ -1126,7 +1139,7 @@ class GHXArrayStaticAggBlocks(BaseGHX):
         self.generate_output_reports()
 
 
-class GHXArray:
+class GHXArray(BaseGHX):
 
     def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
 
@@ -1162,29 +1175,29 @@ class GHXArray:
             with open(sim_config_path) as json_file:
                 json_data = json.load(json_file)
         except:  # pragma: no cover
-            if self.print_output: cprint("Error reading simulation configuration---check file path", color_fail)
-            if self.print_output: cprint("Program exiting", color_fail)
+            self.my_print("Error reading simulation configuration---check file path", color_fail)
+            self.my_print("Program exiting", color_fail)
             sys.exit(1)
 
         try:
             try:
                 self.aggregation_type = json_data['Aggregation Type']
             except:  # pragma: no cover
-                if self.print_output: cprint("....'Aggregation Type' key not found", color_warn)
+                self.my_print("....'Aggregation Type' key not found", color_warn)
                 errors_found = True
                 pass
 
         except:  # pragma: no cover
-            if self.print_output: cprint("Error reading simulation configuration", color_fail)
-            if self.print_output: cprint("Program exiting", color_fail)
+            self.my_print("Error reading simulation configuration", color_fail)
+            self.my_print("Program exiting", color_fail)
             sys.exit(1)
 
         if not errors_found:
             # success
-            if self.print_output: print("....Success")
+            self.my_print("....Success")
         else:  # pragma: no cover
-            if self.print_output: cprint("Error loading data", color_fail)
-            if self.print_output: cprint("Program exiting", color_fail)
+            self.my_print("Error loading data", color_fail)
+            self.my_print("Program exiting", color_fail)
             sys.exit(1)
 
     def simulate(self):
@@ -1193,7 +1206,7 @@ class GHXArray:
 
         More docs to come...
         """
-        if self.print_output: print("Beginning simulation")
+        self.my_print("Beginning simulation")
 
         if self.aggregation_type in self.dynamic_agg_types:
             GHXArrayDynamicAggBlocks(self.ghx_input_json_path,
@@ -1206,12 +1219,12 @@ class GHXArray:
                                     self.loads_path,
                                     self.print_output).simulate()
         else:
-            if self.print_output: cprint("Error starting program", color_fail)
-            if self.print_output: cprint("Program exiting", color_fail)
+            self.my_print("Error starting program", color_fail)
+            self.my_print("Program exiting", color_fail)
             sys.exit(1)
 
-        if self.print_output: cprint("Simulation complete", color_success)
-        if self.print_output: print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
+        self.my_print("Simulation complete", color_success)
+        self.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
 
 
 class GHX:

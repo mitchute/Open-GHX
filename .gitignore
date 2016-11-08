@@ -95,8 +95,8 @@ ENV/
 run
 
 # LaTeX stuff
-.aux
-.pdf
-.gz
-.bbl
-.blg
+*.aux
+*.pdf
+*.gz
+*.bbl
+*.blg
