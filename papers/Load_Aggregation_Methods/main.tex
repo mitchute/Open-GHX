@@ -1,39 +1,24 @@
+\documentclass{article}
 
-\documentclass[journal]{../IEEE_Template/IEEEtran}
-\usepackage{graphicx}
+\usepackage[letterpaper, margin=1in]{geometry}
+\usepackage{blindtext}
+\usepackage{setspace}
 \usepackage{harvard}
 
-% correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
+\providecommand{\keywords}[1]{\textbf{\textit{Keywords---}} #1}
 
+\title{A Comparison of Load Aggregation Methods for Ground Source Heat Pump Systems}
+\author{Matt Mitchell\footnote{Research Engineer, Oklahoma State University. email: matt.s.mitchell@okstate.edu} \\ Jeffrey Spitler\footnote{Regent Professor, Oklahoma State University. email: spitler@okstate.edu}}
 
 \begin{document}
-
-\title{A Comparison of Load Aggregation Methods}
-
-
-\author{Matt S. Mitchell, \IEEEmembership{Student Member, ASHRAE;}
-        Jeffrey D. Spitler, \IEEEmembership{Fellow, ASHRAE}
-\thanks{M.S. Mitchell is with the School of Mechanical and Aerospace Engineering, Oklahoma State University, Stillwater, OK, 74075 e-mail: matt.s.mitchell@Okstate.edu}% <-this % stops a space
-}
-
-
-% The paper headers
-\markboth{Journal of Energy Engineering}%
-{Mitchell \& Spitler: Load Aggregation Methods}
-
-% make the title area
 \maketitle
+\spacing{1.5}
 
 \begin{abstract}
 Load aggregation methods have been used extensively in procedures used for calculating the thermal response of a borehole heat exchanger under specified heat loads. These methods are used to lump the previous borehole heat loads together which helps decrease the computation time required to calculate the temperature response of the heat exchanger. The purpose of this paper is to compare a number of different methods which have been presented previously. In comparing the methods, the authors test the load aggregation methods against a numerical model (or experimental data) for accuracy of the temperature response. The simulation time of the methods are also compared. Recommendations are give at the end of the paper regarding the best load aggregation method.
 \end{abstract}
 
-% Note that keywords are not normally used for peerreview papers.
-\begin{IEEEkeywords}
-Load Aggregation, Ground Source Heat Pump, Ground Heat Exchangers.
-\end{IEEEkeywords}
-
+\keywords{Load Aggregation, Ground Source Heat Pump, Ground Heat Exchangers}
 
 \section{Introduction}
 
@@ -76,17 +61,5 @@ The authors would like to thank The Department of Energy and the School of Mecha
 \bibliographystyle{agsm}
 \bibliography{../References/references}
 
-%\begin{thebibliography}{1}
-%
-%\bibitem{Eskilson_1987}
-%Eskilson, P. 1987. Thermal Analysis of Heat Extraction Boreholes. Ph.D. Dissertation. University of Lund, Sweden.
-%
-%\bibitem{IEEEhowto:kopka}
-%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-%
-%\end{thebibliography}
 
 \end{document}
-
-

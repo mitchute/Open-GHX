@@ -1,5 +1,5 @@
 {
     "Simulation Years":1,
-    "Aggregation Type":"Test Dynamic Blocks",
+    "Aggregation Type":"Test Lagrange Blocks",
     "Min Hourly History":192
 }

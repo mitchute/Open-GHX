@@ -1,5 +1,5 @@
 {
     "Simulation Years":1,
-    "Aggregation Type":"Test Static Blocks",
+    "Aggregation Type":"Test Euler Blocks",
     "Min Hourly History":192
 }
