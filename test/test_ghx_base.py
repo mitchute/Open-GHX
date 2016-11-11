@@ -11,7 +11,9 @@ import ghx
 
 
 class TestBaseGHX(unittest.TestCase):
+
     def test_dens(self):
+
         """
         Tests fluid density calculation routine
 
@@ -37,6 +39,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.dens(80), 971.8, delta=tolerance)
 
     def test_cp(self):
+
         """
         Tests fluid specific heat calculation routine
 
@@ -62,6 +65,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.cp(80), 4197, delta=tolerance)
 
     def test_visc(self):
+
         """
         Tests fluid viscosity calculations
 
@@ -87,6 +91,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.visc(80), 0.355E-3, delta=tolerance)
 
     def test_cond(self):
+
         """
         Tests fluid conductivity calculations
 
@@ -112,6 +117,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.cond(80), 0.670, delta=tolerance)
 
     def test_pr(self):
+
         """
         Tests fluid Prandtl number calculations
 
@@ -137,6 +143,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.pr(80), 2.22, delta=tolerance)
 
     def test_interp_g_funcs(self):
+
         """
         Tests g-function interpolation
         """
@@ -161,6 +168,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.g_func(5.0), 8.29, delta=tolerance)
 
     def test_calc_ts(self):
+
         """
         Tests calc_ts which sets timescale
         """
@@ -180,6 +188,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.ts, 645858729.2, delta=tolerance)
 
     def test_init_bh_resistance_calcs(self):
+
         """
         Tests parameters that are initialized for bh resistance calcs
         """
@@ -207,6 +216,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.sigma, sigma, delta=tolerance)
 
     def test_calc_pipe_convection_resistance(self):
+
         """
         Tests the pipe inside convection resistance calculation
         """
@@ -232,6 +242,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.resist_pipe_convection, 0.1357208, delta=tolerance)
 
     def test_calc_pipe_conduction_resistance(self):
+
         """
         Tests the 1-D radial thermal resistance calculation
         """
@@ -251,6 +262,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.resist_pipe_conduction, 0.082204, delta=tolerance)
 
     def test_calc_bh_average_thermal_resistance(self):
+
         """
         Tests average borehole thermal resistance calculation
         """
@@ -272,6 +284,7 @@ class TestBaseGHX(unittest.TestCase):
         #self.assertAlmostEqual(curr_tst.resist_bh_ave, 0.059461853, delta=tolerance)
 
     def test_calc_bh_total_internal_thermal_resistance(self):
+
         """
         Tests total borehole internal thermal resistance calculation
         """
@@ -293,6 +306,7 @@ class TestBaseGHX(unittest.TestCase):
         #self.assertAlmostEqual(curr_tst.resist_bh_total_internal, 0.12100078627, delta=tolerance)
 
     def test_calc_bh_effective_resistance(self):
+
         """
         Tests effective borehole resistance calculation
         """
@@ -312,6 +326,7 @@ class TestBaseGHX(unittest.TestCase):
         #self.assertAlmostEqual(curr_tst.resist_bh_effective, 0.122119276229, delta=tolerance)
 
     def test_friction_factor(self):
+
         """
         Test the smooth tube friction factor calculations
         """
@@ -357,6 +372,7 @@ class TestBaseGHX(unittest.TestCase):
         self.assertEqual(curr_tst.friction_factor(re), (0.79 * np.log(re) - 1.64)**(-2.0))
 
     def test_grout_resistance(self):
+
         """
         Tests the grout resistance. Validation values come from Javed & Spitler 2016
 

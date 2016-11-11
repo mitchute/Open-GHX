@@ -5,7 +5,7 @@ install:
   - pip install coveralls
 
 script:
-  - coverage run --source=ghx test/test_ghx.py
+  - coverage run --source=ghx test_ghx.py
 
 after_success:
   coveralls
