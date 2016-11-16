@@ -1,3 +1,5 @@
+from __future__ import division
+
 from ghx_base import *
 from ghx_aggregated_load import *
 
@@ -44,8 +46,8 @@ class GHXArrayLagrangeAggBlocks(BaseGHX):
         elif self.aggregation_type == "Test Lagrange Blocks":
             self.agg_load_intervals = testing
         else:
-            self.my_print("Load aggregation scheme not recognized", self.color_warn)
-            self.my_print("....Defaulting to MLAA algorithm", self.color_warn)
+            self.my_print("Load aggregation scheme not recognized", self._color_warn)
+            self.my_print("....Defaulting to MLAA algorithm", self._color_warn)
             self.agg_load_intervals = MLAA
 
         # need to add one extra entry to the first interval to account for the '0' hour
@@ -103,6 +105,8 @@ class GHXArrayLagrangeAggBlocks(BaseGHX):
         More docs to come...
         """
 
+        self.my_print("Beginning simulation")
+
         for year in range(self.sim_years):
             for month in range(self.months_in_year):
 
@@ -114,7 +118,7 @@ class GHXArrayLagrangeAggBlocks(BaseGHX):
 
                     # get raw hourly load and append to hourly list
                     load_index = month * self.hours_in_month + hour
-                    curr_load = self.raw_sim_loads[load_index]
+                    curr_load = self.sim_loads[load_index]
 
                     self.shift_loads(curr_load)
 

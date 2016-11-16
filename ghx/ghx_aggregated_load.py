@@ -1,4 +1,4 @@
-
+from __future__ import division
 import numpy as np
 from collections import deque
 
@@ -17,12 +17,12 @@ class AggregatedLoad:
 
         # class data
 
-        self.length = 0
+        self.length = None
         self.max_length = max_length
         self.loads = deque(loads, maxlen=max_length)
-        self.q = 0.0
-        self.new_q_val = 0.0
-        self.q_est = 0.0
+        self.q = None
+        self.new_q_val = None
+        self.q_est = None
         self.first_sim_hour = first_sim_hour
 
         if init:

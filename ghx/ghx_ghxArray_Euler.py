@@ -1,3 +1,5 @@
+from __future__ import division
+
 from ghx_base import *
 from ghx_aggregated_load import *
 
@@ -11,14 +13,14 @@ class GHXArrayEulerAggBlocks(BaseGHX):
     the load block shift one time step further from the "present" simulation time.
     """
 
-    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
+    def __init__(self, json_data, loads_path, print_output=True):
 
         """
         Constructor for the class.
         """
 
         # init base class
-        BaseGHX.__init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output)
+        BaseGHX.__init__(self, json_data, loads_path, print_output)
 
         # class data
 
@@ -48,8 +50,8 @@ class GHXArrayEulerAggBlocks(BaseGHX):
             self.agg_load_intervals = [self.hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
-            self.my_print("Load aggregation scheme not recognized", self.color_warn)
-            self.my_print("....Defaulting to monthly intervals", self.color_warn)
+            self.my_print("Load aggregation scheme not recognized", self._color_warn)
+            self.my_print("....Defaulting to monthly intervals", self._color_warn)
             self.agg_load_intervals = monthly
 
     def aggregate_load(self):
@@ -138,9 +140,11 @@ class GHXArrayEulerAggBlocks(BaseGHX):
         More docs to come...
         """
 
+        self.my_print("Beginning simulation")
+
         # calculate g-functions if not present
         if not self.g_func_present:
-            self.my_print("G-functions not present", self.color_warn)
+            self.my_print("G-functions not present", self._color_warn)
             self.calc_g_func()
 
         # pre-load hourly g-functions
@@ -164,7 +168,7 @@ class GHXArrayEulerAggBlocks(BaseGHX):
 
                     # get raw hourly load and append to hourly list
                     load_index = month * self.hours_in_month + hour
-                    self.hourly_loads.append(self.raw_sim_loads[load_index])
+                    self.hourly_loads.append(self.sim_loads[load_index])
 
                     # calculate borehole resistance
                     self.calc_bh_effective_resistance()
@@ -186,11 +190,11 @@ class GHXArrayEulerAggBlocks(BaseGHX):
                         temp_bh_hourly.append(delta_q * g)
 
                         # calculate mean fluid temp
-                        g_rb = g + self.resist_bh_effective
+                        g_rb = g + self.resist_bh
 
                         if g_rb < 0:
-                            g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
-                            g_rb = g + self.resist_bh_effective
+                            g = -self.resist_bh * 2 * np.pi * self.ground_cond
+                            g_rb = g + self.resist_bh
 
                         temp_mft_hourly.append(delta_q * g_rb)
 
@@ -212,11 +216,11 @@ class GHXArrayEulerAggBlocks(BaseGHX):
                             temp_bh_agg.append(delta_q * g)
 
                             # calculate the mean fluid temp
-                            g_rb = g + self.resist_bh_effective
+                            g_rb = g + self.resist_bh
 
                             if g_rb < 0:
-                                g = -self.resist_bh_effective * 2 * np.pi * self.ground_cond
-                                g_rb = g + self.resist_bh_effective
+                                g = -self.resist_bh * 2 * np.pi * self.ground_cond
+                                g_rb = g + self.resist_bh
 
                             temp_mft_agg.append(delta_q * g_rb)
 

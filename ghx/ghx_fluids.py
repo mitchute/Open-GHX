@@ -1,100 +1,102 @@
+from __future__ import division
+
 import CoolProp.CoolProp as cp
 import numpy as np
 
+from ghx_print import *
+from ghx_constants import *
 
-class FluidsClass:
 
-    def __init__(self):
-        pass
+class FluidsClass(ConstantClass, PrintClass):
 
     """
     Contains all fluid properties, correlations, etc.
     """
 
-    def dens(self, temp_in_c):
+    def __init__(self, json_data, initial_temp, print_output):
+
+        ConstantClass.__init__(self)
+        PrintClass.__init__(self, print_output)
+
+        try:
+            self.fluid = json_data['Type']
+        except:  # pragma: no cover
+            self.my_print("....'Name' key not found", self._color_warn)
+            self.fatal_error(message="Error initializing FluidsClass")
+
+        try:
+            self.concentration = json_data['Concentration']
+        except:  # pragma: no cover
+            self.my_print("....'Concentration' key not found", self._color_warn)
+            self.fatal_error(message="Error initializing FluidsClass")
+
+        try:
+            self.flow_rate = json_data['Flow Rate']
+        except:  # pragma: no cover
+            self.my_print("....'Flow Rate' key not found", self._color_warn)
+            self.fatal_error(message="Error initializing FluidsClass")
+
+        self.mass_flow_rate = None
+        self.temp = initial_temp
+        self.pressure = 101325
+
+    def dens(self):
 
         """
         Determines the fluid density as a function of temperature, in Celsius.
         Uses the CoolProp python library.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
-        :param temp_in_c: temperature in Celsius
         :returns fluid density in [kg/m3]
         """
 
-        return cp.PropsSI('D', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('D', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
 
-    def cp(self, temp_in_c):
+    def cp(self):
 
         """
         Determines the fluid specific heat as a function of temperature, in Celsius.
         Uses the CoolProp python library to find the fluid specific heat.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
-        :param temp_in_c: temperature in Celsius
         :returns fluid specific heat in [J/kg-K]
         """
 
-        return cp.PropsSI('C', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('C', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
 
-    def visc(self, temp_in_c):
+    def visc(self):
 
         """
         Determines the fluid viscosity as a function of temperature, in Celsius.
         Uses the CoolProp python library.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
-        :param temp_in_c: temperature in Celsius
         :returns fluid viscosity in [Pa-s]
         """
 
-        return cp.PropsSI('V', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('V', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
 
-    def cond(self, temp_in_c):
+    def cond(self):
 
         """
         Determines the fluid conductivity as a function of temperature, in Celsius.
         Uses the CoolProp python library.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
-        :param temp_in_c: temperature in Celsius
         :returns fluid conductivity in [W/m-K]
         """
 
-        return cp.PropsSI('L', 'T', temp_in_c + 273.15, 'P', 101325, self.fluid)
+        return cp.PropsSI('L', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
 
-    def pr(self, temp_in_c):
+    def pr(self):
 
         """
         Determines the fluid Prandtl as a function of temperature, in Celsius.
         Uses the CoolProp python library.
         Fluid type is determined from the type of fluid specified for the GHX array object.
 
-        :param temp_in_c: temperature in Celsius
         :returns fluid Prandtl number
         """
 
-        return self.cp(temp_in_c) * self.visc(temp_in_c) / self.cond(temp_in_c)
+        return self.cp() * self.visc() / self.cond()
 
-    def friction_factor(self, re):
-
-        """
-        Calculates the friction factor in smooth tubes
-
-        Petukov, B.S. 1970. 'Heat transfer and friction in turbulent pipe flow with variable physical properties.'
-        In Advances in Heat Transfer, ed. T.F. Irvine and J.P. Hartnett, Vol. 6. New York Academic Press.
-        """
-
-        # limits picked be within about 1% of actual values
-        lower_limit = 1500
-        upper_limit = 5000
-
-        if re < lower_limit:
-            return 64.0 / re  # pure laminar flow
-        elif lower_limit <= re < upper_limit:
-            f_low = 64.0 / re  # pure laminar flow
-            f_high = (0.79 * np.log(re) - 1.64)**(-2.0)  # pure turbulent flow
-            sf = 1 / (1 + np.exp(-(re - 3000.0) / 450.0))  # smoothing function
-            return (1 - sf) * f_low + sf * f_high
-        else:
-            return (0.79 * np.log(re) - 1.64)**(-2.0)  # pure turbulent flow
