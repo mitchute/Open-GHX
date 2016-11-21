@@ -30,7 +30,7 @@ class PrintClass:
             else:
                 print(message)
 
-    def fatal_error(self, message=None):
+    def fatal_error(self, message=None):  # pragma: no cover
 
         """
         Fatal error. Terminate program

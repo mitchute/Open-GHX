@@ -1,33 +1,80 @@
 {
     "Name":"Vertical GHE 1x2 Std",
-    "Number BH":2,
-    "Flow Rate":0.000303,
-    "Ground Cond":2.493,
-    "Ground Heat Capacity":2.4957E06,
-    "Ground Temp":13.0,
-    "Grout Cond":0.744,
-    "Fluid":"Water",
+    "Simulation Configuration":
+        {
+        "Simulation Years":2,
+        "Aggregation Type":"Test Euler Blocks",
+        "Min Hourly History":192
+        },
     "GHXs":
         [
             {
-                "Name":"BH 1",
-                "Location":[0, 0],
-                "BH Length":76.2,
-                "BH Radius":0.05715,
-                "Pipe Cond":0.389,
-                "Pipe Dia":0.0267,
-                "Shank Space":0.0521,
-                "Pipe Thickness":0.00243
+                "Name": "BH 1",
+                "Location": [0, 0],
+                "Depth": 76.2,
+                "Radius": 0.05715,
+                "Shank Spacing": 0.0521,
+                "Pipe":
+                    {
+                    "Outside Diameter": 0.0267,
+                    "Wall Thickness": 0.00243,
+                    "Conductivity": 0.389,
+                    "Density": 800,
+                    "Specific Heat": 1000
+                    },
+                "Fluid":
+                    {
+                    "Type": "Water",
+                    "Concentration": 100,
+                    "Flow Rate": 0.000303
+                    },
+                "Soil":
+                    {
+                    "Conductivity": 2.493,
+                    "Density": 1500,
+                    "Specific Heat": 1663.8,
+                    "Temperature": 13.0
+                    },
+                "Grout":
+                    {
+                    "Conductivity": 0.744,
+                    "Density": 1000,
+                    "Specific Heat": 1000
+                    }
             },
             {
-                "Name":"BH 2",
-                "Location":[0, 0],
-                "BH Length":76.2,
-                "BH Radius":0.05715,
-                "Pipe Cond":0.389,
-                "Pipe Dia":0.0267,
-                "Shank Space":0.0521,
-                "Pipe Thickness":0.00243
+                "Name": "BH 2",
+                "Location": [0, 0],
+                "Depth": 76.2,
+                "Radius": 0.05715,
+                "Shank Spacing": 0.0521,
+                "Pipe":
+                    {
+                    "Outside Diameter": 0.0267,
+                    "Wall Thickness": 0.00243,
+                    "Conductivity": 0.389,
+                    "Density": 800,
+                    "Specific Heat": 1000
+                    },
+                "Fluid":
+                    {
+                    "Type": "Water",
+                    "Concentration": 100,
+                    "Flow Rate": 0.000303
+                    },
+                "Soil":
+                    {
+                    "Conductivity": 2.493,
+                    "Density": 1500,
+                    "Specific Heat": 1663.8,
+                    "Temperature": 13.0
+                    },
+                "Grout":
+                    {
+                    "Conductivity": 0.744,
+                    "Density": 1000,
+                    "Specific Heat": 1000
+                    }
             }
         ],
     "G-func Pairs": [

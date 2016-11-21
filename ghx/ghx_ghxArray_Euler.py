@@ -4,7 +4,7 @@ from ghx_base import *
 from ghx_aggregated_load import *
 
 
-class GHXArrayEulerAggBlocks(BaseGHX):
+class GHXArrayEulerAggBlocks(BaseGHXClass):
 
     """
     GHXArrayEulerAggBlocks is the class object that holds the information that defines a ground heat exchanger array.
@@ -20,7 +20,7 @@ class GHXArrayEulerAggBlocks(BaseGHX):
         """
 
         # init base class
-        BaseGHX.__init__(self, json_data, loads_path, print_output)
+        BaseGHXClass.__init__(self, json_data, loads_path, print_output)
 
         # class data
 
@@ -156,6 +156,9 @@ class GHXArrayEulerAggBlocks(BaseGHX):
         len_hourly_loads = self.min_hourly_history + self.agg_load_intervals[0]
         self.hourly_loads = deque([0]*len_hourly_loads, maxlen=len_hourly_loads)
 
+        agg_hour = 0
+        sim_hour = 0
+
         for year in range(self.sim_years):
             for month in range(self.months_in_year):
 
@@ -163,22 +166,22 @@ class GHXArrayEulerAggBlocks(BaseGHX):
 
                 for hour in range(self.hours_in_month):
 
-                    self.agg_hour += 1
-                    self.sim_hour += 1
+                    agg_hour += 1
+                    sim_hour += 1
 
                     # get raw hourly load and append to hourly list
                     load_index = month * self.hours_in_month + hour
                     self.hourly_loads.append(self.sim_loads[load_index])
 
                     # calculate borehole resistance
-                    self.calc_bh_effective_resistance()
+                    self.borehole.resist_bh
 
                     # calculate borehole temp
                     # hourly effects
                     temp_bh_hourly = []
                     temp_mft_hourly = []
                     start_hourly = len(self.hourly_loads) - 1
-                    end_hourly = start_hourly - self.agg_hour
+                    end_hourly = start_hourly - agg_hour
                     g_func_index = -1
                     for i in range(start_hourly, end_hourly, -1):
                         g_func_index += 1
@@ -186,15 +189,15 @@ class GHXArrayEulerAggBlocks(BaseGHX):
                         q_prev = self.hourly_loads[i - 1]
                         g = self.g_func_hourly[g_func_index]
                         # calculate average bh temp
-                        delta_q = (q_curr - q_prev) / (2 * np.pi * self.ground_cond * self.total_bh_length)
+                        delta_q = (q_curr - q_prev) / (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
                         temp_bh_hourly.append(delta_q * g)
 
                         # calculate mean fluid temp
-                        g_rb = g + self.resist_bh
+                        g_rb = g + self.borehole.resist_bh
 
                         if g_rb < 0:
-                            g = -self.resist_bh * 2 * np.pi * self.ground_cond
-                            g_rb = g + self.resist_bh
+                            g = -self.borehole.resist_bh * 2 * np.pi * self.borehole.soil.conductivity
+                            g_rb = g + self.borehole.resist_bh
 
                         temp_mft_hourly.append(delta_q * g_rb)
 
@@ -208,24 +211,24 @@ class GHXArrayEulerAggBlocks(BaseGHX):
                             curr_obj = self.agg_load_objects[i]
                             prev_obj = self.agg_load_objects[i-1]
 
-                            t_agg = self.sim_hour - curr_obj.time()
+                            t_agg = sim_hour - curr_obj.time()
                             ln_t_ts = np.log(t_agg * 3600 / self.ts)
                             g = self.g_func(ln_t_ts)
                             # calculate the average borehole temp
-                            delta_q = (curr_obj.q - prev_obj.q) / (2 * np.pi * self.ground_cond * self.total_bh_length)
+                            delta_q = (curr_obj.q - prev_obj.q) / (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
                             temp_bh_agg.append(delta_q * g)
 
                             # calculate the mean fluid temp
-                            g_rb = g + self.resist_bh
+                            g_rb = g + self.borehole.resist_bh
 
                             if g_rb < 0:
-                                g = -self.resist_bh * 2 * np.pi * self.ground_cond
-                                g_rb = g + self.resist_bh
+                                g = -self.borehole.resist_bh * 2 * np.pi * self.borehole.soil.conductivity
+                                g_rb = g + self.borehole.resist_bh
 
                             temp_mft_agg.append(delta_q * g_rb)
 
                         # aggregate load
-                        if self.agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
+                        if agg_hour == self.agg_load_intervals[0] + self.min_hourly_history - 1:
                             # this has one extra value for comparative purposes
                             # need to get rid of it here
                             self.hourly_loads.popleft()
@@ -234,12 +237,12 @@ class GHXArrayEulerAggBlocks(BaseGHX):
                             self.aggregate_load()
 
                             # reset aggregation hour to '0'
-                            self.agg_hour -= self.agg_load_intervals[0]
+                            agg_hour -= self.agg_load_intervals[0]
 
                     # final bh temp
-                    self.temp_bh.append(self.ground_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
+                    self.temp_bh.append(self.borehole.soil.undisturbed_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
 
                     # final mean fluid temp
-                    self.temp_mft.append(self.ground_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
+                    self.temp_mft.append(self.borehole.soil.undisturbed_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
 
         self.generate_output_reports()

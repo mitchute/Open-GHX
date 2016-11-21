@@ -45,9 +45,7 @@ class GHXArray(PrintClass):
             with open(sim_config_path) as json_file:
                 self.json_data = json.load(json_file)
         except:  # pragma: no cover
-            self.my_print("Error reading simulation configuration---check file path", self._color_fail)
-            self.my_print("Program exiting", self._color_fail)
-            sys.exit(1)
+            self.fatal_error(message="Error reading simulation configuration---check file path")
 
         try:
             try:
@@ -55,17 +53,12 @@ class GHXArray(PrintClass):
             except:  # pragma: no cover
                 self.my_print("....'Aggregation Type' key not found", self._color_warn)
                 errors_found = True
-                pass
 
         except:  # pragma: no cover
-            self.my_print("Error reading simulation configuration", self._color_fail)
-            self.my_print("Program exiting", self._color_fail)
-            sys.exit(1)
+            self.fatal_error(message="Error reading simulation configuration")
 
         if errors_found:  # pragma: no cover
-            self.my_print("Error loading data", self._color_fail)
-            self.my_print("Program exiting", self._color_fail)
-            sys.exit(1)
+            self.fatal_error(message="Error loading data")
 
     def simulate(self):
 
@@ -86,9 +79,8 @@ class GHXArray(PrintClass):
                                       self.loads_path,
                                       self.print_output).simulate()
         else:
-            self.my_print("Error starting program", self._color_fail)
-            self.my_print("Program exiting", self._color_fail)
-            sys.exit(1)
+            self.my_print("\tAggregation Type \"%s\" not found" % (self.aggregation_type), self._color_warn)
+            self.fatal_error(message="Error starting program")
 
         self.my_print("Simulation complete", self._color_success)
         self.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))

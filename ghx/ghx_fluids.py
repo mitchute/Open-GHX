@@ -19,7 +19,7 @@ class FluidsClass(ConstantClass, PrintClass):
         PrintClass.__init__(self, print_output)
 
         try:
-            self.fluid = json_data['Type']
+            self.fluid_type = json_data['Type']
         except:  # pragma: no cover
             self.my_print("....'Name' key not found", self._color_warn)
             self.fatal_error(message="Error initializing FluidsClass")
@@ -37,7 +37,7 @@ class FluidsClass(ConstantClass, PrintClass):
             self.fatal_error(message="Error initializing FluidsClass")
 
         self.mass_flow_rate = None
-        self.temp = initial_temp
+        self.temperature = initial_temp
         self.pressure = 101325
 
     def dens(self):
@@ -50,7 +50,7 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid density in [kg/m3]
         """
 
-        return cp.PropsSI('D', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
+        return cp.PropsSI('D', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
     def cp(self):
 
@@ -62,7 +62,7 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid specific heat in [J/kg-K]
         """
 
-        return cp.PropsSI('C', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
+        return cp.PropsSI('C', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
     def visc(self):
 
@@ -74,7 +74,7 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid viscosity in [Pa-s]
         """
 
-        return cp.PropsSI('V', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
+        return cp.PropsSI('V', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
     def cond(self):
 
@@ -86,7 +86,7 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid conductivity in [W/m-K]
         """
 
-        return cp.PropsSI('L', 'T', self.temp + self.celsius_to_kelvin, 'P', self.pressure, self.fluid)
+        return cp.PropsSI('L', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
     def pr(self):
 

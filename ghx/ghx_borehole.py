@@ -18,32 +18,32 @@ class BoreholeClass(PrintClass):
             self.name = json_data['Name']
         except:  # pragma: no cover
             self.my_print("....'Name' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.location = json_data['Location']
         except:  # pragma: no cover
             self.my_print("....'Location' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.depth = json_data['Depth']
         except:  # pragma: no cover
             self.my_print("....'Depth' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.radius = json_data['Radius']
             self.diameter = self.radius * 2
         except:  # pragma: no cover
             self.my_print("....'Radius' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.shank_space = json_data['Shank Spacing']
         except:  # pragma: no cover
             self.my_print("....'Shank Spacing' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         self.soil = SoilClass(json_data['Soil'], print_output)
         self.grout = BasePropertiesClass(json_data['Grout'], print_output)
@@ -54,10 +54,11 @@ class BoreholeClass(PrintClass):
                 or self.shank_space < self.pipe.outer_diameter:
             self.my_print("Invalid shank spacing", self._color_warn)
             self.my_print("Check shank spacing, pipe diameter, and borehole radius", self._color_warn)
-            self.fatal_error(message="Error initializing BorholeClass")
+            self.fatal_error(message="Error initializing BoreholeClass")
 
         self.resist_bh_ave = None
         self.resist_bh_total_internal = None
+        self.resist_bh_grout = None
         self.resist_bh = None
 
         self.theta_1 = self.shank_space / (2 * self.radius)
@@ -69,7 +70,7 @@ class BoreholeClass(PrintClass):
 
         self.calc_bh_resistance()
 
-    def calc_bh_average_thermal_resistance(self):
+    def calc_bh_average_resistance(self):
 
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
@@ -79,6 +80,8 @@ class BoreholeClass(PrintClass):
 
         Equation 13
         """
+
+        self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.resist_pipe
 
         final_term_1 = np.log(self.theta_2 / (2 * self.theta_1 * (1 - self.theta_1 ** 4) ** self.sigma))
         num_final_term_2 = self.theta_3 ** 2 * (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
@@ -92,7 +95,7 @@ class BoreholeClass(PrintClass):
 
         return self.resist_bh_ave
 
-    def calc_bh_total_internal_thermal_resistance(self):
+    def calc_bh_total_internal_resistance(self):
 
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
@@ -102,6 +105,8 @@ class BoreholeClass(PrintClass):
 
         Equation 26
         """
+
+        self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.resist_pipe
 
         final_term_1 = np.log(
             ((1 + self.theta_1 ** 2) ** self.sigma) / (self.theta_3 * (1 - self.theta_1 ** 2) ** self.sigma))
@@ -116,6 +121,16 @@ class BoreholeClass(PrintClass):
                                         (self.beta + final_term_1 - final_term_2)
 
         return self.resist_bh_total_internal
+
+    def calc_bh_grout_resistance(self):
+
+        """
+        Calculates borehole resistance. Use for validation.
+        """
+
+        self.resist_bh_grout = self.calc_bh_average_resistance() - self.pipe.resist_pipe / 2.0
+
+        return self.resist_bh_grout
 
     def calc_bh_resistance(self):
 
@@ -135,13 +150,13 @@ class BoreholeClass(PrintClass):
         Equation 14
         """
 
-        self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.resist_pipe
+        self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.calc_pipe_resistance()
 
         fluid_thermal_cap = self.pipe.fluid.cp() * self.pipe.fluid.mass_flow_rate
 
-        resist_short_circuiting = (1 / (3 * self.calc_bh_total_internal_thermal_resistance())) \
+        resist_short_circuiting = (1 / (3 * self.calc_bh_total_internal_resistance())) \
             * (self.depth / fluid_thermal_cap) ** 2
 
-        self.resist_bh = self.calc_bh_average_thermal_resistance() + resist_short_circuiting
+        self.resist_bh = self.calc_bh_average_resistance() + resist_short_circuiting
 
         return self.resist_bh

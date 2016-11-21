@@ -104,12 +104,11 @@ configurations = ['A', 'B', 'C']
 soil_conductivity = [4, 3, 2, 1]
 grout_conductivity = [0.6, 1.2, 1.8, 2.4, 3.0, 3.6]
 
-out_file.write("Theta 1, Theta 2, Ground Conductivity, Grout Conductivity, Rg, Ra\n")
-
 for d_bh in borehole_diameters:
     for config in configurations:
         for s_k in soil_conductivity:
             for g_k in grout_conductivity:
+
                 if config == 'A':
                     s = d_po
                 elif config == 'B':
@@ -119,12 +118,24 @@ for d_bh in borehole_diameters:
 
                 cls = BHResistanceClass(d_po=d_po, d_bh=d_bh, s=s, soil_cond=s_k, grout_cond=g_k, resist_pipe=0.05)
 
-                out_file.write("%f,%f,%f,%f,%f,%f\n" %
-                               (cls.theta_1,
-                                cls.theta_2,
-                                cls.soil.conductivity,
-                                cls.grout.conductivity,
-                                cls.resist_grout,
-                                cls.resist_bh_total_internal))
-            out_file.write("\n\n\n")
+                # out_file.write("%f,%f,%f,%f,%f,%f\n" %
+                               # (cls.theta_1,
+                                # cls.theta_2,
+                                # cls.soil.conductivity,
+                                # cls.grout.conductivity,
+                                # cls.resist_grout,
+                                # cls.resist_bh_total_internal))
+
+                out_file.write("%s%0.3f\n" %("dict_bh['Radius'] = ", d_bh/2.0))
+                out_file.write("%s%0.8f\n" %("dict_bh['Shank Spacing'] = ", s))
+                out_file.write("%s%0.1f\n" %("dict_bh['Soil']['Conductivity'] = ", s_k))
+                out_file.write("%s%0.1f\n" %("dict_bh['Grout']['Conductivity'] = ", g_k))
+                out_file.write("%s\n" %("curr_tst = ghx.BoreholeClass(dict_bh, False)"))
+                out_file.write("%s\n" %("curr_tst.pipe.resist_pipe = 0.05"))
+                out_file.write("%s%0.5f%s\n" %("self.assertAlmostEqual(curr_tst.theta_1, ", cls.theta_1, ", delta=tolerance)"))
+                out_file.write("%s%0.1f%s\n" %("self.assertAlmostEqual(curr_tst.theta_2, ", cls.theta_2, ", delta=tolerance)"))
+                out_file.write("%s%0.5f%s\n" %("self.assertAlmostEqual(curr_tst.calc_bh_grout_resistance(), ", cls.resist_grout, ", delta=tolerance)"))
+                out_file.write("\n")
+
+            # out_file.write("\n")
 out_file.close()

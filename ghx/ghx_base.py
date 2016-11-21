@@ -12,7 +12,7 @@ from ghx_borehole import *
 from ghx_soil import *
 
 
-class BaseGHX(PrintClass, ConstantClass):
+class BaseGHXClass(PrintClass, ConstantClass):
 
     """
     Base class for GHXArray
@@ -31,30 +31,30 @@ class BaseGHX(PrintClass, ConstantClass):
         errors_found = False
 
         # load data into data structs
-        self.my_print("Loading GHX data")
+        self.my_print("....Loading GHX data")
 
         try:
             self.name = json_data['Name']
         except:  # pragma: no cover
-            self.my_print("\t'Name' key not found", self._color_warn)
+            self.my_print("....'Name' key not found", self._color_warn)
             errors_found = True
 
         try:
             self.sim_years = json_data['Simulation Configuration']['Simulation Years']
         except:  # pragma: no cover
-            self.my_print("\t'Simulation Years' key not found", self._color_warn)
+            self.my_print("....'Simulation Years' key not found", self._color_warn)
             errors_found = True
 
         try:
-            self.sim_years = json_data['Simulation Configuration']['Aggregation Type']
+            self.aggregation_type = json_data['Simulation Configuration']['Aggregation Type']
         except:  # pragma: no cover
-            self.my_print("\t'Aggregation Type' key not found", self._color_warn)
+            self.my_print("....'Aggregation Type' key not found", self._color_warn)
             errors_found = True
 
         try:
             self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
         except:  # pragma: no cover
-            self.my_print("\t'Min Hourly History' key not found", self._color_warn)
+            self.my_print("....'Min Hourly History' key not found", self._color_warn)
             errors_found = True
 
         try:
@@ -68,14 +68,21 @@ class BaseGHX(PrintClass, ConstantClass):
             self.my_print("....'G-func Pairs' key not found", self._color_warn)
             self.g_func_present = False
 
+        self.total_bh_length = 0
+
         self.ghx_list = []
+        ghx_dict_list = []
 
         for json_data_bh in json_data['GHXs']:
+            ghx_dict_list.append(json_data_bh)
             this_bh = BoreholeClass(json_data_bh, print_output)
+            self.total_bh_length += this_bh.depth
             self.ghx_list.append(this_bh)
 
+        self.borehole = BoreholeClass(self.merge_dicts(ghx_dict_list), print_output)
+
         try:
-            self.my_print("Importing flow rates and loads")
+            self.my_print("....Importing flow rates and loads")
             load_pairs = np.genfromtxt(loads_path, delimiter=',', skip_header=1)
             self.sim_hours = []
             self.sim_loads = []
@@ -84,21 +91,16 @@ class BaseGHX(PrintClass, ConstantClass):
                 self.sim_hours.append(pair[0])
                 self.sim_loads.append(pair[1])
                 self.total_flow_rate.append(pair[2])
-            self.my_print("....Success")
         except:  # pragma: no cover
             self.fatal_error(message="Error importing loads")
 
         if not errors_found:
             # success
-            self.my_print("....Success")
+            self.my_print("Simulation successfully initialized")
         else:  # pragma: no cover
-            self.fatal_error(message="Error initializing BaseGHX")
+            self.fatal_error(message="Error initializing BaseGHXClass")
 
-        self.sim_years = None
-        self.aggregation_type = None
-        self.min_hourly_history = None
-
-        self.ts = None
+        self.ts = self.calc_ts()
         self.temp_bh = deque()
         self.temp_mft = deque()
 
@@ -109,33 +111,56 @@ class BaseGHX(PrintClass, ConstantClass):
 
         self.agg_loads_flag = True
         self.agg_load_intervals = []
-        self.agg_hour = None
-        self.sim_hour = None
 
-        self.total_bh_length = None
+    def merge_dicts(self, list_of_dicts):
 
-        # calc ts
-        self.calc_ts()
+        """
+        Merges two-level dictionaries into a single identical dictionary.
+        For non-int/floats arguments, the first item in the list will remain in place.
+        For int/float arguments, the mean value of the parent dictionaries will calculated.
+        """
+
+        z = {}
+
+        for this_dict in list_of_dicts:
+            for key in this_dict.keys():
+                if key not in z:
+                    z[key] = this_dict[key]
+                    continue
+                try:
+                    for sub_key in this_dict[key].keys():
+                        if isinstance(this_dict[key][sub_key], (float, int)):
+                            z[key][sub_key] += this_dict[key][sub_key]
+                        else:
+                            z[key][sub_key] = this_dict[key][sub_key]
+                except:
+                    if isinstance(this_dict[key], (float, int)):
+                        z[key] += this_dict[key]
+
+        num_dicts = len(list_of_dicts)
+
+        for key in z.keys():
+            try:
+                for sub_key in z[key].keys():
+                    if isinstance(z[key][sub_key], (float, int)):
+                        z[key][sub_key] /= num_dicts
+            except:
+                if isinstance(z[key], int) or isinstance(z[key], float):
+                    z[key] /= num_dicts
+        return z
 
     def calc_ts(self):
 
         """
-        Calculates non-dimensional time. Selects length scale based on deepest GHX
+        Calculates non-dimensional time.
         """
 
         try:
-            max_h = 0.0
-            ground_thermal_diffusivity = 0.0
-
-            for ghx in self.ghx_list:
-                if max_h < ghx.depth:
-                    max_h = ghx.depth
-                ground_thermal_diffusivity += ghx.soil.thermal_diffusivity
-
-            self.ts = max_h ** 2 / (9 * ground_thermal_diffusivity)
-
+            ts = self.borehole.depth ** 2 / (9 * self.borehole.soil.thermal_diffusivity)
         except:  # pragma: no cover
             self.fatal_error(message="Error calculating simulation time scale \"ts\"")
+
+        return ts
 
     def calc_g_func(self):
 
@@ -148,7 +173,6 @@ class BaseGHX(PrintClass, ConstantClass):
         try:
             self.my_print("Calculating g-functions")
             self.g_func_present = True
-            self.update_g_func_interp_lists()
             self.my_print("....Success")
         except:  # pragma: no cover
             self.fatal_error(message="Error calculating g-functions")
@@ -158,7 +182,7 @@ class BaseGHX(PrintClass, ConstantClass):
         Interpolates to the correct g-function value
         """
 
-        num = len(self.g_func_pairs)
+        num = len(self.g_func_lntts)
         lower_index = 0
         upper_index = num - 1
 

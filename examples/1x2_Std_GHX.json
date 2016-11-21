@@ -26,7 +26,7 @@
                     {
                     "Type": "Water",
                     "Concentration": 100,
-                    "Fraction of Flow Rate": 0.5
+                    "Flow Rate": 0.000303
                     },
                 "Soil":
                     {
@@ -45,7 +45,6 @@
             {
                 "Name": "BH 2",
                 "Location": [0, 0],
-                "Flow Rate": 0.000221,
                 "Depth": 76.2,
                 "Radius": 0.05715,
                 "Shank Spacing": 0.0521,
@@ -61,7 +60,7 @@
                     {
                     "Type": "Water",
                     "Concentration": 100,
-                    "Fraction of Flow Rate": 0.5
+                    "Flow Rate": 0.000303
                     },
                 "Soil":
                     {

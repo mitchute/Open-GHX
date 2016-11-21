@@ -6,10 +6,13 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx
+import ghx.ghx_aggregated_load
+
 
 class TestAggregatedLoad(unittest.TestCase):
+
     def test_init(self):
+
         """
         Tests AggregatedLoad Class
         """

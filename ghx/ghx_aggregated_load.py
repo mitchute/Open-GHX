@@ -17,12 +17,11 @@ class AggregatedLoad:
 
         # class data
 
-        self.length = None
         self.max_length = max_length
         self.loads = deque(loads, maxlen=max_length)
-        self.q = None
-        self.new_q_val = None
-        self.q_est = None
+        self.q = 0.0
+        self.new_q_val = 0.0
+        self.q_est = 0.0
         self.first_sim_hour = first_sim_hour
 
         if init:
