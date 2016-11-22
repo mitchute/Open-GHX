@@ -7,7 +7,7 @@ from ghx_ghxArray_Lagrange import *
 
 class GHXArray(PrintClass):
 
-    def __init__(self, ghx_input_json_path, loads_path, print_output=True):
+    def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
         """
         Class constructor
@@ -21,9 +21,10 @@ class GHXArray(PrintClass):
         self.ghx_input_json_path = ghx_input_json_path
         self.json_data = None
         self.loads_path = loads_path
+        self.output_path = output_path
         self.print_output = print_output
 
-        self.Euler_agg_types = ['Monthly', 'Test Euler Blocks', 'None']
+        self.Euler_agg_types = ['Monthly', 'Type 628', 'Test Euler Blocks', 'None']
         self.Lagrange_agg_types = ['MLAA', 'Test Lagrange Blocks']
 
         self.aggregation_type = ''
@@ -73,10 +74,12 @@ class GHXArray(PrintClass):
         if self.aggregation_type in self.Euler_agg_types:
             GHXArrayEulerAggBlocks(self.json_data,
                                    self.loads_path,
+                                   self.output_path,
                                    self.print_output).simulate()
         elif self.aggregation_type in self.Lagrange_agg_types:
             GHXArrayLagrangeAggBlocks(self.ghx_input_json_path,
                                       self.loads_path,
+                                      self.output_path,
                                       self.print_output).simulate()
         else:
             self.my_print("\tAggregation Type \"%s\" not found" % (self.aggregation_type), self._color_warn)

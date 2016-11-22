@@ -32,13 +32,21 @@ class FluidsClass(ConstantClass, PrintClass):
 
         try:
             self.flow_rate = json_data['Flow Rate']
+            self.flow_rate_prev = 0.0
         except:  # pragma: no cover
             self.my_print("....'Flow Rate' key not found", self._color_warn)
             self.fatal_error(message="Error initializing FluidsClass")
 
-        self.mass_flow_rate = None
         self.temperature = initial_temp
+        self.temperature_prev = None
         self.pressure = 101325
+        self.mass_flow_rate = self.calc_mass_flow_rate()
+        self.dens_val = self.dens()
+        self.cp_val = self.cp()
+        self.visc_val = self.visc()
+        self.cond_val = self.cond()
+        self.pr_val = self.pr()
+        self.heat_capacity_val = self.heat_capacity()
 
     def dens(self):
 
@@ -49,8 +57,10 @@ class FluidsClass(ConstantClass, PrintClass):
 
         :returns fluid density in [kg/m3]
         """
+        if self.temperature != self.temperature_prev:
+            self.dens_val = cp.PropsSI('D', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
-        return cp.PropsSI('D', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+        return self.dens_val
 
     def cp(self):
 
@@ -62,7 +72,10 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid specific heat in [J/kg-K]
         """
 
-        return cp.PropsSI('C', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+        if self.temperature != self.temperature_prev:
+            self.cp_val = cp.PropsSI('C', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+
+        return self.cp_val
 
     def visc(self):
 
@@ -74,7 +87,10 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid viscosity in [Pa-s]
         """
 
-        return cp.PropsSI('V', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+        if self.temperature != self.temperature_prev:
+            self.visc_val = cp.PropsSI('V', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+
+        return self.visc_val
 
     def cond(self):
 
@@ -86,7 +102,10 @@ class FluidsClass(ConstantClass, PrintClass):
         :returns fluid conductivity in [W/m-K]
         """
 
-        return cp.PropsSI('L', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+        if self.temperature != self.temperature_prev:
+            self.cond_val = cp.PropsSI('L', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+
+        return self.cond_val
 
     def pr(self):
 
@@ -100,3 +119,35 @@ class FluidsClass(ConstantClass, PrintClass):
 
         return self.cp() * self.visc() / self.cond()
 
+    def heat_capacity(self):
+
+        """
+        Calculates fluid thermal capacitance
+        """
+
+        return self.mass_flow_rate * self.cp()
+
+    def calc_mass_flow_rate(self):
+
+        """
+        Calculates the fluid mass flow rate
+        """
+
+        self.mass_flow_rate = self.flow_rate * self.dens()
+
+        return self.mass_flow_rate
+
+    def update_fluid_state(self, new_temp=None, new_flow_rate = None):
+
+        """
+        Updates fluid state as necessary
+        """
+
+        if new_temp is not None:
+            self.temperature_prev = self.temperature
+            self.temperature = new_temp
+
+        if new_flow_rate is not None:
+            self.flow_rate_prev = self.flow_rate
+            self.flow_rate = new_flow_rate
+            self.calc_mass_flow_rate()

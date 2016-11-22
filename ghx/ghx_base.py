@@ -18,7 +18,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
     Base class for GHXArray
     """
 
-    def __init__(self, json_data, loads_path, print_output=True):
+    def __init__(self, json_data, loads_path, output_path, print_output=True):
 
         """
         Class constructor
@@ -29,6 +29,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
         ConstantClass.__init__(self)
 
         errors_found = False
+        self.output_path = output_path
 
         # load data into data structs
         self.my_print("....Loading GHX data")
@@ -157,17 +158,14 @@ class BaseGHXClass(PrintClass, ConstantClass):
 
         try:
             ts = self.borehole.depth ** 2 / (9 * self.borehole.soil.thermal_diffusivity)
+            return ts
         except:  # pragma: no cover
             self.fatal_error(message="Error calculating simulation time scale \"ts\"")
-
-        return ts
 
     def calc_g_func(self):
 
         """
-        Attempts to calculate g-functions for given ground heat exchangers. If not successful, program exits.
-
-        More documentation to come...
+        Calculate g-functions for given ground heat exchangers.
         """
 
         try:
@@ -209,13 +207,13 @@ class BaseGHXClass(PrintClass, ConstantClass):
         try:
             self.my_print("Writing output results")
             cwd = os.getcwd()
-            path_to_run_dir = os.path.join(cwd, "run")
+            path_to_output_dir = os.path.join(cwd, self.output_path)
 
-            if not os.path.exists(path_to_run_dir):
-                os.makedirs(path_to_run_dir)
+            if not os.path.exists(path_to_output_dir):
+                os.makedirs(path_to_output_dir)
 
             # open files
-            out_file = open(os.path.join(path_to_run_dir, "GHX.csv"), 'w')
+            out_file = open(os.path.join(path_to_output_dir, "GHX.csv"), 'w')
 
             # write headers
             out_file.write("Hour, BH Temp [C], MFT [C]\n")

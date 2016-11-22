@@ -13,14 +13,14 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
     the load block shift one time step further from the "present" simulation time.
     """
 
-    def __init__(self, json_data, loads_path, print_output=True):
+    def __init__(self, json_data, loads_path, output_path, print_output=True):
 
         """
         Constructor for the class.
         """
 
         # init base class
-        BaseGHXClass.__init__(self, json_data, loads_path, print_output)
+        BaseGHXClass.__init__(self, json_data, loads_path, output_path, print_output)
 
         # class data
 
@@ -39,10 +39,13 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         """
 
         monthly = [12, 24, 48, 96, 192, 384, 768]
+        type_628 = [120]
         testing = [5, 10, 20, 40]
 
         if self.aggregation_type == "Monthly":
             self.agg_load_intervals = monthly
+        elif self.aggregation_type == "Type 628":
+            self.agg_load_intervals = type_628
         elif self.aggregation_type == "Test Euler Blocks":
             self.agg_load_intervals = testing
         elif self.aggregation_type == "None":
@@ -170,11 +173,15 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
                     sim_hour += 1
 
                     # get raw hourly load and append to hourly list
-                    load_index = month * self.hours_in_month + hour
-                    self.hourly_loads.append(self.sim_loads[load_index])
+                    curr_index = month * self.hours_in_month + hour
+                    self.hourly_loads.append(self.sim_loads[curr_index])
+                    curr_flow_rate = self.total_flow_rate[curr_index]
+
+                    # update borehole flow rate
+                    self.borehole.pipe.fluid.update_fluid_state(new_flow_rate=curr_flow_rate)
 
                     # calculate borehole resistance
-                    self.borehole.resist_bh
+                    self.borehole.calc_bh_resistance()
 
                     # calculate borehole temp
                     # hourly effects
@@ -189,7 +196,8 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
                         q_prev = self.hourly_loads[i - 1]
                         g = self.g_func_hourly[g_func_index]
                         # calculate average bh temp
-                        delta_q = (q_curr - q_prev) / (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
+                        delta_q = (q_curr - q_prev) / \
+                                  (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
                         temp_bh_hourly.append(delta_q * g)
 
                         # calculate mean fluid temp
@@ -244,5 +252,8 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
 
                     # final mean fluid temp
                     self.temp_mft.append(self.borehole.soil.undisturbed_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
+
+                    # update borehole temperature
+                    self.borehole.pipe.fluid.update_fluid_state(new_temp=self.temp_mft[-1])
 
         self.generate_output_reports()

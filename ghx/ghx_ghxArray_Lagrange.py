@@ -6,14 +6,14 @@ from ghx_aggregated_load import *
 
 class GHXArrayLagrangeAggBlocks(BaseGHXClass):
 
-    def __init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output=True):
+    def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
         """
         Class constructor
         """
 
         # init base class
-        BaseGHXClass.__init__(self, ghx_input_json_path, sim_conf_json_path, loads_path, print_output)
+        BaseGHXClass.__init__(self, ghx_input_json_path, loads_path, output_path, print_output)
 
         # class data
 

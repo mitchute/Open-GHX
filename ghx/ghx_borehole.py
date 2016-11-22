@@ -51,7 +51,7 @@ class BoreholeClass(PrintClass):
 
         # validate shank spacing
         if self.shank_space > (2 * self.radius - self.pipe.outer_diameter) \
-                or self.shank_space < self.pipe.outer_diameter:
+                or self.shank_space < self.pipe.outer_diameter:  # pragma: no cover
             self.my_print("Invalid shank spacing", self._color_warn)
             self.my_print("Check shank spacing, pipe diameter, and borehole radius", self._color_warn)
             self.fatal_error(message="Error initializing BoreholeClass")
@@ -150,13 +150,15 @@ class BoreholeClass(PrintClass):
         Equation 14
         """
 
-        self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.calc_pipe_resistance()
+        # only update if flow rate has changed
+        if self.pipe.fluid.flow_rate != self.pipe.fluid.flow_rate_prev:
+            self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.calc_pipe_resistance()
+            self.calc_bh_average_resistance()
+            self.calc_bh_total_internal_resistance()
 
-        fluid_thermal_cap = self.pipe.fluid.cp() * self.pipe.fluid.mass_flow_rate
+        resist_short_circuiting = (1 / (3 * self.resist_bh_total_internal)) \
+            * (self.depth / self.pipe.fluid.heat_capacity()) ** 2
 
-        resist_short_circuiting = (1 / (3 * self.calc_bh_total_internal_resistance())) \
-            * (self.depth / fluid_thermal_cap) ** 2
-
-        self.resist_bh = self.calc_bh_average_resistance() + resist_short_circuiting
+        self.resist_bh = self.resist_bh_ave + resist_short_circuiting
 
         return self.resist_bh

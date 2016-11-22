@@ -118,11 +118,18 @@ class TestPipeClass(unittest.TestCase):
 
         tolerance = 0.00001
 
-        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.005716, delta=tolerance)
+        # turbulent
+        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.004453, delta=tolerance)
 
-        curr_tst.fluid.flow_rate /= 10
+        # transitional
+        curr_tst.fluid.flow_rate = dict_fluid['Flow Rate'] / 4
+        curr_tst.fluid.calc_mass_flow_rate()
+        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.019084, delta=tolerance)
 
-        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.1428580, delta=tolerance)
+        # laminar
+        curr_tst.fluid.flow_rate = dict_fluid['Flow Rate'] / 10
+        curr_tst.fluid.calc_mass_flow_rate()
+        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.135714, delta=tolerance)
 
     def test_calc_pipe_conduction_resistance(self):
 
@@ -174,4 +181,4 @@ class TestPipeClass(unittest.TestCase):
 
         tolerance = 0.00001
 
-        self.assertAlmostEqual(curr_tst.calc_pipe_resistance(), 0.082204 + 0.005716, delta=tolerance)
+        self.assertAlmostEqual(curr_tst.calc_pipe_resistance(), 0.082204 + 0.004453, delta=tolerance)

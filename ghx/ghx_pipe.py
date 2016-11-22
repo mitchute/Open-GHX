@@ -13,7 +13,7 @@ class PipeClass(PrintClass, BasePropertiesClass):
         PrintClass.__init__(self, print_output)
         BasePropertiesClass.__init__(self, json_data_pipe, print_output)
 
-        self.fluid = FluidsClass(json_data_fluid, print_output, initial_temp)
+        self.fluid = FluidsClass(json_data_fluid, initial_temp, print_output)
 
         try:
             self.outer_diameter = json_data_pipe['Outside Diameter']
@@ -60,11 +60,21 @@ class PipeClass(PrintClass, BasePropertiesClass):
         International Chemical Engineering 16(1976), pp. 359-368.
         """
 
-        self.fluid.mass_flow_rate = self.fluid.flow_rate * self.fluid.dens()
+        lower_limit = 2000
+        upper_limit = 4000
+
         re = 4 * self.fluid.mass_flow_rate / (self.fluid.visc() * np.pi * self.inner_diameter)
 
-        if re < 3000:
-            nu = np.mean([4.36, 3.66])
+        if re < lower_limit:
+            nu = 4.01  # laminar mean(4.36, 3.66)
+        elif lower_limit <= re < upper_limit:
+            nu_low = 4.01  # laminar
+            f = self.friction_factor(re)  # turbulent
+            pr = self.fluid.pr()
+            nu_high = (f / 8) * (re - 1000) * pr / (1 + 12.7 * (f / 8) ** 0.5 * (pr ** (2 / 3) - 1))
+            sigma = 1 / (1 + np.exp(-(re - 3000) / 150))  # smoothing function
+
+            nu = (1 - sigma) * nu_low + sigma * nu_high
         else:
             f = self.friction_factor(re)
             pr = self.fluid.pr()

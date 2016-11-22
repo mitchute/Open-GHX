@@ -2,8 +2,8 @@
     "Name":"Vertical GHE 1x2 Std",
     "Simulation Configuration":
         {
-        "Simulation Years":2,
-        "Aggregation Type":"Test Euler Blocks",
+        "Simulation Years":1,
+        "Aggregation Type":"Type 628",
         "Min Hourly History":192
         },
     "GHXs":
