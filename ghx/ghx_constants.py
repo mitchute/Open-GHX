@@ -3,12 +3,10 @@ from __future__ import division
 
 class ConstantClass:
 
-    """
-    All constants
-    """
+    months_in_year = 12
+    hours_in_month = 730
+    hours_in_year = months_in_year * hours_in_month
+    celsius_to_kelvin = 273.15
 
     def __init__(self):
-        self.months_in_year = 12
-        self.hours_in_month = 730
-        self.hours_in_year = self.months_in_year * self.hours_in_month
-        self.celsius_to_kelvin = 273.15
+        pass

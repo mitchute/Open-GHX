@@ -5,14 +5,14 @@ import os
 import simplejson as json
 
 from collections import deque
-from ghx_constants import *
+from ghx_constants import ConstantClass
 from ghx_print import PrintClass
 from ghx_fluids import *
 from ghx_borehole import *
 from ghx_soil import *
 
 
-class BaseGHXClass(ConstantClass):
+class BaseGHXClass:
 
     """
     Base class for GHXArray
@@ -23,9 +23,6 @@ class BaseGHXClass(ConstantClass):
         """
         Class constructor
         """
-
-        # init inherited classes
-        ConstantClass.__init__(self)
 
         errors_found = False
         self.output_path = output_path

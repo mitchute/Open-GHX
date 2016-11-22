@@ -2,6 +2,7 @@ from __future__ import division
 
 import timeit
 from ghx_print import PrintClass
+from ghx_constants import ConstantClass
 from ghx_ghxArray_Euler import *
 from ghx_ghxArray_Lagrange import *
 
@@ -15,6 +16,7 @@ class GHXArray:
         """
 
         PrintClass(print_output)
+        ConstantClass()
 
         self.timer_start = timeit.default_timer()
 

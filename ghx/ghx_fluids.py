@@ -4,18 +4,16 @@ import CoolProp.CoolProp as cp
 import numpy as np
 
 from ghx_print import PrintClass
-from ghx_constants import *
+from ghx_constants import ConstantClass
 
 
-class FluidsClass(ConstantClass):
+class FluidsClass:
 
     """
     Contains all fluid properties, correlations, etc.
     """
 
     def __init__(self, json_data, initial_temp, print_output):
-
-        ConstantClass.__init__(self)
 
         try:
             self.fluid_type = json_data['Type']
@@ -57,7 +55,7 @@ class FluidsClass(ConstantClass):
         :returns fluid density in [kg/m3]
         """
         if self.temperature != self.temperature_prev:
-            self.dens_val = cp.PropsSI('D', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.dens_val = cp.PropsSI('D', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
         return self.dens_val
 
@@ -72,7 +70,7 @@ class FluidsClass(ConstantClass):
         """
 
         if self.temperature != self.temperature_prev:
-            self.cp_val = cp.PropsSI('C', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.cp_val = cp.PropsSI('C', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
         return self.cp_val
 
@@ -87,7 +85,7 @@ class FluidsClass(ConstantClass):
         """
 
         if self.temperature != self.temperature_prev:
-            self.visc_val = cp.PropsSI('V', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.visc_val = cp.PropsSI('V', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
         return self.visc_val
 
@@ -102,7 +100,7 @@ class FluidsClass(ConstantClass):
         """
 
         if self.temperature != self.temperature_prev:
-            self.cond_val = cp.PropsSI('L', 'T', self.temperature + self.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.cond_val = cp.PropsSI('L', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
 
         return self.cond_val
 

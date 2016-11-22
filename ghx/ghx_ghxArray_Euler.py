@@ -50,7 +50,7 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
             self.agg_load_intervals = testing
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
-            self.agg_load_intervals = [self.hours_in_year * self.sim_years]
+            self.agg_load_intervals = [ConstantClass.hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
             PrintClass.my_print("Load aggregation scheme not recognized", 'warn')
@@ -124,7 +124,7 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         """
 
         loads = []
-        min_hour = self.hours_in_year * self.sim_years
+        min_hour = ConstantClass.hours_in_year * self.sim_years
         max_hour = 0
 
         for this_obj in obj_list:
@@ -163,17 +163,17 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         sim_hour = 0
 
         for year in range(self.sim_years):
-            for month in range(self.months_in_year):
+            for month in range(ConstantClass.months_in_year):
 
                 PrintClass.my_print("....Year/Month: %d/%d" % (year+1, month+1))
 
-                for hour in range(self.hours_in_month):
+                for hour in range(ConstantClass.hours_in_month):
 
                     agg_hour += 1
                     sim_hour += 1
 
                     # get raw hourly load and append to hourly list
-                    curr_index = month * self.hours_in_month + hour
+                    curr_index = month * ConstantClass.hours_in_month + hour
                     self.hourly_loads.append(self.sim_loads[curr_index])
                     curr_flow_rate = self.total_flow_rate[curr_index]
 
