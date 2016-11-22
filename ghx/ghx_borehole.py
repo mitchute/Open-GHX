@@ -2,48 +2,46 @@ from __future__ import division
 
 import numpy as np
 
-from ghx_print import *
+from ghx_print import PrintClass
 from ghx_soil import *
 from ghx_pipe import *
 from ghx_base_properties import *
 
 
-class BoreholeClass(PrintClass):
+class BoreholeClass:
 
     def __init__(self, json_data, print_output):
-
-        PrintClass.__init__(self, print_output)
 
         try:
             self.name = json_data['Name']
         except:  # pragma: no cover
-            self.my_print("....'Name' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("....'Name' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.location = json_data['Location']
         except:  # pragma: no cover
-            self.my_print("....'Location' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("....'Location' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.depth = json_data['Depth']
         except:  # pragma: no cover
-            self.my_print("....'Depth' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("....'Depth' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.radius = json_data['Radius']
             self.diameter = self.radius * 2
         except:  # pragma: no cover
-            self.my_print("....'Radius' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("....'Radius' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         try:
             self.shank_space = json_data['Shank Spacing']
         except:  # pragma: no cover
-            self.my_print("....'Shank Spacing' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("....'Shank Spacing' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         self.soil = SoilClass(json_data['Soil'], print_output)
         self.grout = BasePropertiesClass(json_data['Grout'], print_output)
@@ -52,9 +50,9 @@ class BoreholeClass(PrintClass):
         # validate shank spacing
         if self.shank_space > (2 * self.radius - self.pipe.outer_diameter) \
                 or self.shank_space < self.pipe.outer_diameter:  # pragma: no cover
-            self.my_print("Invalid shank spacing", self._color_warn)
-            self.my_print("Check shank spacing, pipe diameter, and borehole radius", self._color_warn)
-            self.fatal_error(message="Error initializing BoreholeClass")
+            PrintClass.my_print("Invalid shank spacing", 'warn')
+            PrintClass.my_print("Check shank spacing, pipe diameter, and borehole radius", 'warn')
+            PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         self.resist_bh_ave = None
         self.resist_bh_total_internal = None

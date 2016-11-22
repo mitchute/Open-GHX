@@ -6,13 +6,13 @@ import simplejson as json
 
 from collections import deque
 from ghx_constants import *
-from ghx_print import *
+from ghx_print import PrintClass
 from ghx_fluids import *
 from ghx_borehole import *
 from ghx_soil import *
 
 
-class BaseGHXClass(PrintClass, ConstantClass):
+class BaseGHXClass(ConstantClass):
 
     """
     Base class for GHXArray
@@ -25,37 +25,36 @@ class BaseGHXClass(PrintClass, ConstantClass):
         """
 
         # init inherited classes
-        PrintClass.__init__(self, print_output)
         ConstantClass.__init__(self)
 
         errors_found = False
         self.output_path = output_path
 
         # load data into data structs
-        self.my_print("....Loading GHX data")
+        PrintClass.my_print("....Loading GHX data")
 
         try:
             self.name = json_data['Name']
         except:  # pragma: no cover
-            self.my_print("....'Name' key not found", self._color_warn)
+            PrintClass.my_print("....'Name' key not found", 'warn')
             errors_found = True
 
         try:
             self.sim_years = json_data['Simulation Configuration']['Simulation Years']
         except:  # pragma: no cover
-            self.my_print("....'Simulation Years' key not found", self._color_warn)
+            PrintClass.my_print("....'Simulation Years' key not found", 'warn')
             errors_found = True
 
         try:
             self.aggregation_type = json_data['Simulation Configuration']['Aggregation Type']
         except:  # pragma: no cover
-            self.my_print("....'Aggregation Type' key not found", self._color_warn)
+            PrintClass.my_print("....'Aggregation Type' key not found", 'warn')
             errors_found = True
 
         try:
             self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
         except:  # pragma: no cover
-            self.my_print("....'Min Hourly History' key not found", self._color_warn)
+            PrintClass.my_print("....'Min Hourly History' key not found", 'warn')
             errors_found = True
 
         try:
@@ -66,7 +65,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
                 self.g_func_val.append(pair[1])
             self.g_func_present = True
         except:  # pragma: no cover
-            self.my_print("....'G-func Pairs' key not found", self._color_warn)
+            PrintClass.my_print("....'G-func Pairs' key not found", 'warn')
             self.g_func_present = False
 
         self.total_bh_length = 0
@@ -83,7 +82,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
         self.borehole = BoreholeClass(self.merge_dicts(ghx_dict_list), print_output)
 
         try:
-            self.my_print("....Importing flow rates and loads")
+            PrintClass.my_print("....Importing flow rates and loads")
             load_pairs = np.genfromtxt(loads_path, delimiter=',', skip_header=1)
             self.sim_hours = []
             self.sim_loads = []
@@ -93,13 +92,13 @@ class BaseGHXClass(PrintClass, ConstantClass):
                 self.sim_loads.append(pair[1])
                 self.total_flow_rate.append(pair[2])
         except:  # pragma: no cover
-            self.fatal_error(message="Error importing loads")
+            PrintClass.fatal_error(message="Error importing loads")
 
         if not errors_found:
             # success
-            self.my_print("Simulation successfully initialized")
+            PrintClass.my_print("Simulation successfully initialized")
         else:  # pragma: no cover
-            self.fatal_error(message="Error initializing BaseGHXClass")
+            PrintClass.fatal_error(message="Error initializing BaseGHXClass")
 
         self.ts = self.calc_ts()
         self.temp_bh = deque()
@@ -160,7 +159,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
             ts = self.borehole.depth ** 2 / (9 * self.borehole.soil.thermal_diffusivity)
             return ts
         except:  # pragma: no cover
-            self.fatal_error(message="Error calculating simulation time scale \"ts\"")
+            PrintClass.fatal_error(message="Error calculating simulation time scale \"ts\"")
 
     def calc_g_func(self):
 
@@ -169,11 +168,11 @@ class BaseGHXClass(PrintClass, ConstantClass):
         """
 
         try:
-            self.my_print("Calculating g-functions")
+            PrintClass.my_print("Calculating g-functions")
             self.g_func_present = True
-            self.my_print("....Success")
+            PrintClass.my_print("....Success")
         except:  # pragma: no cover
-            self.fatal_error(message="Error calculating g-functions")
+            PrintClass.fatal_error(message="Error calculating g-functions")
 
     def g_func(self, ln_t_ts):
         """
@@ -205,7 +204,7 @@ class BaseGHXClass(PrintClass, ConstantClass):
         """
 
         try:
-            self.my_print("Writing output results")
+            PrintClass.my_print("Writing output results")
             cwd = os.getcwd()
             path_to_output_dir = os.path.join(cwd, self.output_path)
 
@@ -226,8 +225,8 @@ class BaseGHXClass(PrintClass, ConstantClass):
             # close file
             out_file.close()
 
-            self.my_print("....Success")
+            PrintClass.my_print("....Success")
 
         except:
-            self.fatal_error(message="Error writing output results")
+            PrintClass.fatal_error(message="Error writing output results")
 

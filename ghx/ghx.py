@@ -1,11 +1,12 @@
 from __future__ import division
 
 import timeit
+from ghx_print import PrintClass
 from ghx_ghxArray_Euler import *
 from ghx_ghxArray_Lagrange import *
 
 
-class GHXArray(PrintClass):
+class GHXArray:
 
     def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
@@ -13,8 +14,7 @@ class GHXArray(PrintClass):
         Class constructor
         """
 
-        # init inherited classes
-        PrintClass.__init__(self, print_output)
+        PrintClass(print_output)
 
         self.timer_start = timeit.default_timer()
 
@@ -46,20 +46,20 @@ class GHXArray(PrintClass):
             with open(sim_config_path) as json_file:
                 self.json_data = json.load(json_file)
         except:  # pragma: no cover
-            self.fatal_error(message="Error reading simulation configuration---check file path")
+            PrintClass.fatal_error(message="Error reading simulation configuration---check file path")
 
         try:
             try:
                 self.aggregation_type = self.json_data['Simulation Configuration']['Aggregation Type']
             except:  # pragma: no cover
-                self.my_print("....'Aggregation Type' key not found", self._color_warn)
+                PrintClass.my_print("....'Aggregation Type' key not found", "warn")
                 errors_found = True
 
         except:  # pragma: no cover
-            self.fatal_error(message="Error reading simulation configuration")
+            PrintClass.fatal_error(message="Error reading simulation configuration")
 
         if errors_found:  # pragma: no cover
-            self.fatal_error(message="Error loading data")
+            PrintClass.fatal_error(message="Error loading data")
 
     def simulate(self):
 
@@ -69,7 +69,7 @@ class GHXArray(PrintClass):
         More docs to come...
         """
 
-        self.my_print("Initializing simulation")
+        PrintClass.my_print("Initializing simulation")
 
         if self.aggregation_type in self.Euler_agg_types:
             GHXArrayEulerAggBlocks(self.json_data,
@@ -82,8 +82,10 @@ class GHXArray(PrintClass):
                                       self.output_path,
                                       self.print_output).simulate()
         else:
-            self.my_print("\tAggregation Type \"%s\" not found" % (self.aggregation_type), self._color_warn)
-            self.fatal_error(message="Error starting program")
+            PrintClass.my_print("\tAggregation Type \"%s\" not found" % self.aggregation_type, "warn")
+            PrintClass.fatal_error(message="Error starting program")
 
-        self.my_print("Simulation complete", self._color_success)
-        self.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
+        PrintClass.my_print("Simulation complete", "success")
+        PrintClass.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
+
+        PrintClass.write_log_file(self.output_path)

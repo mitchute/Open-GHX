@@ -1,16 +1,15 @@
 from __future__ import division
 import numpy as np
 
-from ghx_print import *
+from ghx_print import PrintClass
 from ghx_base_properties import *
 from ghx_fluids import *
 
 
-class PipeClass(PrintClass, BasePropertiesClass):
+class PipeClass(BasePropertiesClass):
 
     def __init__(self, json_data_pipe, json_data_fluid, initial_temp, print_output):
 
-        PrintClass.__init__(self, print_output)
         BasePropertiesClass.__init__(self, json_data_pipe, print_output)
 
         self.fluid = FluidsClass(json_data_fluid, initial_temp, print_output)
@@ -18,14 +17,14 @@ class PipeClass(PrintClass, BasePropertiesClass):
         try:
             self.outer_diameter = json_data_pipe['Outside Diameter']
         except:  # pragma: no cover
-            self.my_print("....'Outside Diameter' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing PipeClass")
+            PrintClass.my_print("....'Outside Diameter' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing PipeClass")
 
         try:
             self.thickness = json_data_pipe['Wall Thickness']
         except:  # pragma: no cover
-            self.my_print("....'Wall Thickness' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing PipeClass")
+            PrintClass.my_print("....'Wall Thickness' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing PipeClass")
 
         self.outer_radius = self.outer_diameter / 2
         self.inner_radius = self.outer_radius - self.thickness

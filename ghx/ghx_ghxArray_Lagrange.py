@@ -46,8 +46,8 @@ class GHXArrayLagrangeAggBlocks(BaseGHXClass):
         elif self.aggregation_type == "Test Lagrange Blocks":
             self.agg_load_intervals = testing
         else:
-            self.my_print("Load aggregation scheme not recognized", self._color_warn)
-            self.my_print("....Defaulting to MLAA algorithm", self._color_warn)
+            PrintClass.my_print("Load aggregation scheme not recognized", 'warn')
+            PrintClass.my_print("....Defaulting to MLAA algorithm", 'warn')
             self.agg_load_intervals = MLAA
 
         # need to add one extra entry to the first interval to account for the '0' hour
@@ -90,45 +90,29 @@ class GHXArrayLagrangeAggBlocks(BaseGHXClass):
             obj.calc_q()
             obj.estimate_q()
 
-    def debug(self):
-
-        self.debug_file.write("%d" % (self.sim_hour))
-
-        for i in range(1,len(self.agg_load_objects)):
-            self.debug_file.write(", %f, %f" % (self.agg_load_objects[i].q, self.agg_load_objects[i].q_est))
-
-        self.debug_file.write("\n")
-
     def simulate(self):
 
         """
         More docs to come...
         """
 
-        self.my_print("Beginning simulation")
+        PrintClass.my_print("Beginning simulation")
+
+        sim_hour = 0
 
         for year in range(self.sim_years):
             for month in range(self.months_in_year):
 
-                self.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
+                PrintClass.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
 
                 for hour in range(self.hours_in_month):
 
-                    self.sim_hour += 1
+                    sim_hour += 1
 
                     # get raw hourly load and append to hourly list
                     load_index = month * self.hours_in_month + hour
                     curr_load = self.sim_loads[load_index]
 
                     self.shift_loads(curr_load)
-
-                    self.debug()
-
-                    #for i in range(len(self.agg_load_objects)):
-                    #    if i == 0:
-                    #        for j in range(len(self.agg_load_objects[0].loads), 0, -1):
-                    #
-                    #    else:
-                     #       return 1
 
         self.generate_output_reports()

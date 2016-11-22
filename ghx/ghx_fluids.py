@@ -3,11 +3,11 @@ from __future__ import division
 import CoolProp.CoolProp as cp
 import numpy as np
 
-from ghx_print import *
+from ghx_print import PrintClass
 from ghx_constants import *
 
 
-class FluidsClass(ConstantClass, PrintClass):
+class FluidsClass(ConstantClass):
 
     """
     Contains all fluid properties, correlations, etc.
@@ -16,26 +16,25 @@ class FluidsClass(ConstantClass, PrintClass):
     def __init__(self, json_data, initial_temp, print_output):
 
         ConstantClass.__init__(self)
-        PrintClass.__init__(self, print_output)
 
         try:
             self.fluid_type = json_data['Type']
         except:  # pragma: no cover
-            self.my_print("....'Name' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing FluidsClass")
+            PrintClass.my_print("....'Name' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing FluidsClass")
 
         try:
             self.concentration = json_data['Concentration']
         except:  # pragma: no cover
-            self.my_print("....'Concentration' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing FluidsClass")
+            PrintClass.my_print("....'Concentration' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing FluidsClass")
 
         try:
             self.flow_rate = json_data['Flow Rate']
             self.flow_rate_prev = 0.0
         except:  # pragma: no cover
-            self.my_print("....'Flow Rate' key not found", self._color_warn)
-            self.fatal_error(message="Error initializing FluidsClass")
+            PrintClass.my_print("....'Flow Rate' key not found", 'warn')
+            PrintClass.fatal_error(message="Error initializing FluidsClass")
 
         self.temperature = initial_temp
         self.temperature_prev = None

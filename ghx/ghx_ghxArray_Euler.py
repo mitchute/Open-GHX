@@ -53,9 +53,9 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
             self.agg_load_intervals = [self.hours_in_year * self.sim_years]
             self.min_hourly_history = 0
         else:
-            self.my_print("Load aggregation scheme not recognized", self._color_warn)
-            self.my_print("....Defaulting to monthly intervals", self._color_warn)
-            self.agg_load_intervals = monthly
+            PrintClass.my_print("Load aggregation scheme not recognized", 'warn')
+            PrintClass.my_print("....Defaulting to monthly intervals", 'warn')
+            PrintClass.agg_load_intervals = monthly
 
     def aggregate_load(self):
 
@@ -143,11 +143,11 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         More docs to come...
         """
 
-        self.my_print("Beginning simulation")
+        PrintClass.my_print("Beginning simulation")
 
         # calculate g-functions if not present
         if not self.g_func_present:
-            self.my_print("G-functions not present", self._color_warn)
+            PrintClass.my_print("G-functions not present", 'warn')
             self.calc_g_func()
 
         # pre-load hourly g-functions
@@ -165,7 +165,7 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         for year in range(self.sim_years):
             for month in range(self.months_in_year):
 
-                self.my_print("....Year/Month: %d/%d" % (year+1, month+1))
+                PrintClass.my_print("....Year/Month: %d/%d" % (year+1, month+1))
 
                 for hour in range(self.hours_in_month):
 
