@@ -1,4 +1,5 @@
 from __future__ import division
+import timeit
 
 from ghx_base import *
 from ghx_aggregated_load import *
@@ -18,6 +19,8 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         """
         Constructor for the class.
         """
+
+        PrintClass(print_output, output_path)
 
         # init base class
         BaseGHXClass.__init__(self, json_data, loads_path, output_path, print_output)
@@ -42,12 +45,8 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         type_628 = [120]
         testing = [5, 10, 20, 40]
 
-        if self.aggregation_type == "Monthly":
-            self.agg_load_intervals = monthly
-        elif self.aggregation_type == "Type 628":
-            self.agg_load_intervals = type_628
-        elif self.aggregation_type == "Test Euler Blocks":
-            self.agg_load_intervals = testing
+        if self.aggregation_type == "Euler":
+            pass
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
             self.agg_load_intervals = [ConstantClass.hours_in_year * self.sim_years]
@@ -257,3 +256,8 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
                     self.borehole.pipe.fluid.update_fluid_state(new_temp=self.temp_mft[-1])
 
         self.generate_output_reports()
+
+        PrintClass.my_print("Simulation complete", "success")
+        PrintClass.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
+
+        PrintClass.write_log_file()

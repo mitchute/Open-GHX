@@ -2,9 +2,10 @@
     "Name":"Vertical GHE 1x2 Std",
     "Simulation Configuration":
         {
-        "Simulation Years":1,
-        "Aggregation Type":"Type 628",
-        "Min Hourly History":192
+        "Simulation Years":10,
+        "Aggregation Type":"None",
+        "Min Hourly History":0,
+        "Intervals": []
         },
     "GHXs":
         [

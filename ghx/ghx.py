@@ -15,7 +15,7 @@ class GHXArray:
         Class constructor
         """
 
-        PrintClass(print_output)
+        PrintClass(print_output, output_path)
         ConstantClass()
 
         self.timer_start = timeit.default_timer()
@@ -25,9 +25,6 @@ class GHXArray:
         self.loads_path = loads_path
         self.output_path = output_path
         self.print_output = print_output
-
-        self.Euler_agg_types = ['Monthly', 'Type 628', 'Test Euler Blocks', 'None']
-        self.Lagrange_agg_types = ['MLAA', 'Test Lagrange Blocks']
 
         self.aggregation_type = ''
 
@@ -73,12 +70,12 @@ class GHXArray:
 
         PrintClass.my_print("Initializing simulation")
 
-        if self.aggregation_type in self.Euler_agg_types:
+        if self.aggregation_type == "Euler" or "None":
             GHXArrayEulerAggBlocks(self.json_data,
                                    self.loads_path,
                                    self.output_path,
                                    self.print_output).simulate()
-        elif self.aggregation_type in self.Lagrange_agg_types:
+        elif self.aggregation_type == "Lagrange":
             GHXArrayLagrangeAggBlocks(self.ghx_input_json_path,
                                       self.loads_path,
                                       self.output_path,
@@ -86,8 +83,3 @@ class GHXArray:
         else:
             PrintClass.my_print("\tAggregation Type \"%s\" not found" % self.aggregation_type, "warn")
             PrintClass.fatal_error(message="Error starting program")
-
-        PrintClass.my_print("Simulation complete", "success")
-        PrintClass.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
-
-        PrintClass.write_log_file(self.output_path)

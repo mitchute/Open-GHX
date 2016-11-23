@@ -23,8 +23,9 @@ class TestGHXArrayEulerAggBlocks(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type": "Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type": "Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -179,9 +180,9 @@ class TestGHXArrayEulerAggBlocks(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = ghx.GHXArrayEulerAggBlocks(dict_bh, csv_file_path, False)
+        curr_tst = ghx.GHXArrayEulerAggBlocks(dict_bh, csv_file_path, output_path, False)
 
         # make a few dummy AggregatedLoad classes
         obj_1 = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
@@ -210,8 +211,9 @@ class TestGHXArrayEulerAggBlocks(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type": "Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type": "Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -366,9 +368,9 @@ class TestGHXArrayEulerAggBlocks(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = ghx.GHXArrayEulerAggBlocks(dict_bh, csv_file_path, False)
+        curr_tst = ghx.GHXArrayEulerAggBlocks(dict_bh, csv_file_path, output_path, False)
 
         # should initialize empty first object for comparative purposes
         # [0]

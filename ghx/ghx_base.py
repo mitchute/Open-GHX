@@ -3,6 +3,7 @@ from __future__ import division
 import sys
 import os
 import simplejson as json
+import timeit
 
 from collections import deque
 from ghx_constants import ConstantClass
@@ -23,9 +24,15 @@ class BaseGHXClass:
         """
         Class constructor
         """
-
+        self.timer_start = timeit.default_timer()
         errors_found = False
         self.output_path = output_path
+
+        if not os.path.exists(self.output_path):
+            os.makedirs(self.output_path)
+
+        with open(os.path.join(self.output_path, 'in.json'), 'w') as outfile:
+            json.dump(json_data, outfile, indent=4, sort_keys=True)
 
         # load data into data structs
         PrintClass.my_print("....Loading GHX data")
@@ -44,6 +51,7 @@ class BaseGHXClass:
 
         try:
             self.aggregation_type = json_data['Simulation Configuration']['Aggregation Type']
+            self.agg_load_intervals = json_data['Simulation Configuration']['Intervals']
         except:  # pragma: no cover
             PrintClass.my_print("....'Aggregation Type' key not found", 'warn')
             errors_found = True
@@ -52,6 +60,12 @@ class BaseGHXClass:
             self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
         except:  # pragma: no cover
             PrintClass.my_print("....'Min Hourly History' key not found", 'warn')
+            errors_found = True
+
+        try:
+            self.agg_load_intervals = json_data['Simulation Configuration']['Intervals']
+        except:  # pragma: no cover
+            PrintClass.my_print("....'Intervals' key not found", 'warn')
             errors_found = True
 
         try:
@@ -107,7 +121,6 @@ class BaseGHXClass:
         self.hourly_loads = deque()
 
         self.agg_loads_flag = True
-        self.agg_load_intervals = []
 
     def merge_dicts(self, list_of_dicts):
 

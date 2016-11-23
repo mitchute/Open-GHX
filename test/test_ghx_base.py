@@ -18,8 +18,9 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type": "Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type": "Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -174,13 +175,14 @@ class TestBaseGHXClass(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, False)
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         self.assertEqual(curr_tst.name, dict_bh['Name'])
         self.assertEqual(curr_tst.sim_years, dict_bh['Simulation Configuration']['Simulation Years'])
         self.assertEqual(curr_tst.aggregation_type, dict_bh['Simulation Configuration']['Aggregation Type'])
         self.assertEqual(curr_tst.min_hourly_history, dict_bh['Simulation Configuration']['Min Hourly History'])
+        self.assertEqual(curr_tst.agg_load_intervals, dict_bh['Simulation Configuration']['Intervals'])
 
         i = 0
 
@@ -219,8 +221,9 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type":"Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -296,8 +299,8 @@ class TestBaseGHXClass(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, False)
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         x = {
             "Name": "BH 1",
@@ -397,8 +400,9 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type":"Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -553,8 +557,8 @@ class TestBaseGHXClass(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, False)
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1
 
@@ -578,8 +582,9 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Test Euler Blocks",
-                "Min Hourly History": 192
+                "Aggregation Type":"Euler",
+                "Min Hourly History": 192,
+                "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -734,8 +739,8 @@ class TestBaseGHXClass(unittest.TestCase):
         }
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, False)
+        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1
 
