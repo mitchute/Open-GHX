@@ -5,13 +5,11 @@ from ghx_base import *
 from ghx_aggregated_load import *
 
 
-class GHXArrayEulerAggBlocks(BaseGHXClass):
+class GHXArrayFixedAggBlocks(BaseGHXClass):
 
     """
-    GHXArrayEulerAggBlocks is the class object that holds the information that defines a ground heat exchanger array.
+    GHXArrayFixedAggBlocks is the class object that holds the information that defines a ground heat exchanger array.
     This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
-    Aggregation load blocks are "Euler" relative to "present" simulation time, meaning, at every time step
-    the load block shift one time step further from the "present" simulation time.
     """
 
     def __init__(self, json_data, loads_path, output_path, print_output=True):
@@ -41,7 +39,7 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         Intervals must be integer multiples.
         """
 
-        if self.aggregation_type == "Euler":
+        if self.aggregation_type == "Fixed":
             pass
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False

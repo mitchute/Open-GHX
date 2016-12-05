@@ -181,11 +181,11 @@ def run(name, hist, d):
         os.makedirs(output_path)
 
     json_data['Simulation Configuration']['Simulation Years'] = 10
-    json_data['Simulation Configuration']['Aggregation Type'] = "Euler"
+    json_data['Simulation Configuration']['Aggregation Type'] = "Fixed"
     json_data['Simulation Configuration']['Min Hourly History'] = hist
     json_data['Simulation Configuration']['Intervals'] = d
 
-    this_test = ghx.GHXArrayEulerAggBlocks(json_data, load_path, output_path, True)
+    this_test = ghx.GHXArrayFixedAggBlocks(json_data, load_path, output_path, True)
 
     this_test.simulate()
 

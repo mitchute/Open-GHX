@@ -18,7 +18,7 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type": "Euler",
+                "Aggregation Type": "Fixed",
                 "Min Hourly History": 192,
                 "Intervals": [5, 10, 20, 40]
                 },
@@ -221,7 +221,7 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Euler",
+                "Aggregation Type":"Fixed",
                 "Min Hourly History": 192,
                 "Intervals": [5, 10, 20, 40]
                 },
@@ -400,7 +400,7 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Euler",
+                "Aggregation Type":"Fixed",
                 "Min Hourly History": 192,
                 "Intervals": [5, 10, 20, 40]
                 },
@@ -582,7 +582,7 @@ class TestBaseGHXClass(unittest.TestCase):
             "Simulation Configuration":
                 {
                 "Simulation Years": 2,
-                "Aggregation Type":"Euler",
+                "Aggregation Type":"Fixed",
                 "Min Hourly History": 192,
                 "Intervals": [5, 10, 20, 40]
                 },

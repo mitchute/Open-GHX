@@ -10,7 +10,7 @@
 # import ghx
 
 
-# class TestGHXArrayLagrangeAggBlocks(unittest.TestCase):
+# class TestGHXArrayShiftingAggBlocks(unittest.TestCase):
 
     # def test_shift_loads(self):
 
@@ -20,11 +20,11 @@
 
         # ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.json')
         # config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
-                                        # 'test_Lagrange_config.json')
+                                        # 'test_Shifting_config.json')
         # csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
 
         # init
-        # curr_tst = ghx.GHXArrayLagrangeAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
+        # curr_tst = ghx.GHXArrayShiftingAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
 
         # l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
@@ -126,12 +126,12 @@
         # ghx_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
                                      # 'testing.json')
         # config_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
-                                        # 'test_Lagrange_config.json')
+                                        # 'test_Shifting_config.json')
         # csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples',
                                      # 'testing.csv')
 
         # init
-        # curr_tst = ghx.GHXArrayLagrangeAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
+        # curr_tst = ghx.GHXArrayShiftingAggBlocks(ghx_file_path, config_file_path, csv_file_path, False)
 
         # l = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 

@@ -3,8 +3,8 @@ from __future__ import division
 import timeit
 from ghx_print import PrintClass
 from ghx_constants import ConstantClass
-from ghx_ghxArray_Euler import *
-from ghx_ghxArray_Lagrange import *
+from ghx_ghxArray_Fixed import *
+from ghx_ghxArray_Shifting import *
 
 
 class GHXArray:
@@ -70,13 +70,13 @@ class GHXArray:
 
         PrintClass.my_print("Initializing simulation")
 
-        if self.aggregation_type == "Euler" or "None":
-            GHXArrayEulerAggBlocks(self.json_data,
+        if self.aggregation_type == "Fixed" or self.aggregation_type == "None":
+            GHXArrayFixedAggBlocks(self.json_data,
                                    self.loads_path,
                                    self.output_path,
                                    self.print_output).simulate()
-        elif self.aggregation_type == "Lagrange":
-            GHXArrayLagrangeAggBlocks(self.ghx_input_json_path,
+        elif self.aggregation_type == "Shifting":
+            GHXArrayShiftingAggBlocks(self.json_data,
                                       self.loads_path,
                                       self.output_path,
                                       self.print_output).simulate()

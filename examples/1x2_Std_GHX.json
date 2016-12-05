@@ -3,7 +3,7 @@
     "Simulation Configuration":
         {
         "Simulation Years":1,
-        "Aggregation Type":"Lagrange",
+        "Aggregation Type":"Shifting",
         "Min Hourly History":5,
         "Intervals": [[12,1],[48,1],[168,1],[360,1]]
         },

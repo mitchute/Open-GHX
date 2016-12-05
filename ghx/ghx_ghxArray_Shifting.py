@@ -5,7 +5,7 @@ from ghx_aggregated_load import *
 from ghx_constants import ConstantClass
 
 
-class GHXArrayLagrangeAggBlocks(BaseGHXClass):
+class GHXArrayShiftingAggBlocks(BaseGHXClass):
 
     def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
@@ -19,11 +19,13 @@ class GHXArrayLagrangeAggBlocks(BaseGHXClass):
         # set load aggregation intervals
         self.set_load_aggregation()
 
-    # def set_load_aggregation(self):
+    def set_load_aggregation(self):
 
         """
         Sets the load aggregation intervals based on the type specified by the user.
         """
+
+        pass
 
         # need to add one extra entry to the first interval to account for the '0' hour
         # self.agg_load_intervals[0] += 1

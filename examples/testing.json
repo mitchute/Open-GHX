@@ -3,7 +3,7 @@
     "Simulation Configuration":
         {
         "Simulation Years":2,
-        "Aggregation Type":"Test Euler Blocks",
+        "Aggregation Type":"Fixed",
         "Min Hourly History":192
         },
     "GHXs":
