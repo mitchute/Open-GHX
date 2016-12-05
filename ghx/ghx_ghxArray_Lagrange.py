@@ -16,52 +16,25 @@ class GHXArrayLagrangeAggBlocks(BaseGHXClass):
         # init base class
         BaseGHXClass.__init__(self, ghx_input_json_path, loads_path, output_path, print_output)
 
-        # class data
-
-        cwd = os.getcwd()
-        path_to_run_dir = os.path.join(cwd, "run")
-
-        if not os.path.exists(path_to_run_dir):
-            os.makedirs(path_to_run_dir)
-
-        # open files
-        self.debug_file = open(os.path.join(path_to_run_dir, "debug.csv"), 'w')
-
         # set load aggregation intervals
         self.set_load_aggregation()
 
-    def set_load_aggregation(self):
+    # def set_load_aggregation(self):
 
         """
         Sets the load aggregation intervals based on the type specified by the user.
-
-        Bernier, M.A., Labib, R., Pinel, P., and Paillot, R. 2004. 'A multiple load aggregation algorithm
-        for annual hourly simulations of GCHP systems.' HVAC&R Research, 10(4): 471-487.
         """
-
-        MLAA = [12, 48, 168, 360]
-        testing = [2, 2, 4, 8]
-
-        if self.aggregation_type == "MLAA":  # Bernier et al. 2004
-            self.agg_load_intervals = MLAA
-        elif self.aggregation_type == "Test Lagrange Blocks":
-            self.agg_load_intervals = testing
-        else:
-            PrintClass.my_print("Load aggregation scheme not recognized", 'warn')
-            PrintClass.my_print("....Defaulting to MLAA algorithm", 'warn')
-            self.agg_load_intervals = MLAA
 
         # need to add one extra entry to the first interval to account for the '0' hour
         # self.agg_load_intervals[0] += 1
 
         # set first load, which is zero--need this for later
-        self.agg_load_objects.append(AggregatedLoad([0], 0, self.agg_load_intervals[0], True))
+        # self.agg_load_objects.append(AggregatedLoad([0], 0, self.agg_load_intervals[0], True))
 
     def shift_loads(self, curr_load):
 
         """
         Manages shifting loads between aggregation blocks
-        :param curr_load: current load on GHX
         """
 
         length_new_object = 0

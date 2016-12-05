@@ -51,7 +51,6 @@ class BaseGHXClass:
 
         try:
             self.aggregation_type = json_data['Simulation Configuration']['Aggregation Type']
-            self.agg_load_intervals = json_data['Simulation Configuration']['Intervals']
         except:  # pragma: no cover
             PrintClass.my_print("....'Aggregation Type' key not found", 'warn')
             errors_found = True

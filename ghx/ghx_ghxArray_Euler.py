@@ -41,20 +41,12 @@ class GHXArrayEulerAggBlocks(BaseGHXClass):
         Intervals must be integer multiples.
         """
 
-        monthly = [12, 24, 48, 96, 192, 384, 768]
-        type_628 = [120]
-        testing = [5, 10, 20, 40]
-
         if self.aggregation_type == "Euler":
             pass
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
             self.agg_load_intervals = [ConstantClass.hours_in_year * self.sim_years]
             self.min_hourly_history = 0
-        else:
-            PrintClass.my_print("Load aggregation scheme not recognized", 'warn')
-            PrintClass.my_print("....Defaulting to monthly intervals", 'warn')
-            PrintClass.agg_load_intervals = monthly
 
     def aggregate_load(self):
 
