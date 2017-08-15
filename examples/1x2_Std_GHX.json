@@ -3,9 +3,9 @@
     "Simulation Configuration":
         {
         "Simulation Years":1,
-        "Aggregation Type":"Shifting",
+        "Aggregation Type":"Fixed",
         "Min Hourly History":5,
-        "Intervals": [[12,1],[48,1],[168,1],[360,1]]
+        "Intervals": [12, 48, 168, 360]
         },
     "GHXs":
         [

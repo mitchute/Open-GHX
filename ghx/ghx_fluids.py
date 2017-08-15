@@ -1,10 +1,7 @@
-from __future__ import division
-
 import CoolProp.CoolProp as cp
-import numpy as np
 
-from ghx_print import PrintClass
-from ghx_constants import ConstantClass
+from ghx.ghx_print import PrintClass
+from ghx.ghx_constants import ConstantClass
 
 
 class FluidsClass:

@@ -1,11 +1,7 @@
-from __future__ import division
-
-import numpy as np
-
-from ghx_print import PrintClass
-from ghx_soil import *
-from ghx_pipe import *
-from ghx_base_properties import *
+from ghx.ghx_print import PrintClass
+from ghx.ghx_soil import *
+from ghx.ghx_pipe import *
+from ghx.ghx_base_properties import *
 
 
 class BoreholeClass:

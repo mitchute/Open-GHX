@@ -19,10 +19,9 @@ class AggregatedLoad:
 
         self.max_length = max_length
         self.loads = deque(loads, maxlen=max_length)
-        self.q = 0.0
-        self.new_q_val = 0.0
-        self.q_est = 0.0
+        self.q = self.calc_q()
         self.first_sim_hour = first_sim_hour
+        self.keep_q_values = False
 
         if init:
             self.last_sim_hour = 0
@@ -31,6 +30,7 @@ class AggregatedLoad:
             self.calc_q()
 
     def time(self):
+
         """
         :returns absolute time (in hours) when load occurred
         """
@@ -38,15 +38,9 @@ class AggregatedLoad:
         return self.first_sim_hour
 
     def calc_q(self):
+
         """
         Calculates the mean q value for the aggregation period
         """
 
-        self.q = np.mean(self.loads)
-
-    def estimate_q(self):
-        """
-        Estimates the average q value for the period using the modified moving average formula
-        """
-        self.length = len(self.loads)
-        self.q_est = ((self.length - 1) * self.q_est + self.new_q_val) / self.length
+        return np.mean(self.loads)

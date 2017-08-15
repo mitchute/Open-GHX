@@ -1,6 +1,3 @@
-from __future__ import division
-
-
 class ConstantClass:
 
     months_in_year = 12

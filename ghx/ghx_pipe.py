@@ -1,9 +1,9 @@
 from __future__ import division
 import numpy as np
 
-from ghx_print import PrintClass
-from ghx_base_properties import *
-from ghx_fluids import *
+from ghx.ghx_print import PrintClass
+from ghx.ghx_base_properties import *
+from ghx.ghx_fluids import *
 
 
 class PipeClass(BasePropertiesClass):

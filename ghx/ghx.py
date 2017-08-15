@@ -1,10 +1,9 @@
-from __future__ import division
+import json
 
-import timeit
-from ghx_print import PrintClass
-from ghx_constants import ConstantClass
-from ghx_ghxArray_Fixed import *
-from ghx_ghxArray_Shifting import *
+from ghx.ghx_print import PrintClass
+from ghx.ghx_constants import ConstantClass
+from ghx.ghx_ghxArray_Fixed import *
+from ghx.ghx_ghxArray_Shifting import *
 
 
 class GHXArray:

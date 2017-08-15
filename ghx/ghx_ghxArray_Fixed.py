@@ -1,8 +1,6 @@
-from __future__ import division
-import timeit
-
-from ghx_base import *
-from ghx_aggregated_load import *
+from ghx.ghx_base import *
+from ghx.ghx_aggregated_load import *
+from ghx.ghx import PrintClass
 
 
 class GHXArrayFixedAggBlocks(BaseGHXClass):

@@ -1,7 +1,5 @@
-from __future__ import division
-
-from ghx_print import PrintClass
-from ghx_base_properties import *
+from ghx.ghx_print import PrintClass
+from ghx.ghx_base_properties import *
 
 
 class SoilClass(BasePropertiesClass):

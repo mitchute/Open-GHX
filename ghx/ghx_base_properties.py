@@ -1,7 +1,4 @@
-from __future__ import division
-import sys
-
-from ghx_print import PrintClass
+from ghx.ghx_print import PrintClass
 
 
 class BasePropertiesClass:

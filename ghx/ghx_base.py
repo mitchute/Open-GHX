@@ -1,16 +1,12 @@
 from __future__ import division
 
-import sys
 import os
 import simplejson as json
 import timeit
 
 from collections import deque
-from ghx_constants import ConstantClass
-from ghx_print import PrintClass
-from ghx_fluids import *
-from ghx_borehole import *
-from ghx_soil import *
+from ghx.ghx_print import PrintClass
+from ghx.ghx_borehole import *
 
 
 class BaseGHXClass:
