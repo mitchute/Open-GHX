@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_aggregated_load
+from ghx.ghx_aggregated_load import *
 
 
 class TestAggregatedLoad(unittest.TestCase):
@@ -17,7 +17,7 @@ class TestAggregatedLoad(unittest.TestCase):
         """
 
         # init
-        curr_tst = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
+        curr_tst = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
 
         # check average load
         self.assertEqual(curr_tst.q, 5.5)

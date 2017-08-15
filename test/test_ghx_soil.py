@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_soil
+from ghx.ghx_soil import *
 
 
 class TestSoilClass(unittest.TestCase):
@@ -19,7 +19,7 @@ class TestSoilClass(unittest.TestCase):
                'Temperature': 13.0
                }
 
-        curr_tst = ghx.SoilClass(dict_soil, False)
+        curr_tst = SoilClass(dict_soil, False)
 
         self.assertEqual(curr_tst.conductivity, dict_soil['Conductivity'])
         self.assertEqual(curr_tst.density, dict_soil['Density'])

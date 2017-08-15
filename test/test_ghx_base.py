@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_base
+from ghx.ghx_base import *
 
 
 class TestBaseGHXClass(unittest.TestCase):
@@ -175,7 +175,7 @@ class TestBaseGHXClass(unittest.TestCase):
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
+        curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         self.assertEqual(curr_tst.name, dict_bh['Name'])
         self.assertEqual(curr_tst.sim_years, dict_bh['Simulation Configuration']['Simulation Years'])
@@ -299,7 +299,7 @@ class TestBaseGHXClass(unittest.TestCase):
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
+        curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         x = {
             "Name": "BH 1",
@@ -557,7 +557,7 @@ class TestBaseGHXClass(unittest.TestCase):
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
+        curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1
 
@@ -739,7 +739,7 @@ class TestBaseGHXClass(unittest.TestCase):
 
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
-        curr_tst = ghx.BaseGHXClass(dict_bh, csv_file_path, output_path, False)
+        curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1
 

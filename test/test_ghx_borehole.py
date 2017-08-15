@@ -6,7 +6,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_borehole
+from ghx.ghx_borehole import *
 
 
 class TestBoreholeClass(unittest.TestCase):
@@ -48,7 +48,7 @@ class TestBoreholeClass(unittest.TestCase):
                       }
                   }
 
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
 
         self.assertEqual(curr_tst.name, dict_bh['Name'])
         self.assertEqual(curr_tst.location, dict_bh['Location'])
@@ -101,7 +101,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -111,7 +111,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -121,7 +121,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -131,7 +131,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -141,7 +141,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -151,7 +151,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -161,7 +161,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -171,7 +171,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -181,7 +181,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -191,7 +191,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -201,7 +201,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -211,7 +211,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -221,7 +221,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -231,7 +231,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -241,7 +241,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -251,7 +251,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -261,7 +261,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -271,7 +271,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -281,7 +281,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -291,7 +291,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -301,7 +301,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -311,7 +311,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -321,7 +321,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -331,7 +331,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -341,7 +341,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -351,7 +351,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -361,7 +361,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -371,7 +371,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -381,7 +381,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -391,7 +391,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -401,7 +401,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -411,7 +411,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -421,7 +421,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -431,7 +431,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -441,7 +441,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -451,7 +451,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -461,7 +461,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -471,7 +471,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -481,7 +481,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -491,7 +491,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -501,7 +501,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -511,7 +511,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -521,7 +521,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -531,7 +531,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -541,7 +541,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -551,7 +551,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -561,7 +561,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -571,7 +571,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -581,7 +581,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -591,7 +591,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -601,7 +601,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -611,7 +611,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -621,7 +621,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -631,7 +631,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -641,7 +641,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -651,7 +651,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -661,7 +661,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -671,7 +671,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -681,7 +681,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -691,7 +691,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -701,7 +701,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -711,7 +711,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -721,7 +721,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -731,7 +731,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -741,7 +741,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -751,7 +751,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -761,7 +761,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -771,7 +771,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -781,7 +781,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -791,7 +791,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -801,7 +801,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -811,7 +811,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -821,7 +821,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -831,7 +831,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -841,7 +841,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -851,7 +851,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -861,7 +861,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -871,7 +871,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -881,7 +881,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -891,7 +891,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -901,7 +901,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -911,7 +911,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -921,7 +921,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -931,7 +931,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -941,7 +941,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -951,7 +951,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -961,7 +961,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -971,7 +971,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -981,7 +981,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -991,7 +991,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1001,7 +1001,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1011,7 +1011,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1021,7 +1021,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1031,7 +1031,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1041,7 +1041,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1051,7 +1051,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1061,7 +1061,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1071,7 +1071,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1081,7 +1081,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1091,7 +1091,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1101,7 +1101,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1111,7 +1111,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1121,7 +1121,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1131,7 +1131,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1141,7 +1141,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1151,7 +1151,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1161,7 +1161,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1171,7 +1171,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1181,7 +1181,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1191,7 +1191,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1201,7 +1201,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1211,7 +1211,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1221,7 +1221,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1231,7 +1231,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1241,7 +1241,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1251,7 +1251,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1261,7 +1261,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1271,7 +1271,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1281,7 +1281,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1291,7 +1291,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1301,7 +1301,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1311,7 +1311,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1321,7 +1321,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1331,7 +1331,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1341,7 +1341,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1351,7 +1351,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1361,7 +1361,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1371,7 +1371,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1381,7 +1381,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1391,7 +1391,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1401,7 +1401,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1411,7 +1411,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1421,7 +1421,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1431,7 +1431,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1441,7 +1441,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1451,7 +1451,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1461,7 +1461,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1471,7 +1471,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1481,7 +1481,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1491,7 +1491,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1501,7 +1501,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1511,7 +1511,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1521,7 +1521,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1531,7 +1531,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -1541,7 +1541,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1551,7 +1551,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1561,7 +1561,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1571,7 +1571,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1581,7 +1581,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1591,7 +1591,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1601,7 +1601,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1611,7 +1611,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1621,7 +1621,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1631,7 +1631,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1641,7 +1641,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1651,7 +1651,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1661,7 +1661,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1671,7 +1671,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1681,7 +1681,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1691,7 +1691,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1701,7 +1701,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1711,7 +1711,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1721,7 +1721,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1731,7 +1731,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1741,7 +1741,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1751,7 +1751,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1761,7 +1761,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1771,7 +1771,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1781,7 +1781,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1791,7 +1791,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1801,7 +1801,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1811,7 +1811,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1821,7 +1821,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1831,7 +1831,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1841,7 +1841,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1851,7 +1851,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1861,7 +1861,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1871,7 +1871,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1881,7 +1881,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1891,7 +1891,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1901,7 +1901,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1911,7 +1911,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1921,7 +1921,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1931,7 +1931,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1941,7 +1941,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1951,7 +1951,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1961,7 +1961,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1971,7 +1971,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1981,7 +1981,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -1991,7 +1991,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2001,7 +2001,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2011,7 +2011,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2021,7 +2021,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2031,7 +2031,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2041,7 +2041,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2051,7 +2051,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2061,7 +2061,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2071,7 +2071,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2081,7 +2081,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2091,7 +2091,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2101,7 +2101,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2111,7 +2111,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2121,7 +2121,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2131,7 +2131,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2141,7 +2141,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2151,7 +2151,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2161,7 +2161,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2171,7 +2171,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2181,7 +2181,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2191,7 +2191,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2201,7 +2201,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2211,7 +2211,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2221,7 +2221,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2231,7 +2231,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2241,7 +2241,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2251,7 +2251,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -2300,7 +2300,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2310,7 +2310,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2320,7 +2320,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2330,7 +2330,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2340,7 +2340,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2350,7 +2350,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2360,7 +2360,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2370,7 +2370,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2380,7 +2380,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2390,7 +2390,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2400,7 +2400,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2410,7 +2410,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2420,7 +2420,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2430,7 +2430,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2440,7 +2440,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2450,7 +2450,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2460,7 +2460,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2470,7 +2470,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2480,7 +2480,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2490,7 +2490,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2500,7 +2500,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2510,7 +2510,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2520,7 +2520,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2530,7 +2530,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.33333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2540,7 +2540,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2550,7 +2550,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2560,7 +2560,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2570,7 +2570,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2580,7 +2580,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2590,7 +2590,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2600,7 +2600,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2610,7 +2610,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2620,7 +2620,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2630,7 +2630,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2640,7 +2640,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2650,7 +2650,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2660,7 +2660,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2670,7 +2670,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2680,7 +2680,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2690,7 +2690,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2700,7 +2700,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2710,7 +2710,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2720,7 +2720,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2730,7 +2730,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2740,7 +2740,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2750,7 +2750,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2760,7 +2760,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2770,7 +2770,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.04266667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.44444, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2780,7 +2780,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2790,7 +2790,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2800,7 +2800,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2810,7 +2810,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2820,7 +2820,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2830,7 +2830,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2840,7 +2840,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2850,7 +2850,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2860,7 +2860,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2870,7 +2870,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2880,7 +2880,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2890,7 +2890,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2900,7 +2900,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2910,7 +2910,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2920,7 +2920,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2930,7 +2930,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2940,7 +2940,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2950,7 +2950,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2960,7 +2960,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2970,7 +2970,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2980,7 +2980,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -2990,7 +2990,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -3000,7 +3000,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -3010,7 +3010,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.06400000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.66667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 3.0, delta=tolerance)
@@ -3020,7 +3020,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3030,7 +3030,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3040,7 +3040,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3050,7 +3050,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3060,7 +3060,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3070,7 +3070,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3080,7 +3080,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3090,7 +3090,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3100,7 +3100,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3110,7 +3110,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3120,7 +3120,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3130,7 +3130,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3140,7 +3140,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3150,7 +3150,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3160,7 +3160,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3170,7 +3170,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3180,7 +3180,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3190,7 +3190,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3200,7 +3200,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3210,7 +3210,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3220,7 +3220,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3230,7 +3230,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3240,7 +3240,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3250,7 +3250,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.16667, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3260,7 +3260,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3270,7 +3270,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3280,7 +3280,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3290,7 +3290,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3300,7 +3300,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3310,7 +3310,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3320,7 +3320,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3330,7 +3330,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3340,7 +3340,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3350,7 +3350,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3360,7 +3360,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3370,7 +3370,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3380,7 +3380,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3390,7 +3390,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3400,7 +3400,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3410,7 +3410,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3420,7 +3420,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3430,7 +3430,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3440,7 +3440,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3450,7 +3450,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3460,7 +3460,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3470,7 +3470,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3480,7 +3480,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3490,7 +3490,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.07466667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.38889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3500,7 +3500,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3510,7 +3510,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3520,7 +3520,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3530,7 +3530,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3540,7 +3540,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3550,7 +3550,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3560,7 +3560,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3570,7 +3570,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3580,7 +3580,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3590,7 +3590,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3600,7 +3600,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3610,7 +3610,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3620,7 +3620,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3630,7 +3630,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3640,7 +3640,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3650,7 +3650,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3660,7 +3660,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3670,7 +3670,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3680,7 +3680,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3690,7 +3690,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3700,7 +3700,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3710,7 +3710,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3720,7 +3720,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3730,7 +3730,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.16000000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.83333, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 6.0, delta=tolerance)
@@ -3740,7 +3740,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3750,7 +3750,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3760,7 +3760,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3770,7 +3770,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3780,7 +3780,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3790,7 +3790,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3800,7 +3800,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3810,7 +3810,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3820,7 +3820,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3830,7 +3830,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3840,7 +3840,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3850,7 +3850,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3860,7 +3860,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3870,7 +3870,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3880,7 +3880,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3890,7 +3890,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3900,7 +3900,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3910,7 +3910,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3920,7 +3920,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3930,7 +3930,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3940,7 +3940,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3950,7 +3950,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3960,7 +3960,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3970,7 +3970,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.03200000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.11111, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3980,7 +3980,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -3990,7 +3990,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4000,7 +4000,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4010,7 +4010,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4020,7 +4020,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4030,7 +4030,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4040,7 +4040,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4050,7 +4050,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4060,7 +4060,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4070,7 +4070,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4080,7 +4080,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4090,7 +4090,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4100,7 +4100,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4110,7 +4110,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4120,7 +4120,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4130,7 +4130,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4140,7 +4140,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4150,7 +4150,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4160,7 +4160,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4170,7 +4170,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4180,7 +4180,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4190,7 +4190,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4200,7 +4200,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4210,7 +4210,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.10666667
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.37037, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4220,7 +4220,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4230,7 +4230,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4240,7 +4240,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4250,7 +4250,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4260,7 +4260,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4270,7 +4270,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 4.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4280,7 +4280,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4290,7 +4290,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4300,7 +4300,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4310,7 +4310,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4320,7 +4320,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4330,7 +4330,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 3.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4340,7 +4340,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4350,7 +4350,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4360,7 +4360,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4370,7 +4370,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4380,7 +4380,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4390,7 +4390,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 2.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4400,7 +4400,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 0.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4410,7 +4410,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.2
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4420,7 +4420,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 1.8
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4430,7 +4430,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 2.4
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4440,7 +4440,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.0
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4450,7 +4450,7 @@ class TestBoreholeClass(unittest.TestCase):
         dict_bh['Shank Spacing'] = 0.25600000
         dict_bh['Soil']['Conductivity'] = 1.0
         dict_bh['Grout']['Conductivity'] = 3.6
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
         curr_tst.pipe.resist_pipe = 0.05
         self.assertAlmostEqual(curr_tst.theta_1, 0.88889, delta=tolerance)
         self.assertAlmostEqual(curr_tst.theta_2, 9.0, delta=tolerance)
@@ -4495,6 +4495,6 @@ class TestBoreholeClass(unittest.TestCase):
 
         tolerance = 0.00001
 
-        curr_tst = ghx.BoreholeClass(dict_bh, False)
+        curr_tst = BoreholeClass(dict_bh, False)
 
         self.assertAlmostEqual(curr_tst.calc_bh_total_internal_resistance(), 0.36818, delta=tolerance)

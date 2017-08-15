@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 
 import numpy as np
 
 import unittest
-import ghx.ghx_pipe
+from ghx.ghx_pipe import *
 
 
 class TestPipeClass(unittest.TestCase):
@@ -32,7 +32,7 @@ class TestPipeClass(unittest.TestCase):
                      'Flow Rate': 0.000303
                      }
 
-        curr_tst = ghx.PipeClass(dict_pipe, dict_fluid, 13.0, False)
+        curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
         self.assertEqual(curr_tst.outer_diameter, dict_pipe['Outside Diameter'])
         self.assertEqual(curr_tst.outer_radius, dict_pipe['Outside Diameter'] / 2)
@@ -60,7 +60,7 @@ class TestPipeClass(unittest.TestCase):
                      'Flow Rate': 0.000303
                      }
 
-        curr_tst = ghx.PipeClass(dict_pipe, dict_fluid, 13.0, False)
+        curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
         tolerance = 0.00001
 
@@ -113,7 +113,7 @@ class TestPipeClass(unittest.TestCase):
                       'Flow Rate': 0.000303
                      }
 
-        curr_tst = ghx.PipeClass(dict_pipe, dict_fluid, 13.0, False)
+        curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
         tolerance = 0.00001
 
@@ -150,7 +150,7 @@ class TestPipeClass(unittest.TestCase):
                      'Flow Rate': 0.000303
                      }
 
-        curr_tst = ghx.PipeClass(dict_pipe, dict_fluid, 13.0, False)
+        curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
         tolerance = 0.00001
 
@@ -176,7 +176,7 @@ class TestPipeClass(unittest.TestCase):
                      'Flow Rate': 0.000303
                      }
 
-        curr_tst = ghx.PipeClass(dict_pipe, dict_fluid, 13.0, False)
+        curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
         tolerance = 0.00001
 

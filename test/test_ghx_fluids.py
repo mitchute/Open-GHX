@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_fluids
+from ghx.ghx_fluids import *
 
 
 class TestFluidsClass(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestFluidsClass(unittest.TestCase):
 
         tolerance = 1.0
 
-        curr_tst = ghx.FluidsClass(dict_fluid, 20, False)
+        curr_tst = FluidsClass(dict_fluid, 20, False)
         self.assertAlmostEqual(curr_tst.dens(), 998.0, delta=tolerance)
 
         curr_tst.temperature = 40
@@ -56,7 +56,7 @@ class TestFluidsClass(unittest.TestCase):
 
         tolerance = 4.0
 
-        curr_tst = ghx.FluidsClass(dict_fluid, 20, False)
+        curr_tst = FluidsClass(dict_fluid, 20, False)
         self.assertAlmostEqual(curr_tst.cp(), 4182, delta=tolerance)
 
         curr_tst.temperature = 40
@@ -85,7 +85,7 @@ class TestFluidsClass(unittest.TestCase):
 
         tolerance = 1E-4
 
-        curr_tst = ghx.FluidsClass(dict_fluid, 20, False)
+        curr_tst = FluidsClass(dict_fluid, 20, False)
         self.assertAlmostEqual(curr_tst.visc(), 1.002E-3, delta=tolerance)
 
         curr_tst.temperature = 40
@@ -114,7 +114,7 @@ class TestFluidsClass(unittest.TestCase):
 
         tolerance = 1E-2
 
-        curr_tst = ghx.FluidsClass(dict_fluid, 20, False)
+        curr_tst = FluidsClass(dict_fluid, 20, False)
         self.assertAlmostEqual(curr_tst.cond(), 0.598, delta=tolerance)
 
         curr_tst.temperature = 40
@@ -143,7 +143,7 @@ class TestFluidsClass(unittest.TestCase):
 
         tolerance = 1E-1
 
-        curr_tst = ghx.FluidsClass(dict_fluid, 20, False)
+        curr_tst = FluidsClass(dict_fluid, 20, False)
         self.assertAlmostEqual(curr_tst.pr(), 7.01, delta=tolerance)
 
         curr_tst.temperature = 40

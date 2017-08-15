@@ -5,7 +5,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx.ghx_constants
+from ghx.ghx_constants import *
 
 
 class TestConstantClass(unittest.TestCase):
@@ -16,7 +16,7 @@ class TestConstantClass(unittest.TestCase):
         Test initialization
         """
 
-        curr_tst = ghx.ConstantClass()
+        curr_tst = ConstantClass()
 
         self.assertEqual(curr_tst.months_in_year, 12)
         self.assertEqual(curr_tst.hours_in_month, 730)

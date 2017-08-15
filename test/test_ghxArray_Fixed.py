@@ -6,7 +6,7 @@ from collections import deque
 sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
 
 import unittest
-import ghx
+from ghx.ghx_ghxArray_Fixed import *
 
 
 class TestGHXArrayFixedAggBlocks(unittest.TestCase):
@@ -181,13 +181,13 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = ghx.GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
+        curr_tst = GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
 
         # make a few dummy AggregatedLoad classes
-        obj_1 = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
-        obj_2 = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10, 10)
-        obj_3 = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20, 10)
-        obj_4 = ghx.AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 30, 10)
+        obj_1 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
+        obj_2 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10, 10)
+        obj_3 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20, 10)
+        obj_4 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 30, 10)
 
         obj_list = [obj_1, obj_2, obj_3, obj_4]
 
@@ -369,7 +369,7 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
         csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
         output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = ghx.GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
+        curr_tst = GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
 
         # should initialize empty first object for comparative purposes
         # [0]

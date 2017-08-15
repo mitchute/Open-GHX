@@ -1,3 +1,4 @@
+from test import *
 import unittest
 
 # allow execution directly as python test_ghx.py
