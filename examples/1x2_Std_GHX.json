@@ -5,7 +5,7 @@
         "Simulation Years":1,
         "Aggregation Type":"Fixed",
         "Min Hourly History":5,
-        "Intervals": [12, 48, 168, 360]
+        "Intervals": [12, 48, 192, 384]
         },
     "GHXs":
         [

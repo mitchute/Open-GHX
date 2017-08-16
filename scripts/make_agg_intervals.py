@@ -1,4 +1,3 @@
-
 def make_interval(depth, depth_integer_multiplier, num, step_num, start_val):
 
     all_groups_str = "[\n"
