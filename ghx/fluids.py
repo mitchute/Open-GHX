@@ -1,11 +1,10 @@
 import CoolProp.CoolProp as cp
 
-from ghx.ghx_print import PrintClass
-from ghx.ghx_constants import ConstantClass
+from ghx.constants import ConstantClass
+from ghx.my_print import PrintClass
 
 
 class FluidsClass:
-
     """
     Contains all fluid properties, correlations, etc.
     """
@@ -52,7 +51,8 @@ class FluidsClass:
         :returns fluid density in [kg/m3]
         """
         if self.temperature != self.temperature_prev:
-            self.dens_val = cp.PropsSI('D', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.dens_val = cp.PropsSI('D', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure,
+                                       self.fluid_type)
 
         return self.dens_val
 
@@ -67,7 +67,8 @@ class FluidsClass:
         """
 
         if self.temperature != self.temperature_prev:
-            self.cp_val = cp.PropsSI('C', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.cp_val = cp.PropsSI('C', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure,
+                                     self.fluid_type)
 
         return self.cp_val
 
@@ -82,7 +83,8 @@ class FluidsClass:
         """
 
         if self.temperature != self.temperature_prev:
-            self.visc_val = cp.PropsSI('V', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.visc_val = cp.PropsSI('V', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure,
+                                       self.fluid_type)
 
         return self.visc_val
 
@@ -97,7 +99,8 @@ class FluidsClass:
         """
 
         if self.temperature != self.temperature_prev:
-            self.cond_val = cp.PropsSI('L', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure, self.fluid_type)
+            self.cond_val = cp.PropsSI('L', 'T', self.temperature + ConstantClass.celsius_to_kelvin, 'P', self.pressure,
+                                       self.fluid_type)
 
         return self.cond_val
 
@@ -131,7 +134,7 @@ class FluidsClass:
 
         return self.mass_flow_rate
 
-    def update_fluid_state(self, new_temp=None, new_flow_rate = None):
+    def update_fluid_state(self, new_temp=None, new_flow_rate=None):
 
         """
         Updates fluid state as necessary

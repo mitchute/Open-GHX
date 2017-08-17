@@ -1,17 +1,10 @@
-import os
-import sys
-
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
 import unittest
-from ghx.ghx_fluids import *
+
+from ghx.fluids import FluidsClass
 
 
 class TestFluidsClass(unittest.TestCase):
-
     def test_dens(self):
-
         """
         Tests fluid density calculation routine
 
@@ -22,8 +15,8 @@ class TestFluidsClass(unittest.TestCase):
         """
 
         dict_fluid = {'Type': 'Water',
-                'Concentration': 100,
-                'Flow Rate': 0.000303}
+                      'Concentration': 100,
+                      'Flow Rate': 0.000303}
 
         tolerance = 1.0
 
@@ -40,7 +33,6 @@ class TestFluidsClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.dens(), 971.8, delta=tolerance)
 
     def test_cp(self):
-
         """
         Tests fluid specific heat calculation routine
 
@@ -51,8 +43,8 @@ class TestFluidsClass(unittest.TestCase):
         """
 
         dict_fluid = {'Type': 'Water',
-                'Concentration': 100,
-                'Flow Rate': 0.000303}
+                      'Concentration': 100,
+                      'Flow Rate': 0.000303}
 
         tolerance = 4.0
 
@@ -69,7 +61,6 @@ class TestFluidsClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.cp(), 4197, delta=tolerance)
 
     def test_visc(self):
-
         """
         Tests fluid viscosity calculations
 
@@ -80,8 +71,8 @@ class TestFluidsClass(unittest.TestCase):
         """
 
         dict_fluid = {'Type': 'Water',
-                'Concentration': 100,
-                'Flow Rate': 0.000303}
+                      'Concentration': 100,
+                      'Flow Rate': 0.000303}
 
         tolerance = 1E-4
 
@@ -98,7 +89,6 @@ class TestFluidsClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.visc(), 0.355E-3, delta=tolerance)
 
     def test_cond(self):
-
         """
         Tests fluid conductivity calculations
 
@@ -109,8 +99,8 @@ class TestFluidsClass(unittest.TestCase):
         """
 
         dict_fluid = {'Type': 'Water',
-                'Concentration': 100,
-                'Flow Rate': 0.000303}
+                      'Concentration': 100,
+                      'Flow Rate': 0.000303}
 
         tolerance = 1E-2
 
@@ -127,7 +117,6 @@ class TestFluidsClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.cond(), 0.670, delta=tolerance)
 
     def test_pr(self):
-
         """
         Tests fluid Prandtl number calculations
 
@@ -138,8 +127,8 @@ class TestFluidsClass(unittest.TestCase):
         """
 
         dict_fluid = {'Type': 'Water',
-                'Concentration': 100,
-                'Flow Rate': 0.000303}
+                      'Concentration': 100,
+                      'Flow Rate': 0.000303}
 
         tolerance = 1E-1
 

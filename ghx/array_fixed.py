@@ -1,10 +1,15 @@
-from ghx.ghx_base import *
-from ghx.ghx_aggregated_load import *
-from ghx.ghx import PrintClass
+import timeit
+from collections import deque
+
+import numpy as np
+
+from ghx.aggregated_loads import AggregatedLoad
+from ghx.base import BaseGHXClass
+from ghx.constants import ConstantClass
+from ghx.my_print import PrintClass
 
 
 class GHXArrayFixedAggBlocks(BaseGHXClass):
-
     """
     GHXArrayFixedAggBlocks is the class object that holds the information that defines a ground heat exchanger array.
     This could be a single borehole, or a field with an arbitrary number of boreholes at arbitrary locations.
@@ -93,7 +98,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                     num_objs = len(temp_objs)
                     i += num_objs
                     if num_objs > 0:
-                        if num_objs*agg_int >= self.agg_load_intervals[k+1]:
+                        if num_objs * agg_int >= self.agg_load_intervals[k + 1]:
                             agg_load_objects_update.append(self.merge_agg_load_objs(temp_objs))
                         else:
                             for l in range(len(temp_objs)):
@@ -139,12 +144,12 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
 
         # pre-load hourly g-functions
         for hour in range(self.agg_load_intervals[0] + self.min_hourly_history):
-            ln_t_ts = np.log((hour+1) * 3600 / self.ts)
+            ln_t_ts = np.log((hour + 1) * 3600 / self.ts)
             self.g_func_hourly.append(self.g_func(ln_t_ts))
 
         # set aggregate load container max length
         len_hourly_loads = self.min_hourly_history + self.agg_load_intervals[0]
-        self.hourly_loads = deque([0]*len_hourly_loads, maxlen=len_hourly_loads)
+        self.hourly_loads = deque([0] * len_hourly_loads, maxlen=len_hourly_loads)
 
         agg_hour = 0
         sim_hour = 0
@@ -152,7 +157,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         for year in range(self.sim_years):
             for month in range(ConstantClass.months_in_year):
 
-                PrintClass.my_print("....Year/Month: %d/%d" % (year+1, month+1))
+                PrintClass.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
 
                 for hour in range(ConstantClass.hours_in_month):
 
@@ -204,13 +209,14 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                             if i == 0:
                                 continue
                             curr_obj = self.agg_load_objects[i]
-                            prev_obj = self.agg_load_objects[i-1]
+                            prev_obj = self.agg_load_objects[i - 1]
 
                             t_agg = sim_hour - curr_obj.time()
                             ln_t_ts = np.log(t_agg * 3600 / self.ts)
                             g = self.g_func(ln_t_ts)
                             # calculate the average borehole temp
-                            delta_q = (curr_obj.q - prev_obj.q) / (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
+                            delta_q = (curr_obj.q - prev_obj.q) / (
+                            2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
                             temp_bh_agg.append(delta_q * g)
 
                             # calculate the mean fluid temp

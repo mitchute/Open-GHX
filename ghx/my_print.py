@@ -1,10 +1,10 @@
-import sys
 import os
+import sys
+
 from termcolor import cprint
 
 
 class PrintClass:
-
     print_output = None
     output_path = None
     color_fail = 'red'

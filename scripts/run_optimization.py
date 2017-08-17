@@ -2,7 +2,7 @@ import os
 
 
 import simplejson as json
-import ghx.ghx as ghx
+import ghx.array as ghx
 
 cwd = os.getcwd()
 

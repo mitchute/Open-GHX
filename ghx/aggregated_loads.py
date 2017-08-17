@@ -1,9 +1,9 @@
-import numpy as np
 from collections import deque
+
+import numpy as np
 
 
 class AggregatedLoad:
-
     """
     Class that contains a block of aggregated loads
     """

@@ -1,8 +1,7 @@
-from ghx.ghx_print import PrintClass
+from ghx.my_print import PrintClass
 
 
 class BasePropertiesClass:
-
     def __init__(self, json_data, print_output):
 
         try:

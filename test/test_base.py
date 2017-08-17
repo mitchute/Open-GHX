@@ -1,25 +1,20 @@
 import os
-import sys
-
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
 import unittest
-from ghx.ghx_base import *
+
+from ghx.base import BaseGHXClass
 
 
 class TestBaseGHXClass(unittest.TestCase):
-
     def test_init(self):
 
         dict_bh = {
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type": "Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -31,30 +26,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -65,30 +60,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]
@@ -212,17 +207,16 @@ class TestBaseGHXClass(unittest.TestCase):
             self.assertEqual(curr_tst.g_func_lntts[i], dict_bh['G-func Pairs'][i][0])
             self.assertEqual(curr_tst.g_func_val[i], dict_bh['G-func Pairs'][i][1])
 
-
     def test_merge_dicts(self):
 
         dict_bh = {
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type":"Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -234,30 +228,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -268,30 +262,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]
@@ -370,7 +364,7 @@ class TestBaseGHXClass(unittest.TestCase):
                 }
         }
 
-        dict_list = [x,y]
+        dict_list = [x, y]
 
         merged_dict = curr_tst.merge_dicts(dict_list)
 
@@ -398,10 +392,10 @@ class TestBaseGHXClass(unittest.TestCase):
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type":"Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -413,30 +407,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -447,30 +441,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]
@@ -580,10 +574,10 @@ class TestBaseGHXClass(unittest.TestCase):
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type":"Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -595,30 +589,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -629,30 +623,30 @@ class TestBaseGHXClass(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]

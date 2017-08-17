@@ -1,5 +1,5 @@
 import sys
-import ghx.ghx as ghx
+import ghx.array as ghx
 
 
 # nice usage function

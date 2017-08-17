@@ -1,52 +1,44 @@
-
-import os
-import sys
-
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
 import unittest
-from ghx.ghx_borehole import *
+
+from ghx.borehole import BoreholeClass
 
 
 class TestBoreholeClass(unittest.TestCase):
-
     def test_init(self):
-
         dict_bh = {
-                  'Name': 'BH 1',
-                  'Location': [0, 0],
-                  'Depth': 76.2,
-                  'Radius': 0.05715,
-                  'Shank Spacing': 0.0521,
-                  'Pipe':
-                       {
-                      'Outside Diameter': 0.0267,
-                      'Wall Thickness': 0.00243,
-                      'Conductivity': 0.389,
-                      'Density': 800,
-                      'Specific Heat': 1000
-                      },
-                  'Fluid':
-                      {
-                      'Type': 'Water',
-                      'Concentration': 100,
-                      'Flow Rate': 0.5
-                      },
-                  'Soil':
-                      {
-                      'Conductivity': 2.493,
-                      'Density': 1500,
-                      'Specific Heat': 1663.8,
-                      'Temperature': 13.0
-                      },
-                  'Grout':
-                      {
-                      'Conductivity': 0.744,
-                      'Density': 1000,
-                      'Specific Heat': 1000
-                      }
-                  }
+            'Name': 'BH 1',
+            'Location': [0, 0],
+            'Depth': 76.2,
+            'Radius': 0.05715,
+            'Shank Spacing': 0.0521,
+            'Pipe':
+                {
+                    'Outside Diameter': 0.0267,
+                    'Wall Thickness': 0.00243,
+                    'Conductivity': 0.389,
+                    'Density': 800,
+                    'Specific Heat': 1000
+                },
+            'Fluid':
+                {
+                    'Type': 'Water',
+                    'Concentration': 100,
+                    'Flow Rate': 0.5
+                },
+            'Soil':
+                {
+                    'Conductivity': 2.493,
+                    'Density': 1500,
+                    'Specific Heat': 1663.8,
+                    'Temperature': 13.0
+                },
+            'Grout':
+                {
+                    'Conductivity': 0.744,
+                    'Density': 1000,
+                    'Specific Heat': 1000
+                }
+        }
 
         curr_tst = BoreholeClass(dict_bh, False)
 
@@ -59,41 +51,40 @@ class TestBoreholeClass(unittest.TestCase):
         self.assertEqual(curr_tst.pipe.outer_diameter, dict_bh['Pipe']['Outside Diameter'])
 
     def test_calc_bh_total_internal_resistance(self):
-
         dict_bh = {
-                  'Name': 'BH 1',
-                  'Location': [0, 0],
-                  'Depth': 76.2,
-                  'Radius': 0.048,
-                  'Shank Spacing': 0.032,
-                  'Pipe':
-                       {
-                      'Outside Diameter': 0.032,
-                      'Wall Thickness': 0.00243,
-                      'Conductivity': 0.389,
-                      'Density': 800,
-                      'Specific Heat': 1000
-                      },
-                  'Fluid':
-                      {
-                      'Type': 'Water',
-                      'Concentration': 100,
-                      'Flow Rate': 0.5
-                      },
-                  'Soil':
-                      {
-                      'Conductivity': 4.0,
-                      'Density': 1500,
-                      'Specific Heat': 1663.8,
-                      'Temperature': 13.0
-                      },
-                  'Grout':
-                      {
-                      'Conductivity': 0.6,
-                      'Density': 1000,
-                      'Specific Heat': 1000
-                      }
-                  }
+            'Name': 'BH 1',
+            'Location': [0, 0],
+            'Depth': 76.2,
+            'Radius': 0.048,
+            'Shank Spacing': 0.032,
+            'Pipe':
+                {
+                    'Outside Diameter': 0.032,
+                    'Wall Thickness': 0.00243,
+                    'Conductivity': 0.389,
+                    'Density': 800,
+                    'Specific Heat': 1000
+                },
+            'Fluid':
+                {
+                    'Type': 'Water',
+                    'Concentration': 100,
+                    'Flow Rate': 0.5
+                },
+            'Soil':
+                {
+                    'Conductivity': 4.0,
+                    'Density': 1500,
+                    'Specific Heat': 1663.8,
+                    'Temperature': 13.0
+                },
+            'Grout':
+                {
+                    'Conductivity': 0.6,
+                    'Density': 1000,
+                    'Specific Heat': 1000
+                }
+        }
 
         tolerance = 0.00001
 
@@ -2258,41 +2249,40 @@ class TestBoreholeClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.calc_bh_total_internal_resistance(), 0.45299, delta=tolerance)
 
     def test_calc_bh_grout_resistance(self):
-
         dict_bh = {
-                  'Name': 'BH 1',
-                  'Location': [0, 0],
-                  'Depth': 76.2,
-                  'Radius': 0.048,
-                  'Shank Spacing': 0.032,
-                  'Pipe':
-                       {
-                      'Outside Diameter': 0.032,
-                      'Wall Thickness': 0.00243,
-                      'Conductivity': 0.389,
-                      'Density': 800,
-                      'Specific Heat': 1000
-                      },
-                  'Fluid':
-                      {
-                      'Type': 'Water',
-                      'Concentration': 100,
-                      'Flow Rate': 0.5
-                      },
-                  'Soil':
-                      {
-                      'Conductivity': 4.0,
-                      'Density': 1500,
-                      'Specific Heat': 1663.8,
-                      'Temperature': 13.0
-                      },
-                  'Grout':
-                      {
-                      'Conductivity': 0.6,
-                      'Density': 1000,
-                      'Specific Heat': 1000
-                      }
-                  }
+            'Name': 'BH 1',
+            'Location': [0, 0],
+            'Depth': 76.2,
+            'Radius': 0.048,
+            'Shank Spacing': 0.032,
+            'Pipe':
+                {
+                    'Outside Diameter': 0.032,
+                    'Wall Thickness': 0.00243,
+                    'Conductivity': 0.389,
+                    'Density': 800,
+                    'Specific Heat': 1000
+                },
+            'Fluid':
+                {
+                    'Type': 'Water',
+                    'Concentration': 100,
+                    'Flow Rate': 0.5
+                },
+            'Soil':
+                {
+                    'Conductivity': 4.0,
+                    'Density': 1500,
+                    'Specific Heat': 1663.8,
+                    'Temperature': 13.0
+                },
+            'Grout':
+                {
+                    'Conductivity': 0.6,
+                    'Density': 1000,
+                    'Specific Heat': 1000
+                }
+        }
 
         tolerance = 0.00001
 
@@ -4457,41 +4447,40 @@ class TestBoreholeClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.calc_bh_grout_resistance(), 0.04812, delta=tolerance)
 
     def test_calc_bh_resistance(self):
-
         dict_bh = {
-                  'Name': 'BH 1',
-                  'Location': [0, 0],
-                  'Depth': 76.2,
-                  'Radius': 0.048,
-                  'Shank Spacing': 0.032,
-                  'Pipe':
-                       {
-                      'Outside Diameter': 0.032,
-                      'Wall Thickness': 0.00243,
-                      'Conductivity': 0.389,
-                      'Density': 800,
-                      'Specific Heat': 1000
-                      },
-                  'Fluid':
-                      {
-                      'Type': 'Water',
-                      'Concentration': 100,
-                      'Flow Rate': 0.5
-                      },
-                  'Soil':
-                      {
-                      'Conductivity': 4.0,
-                      'Density': 1500,
-                      'Specific Heat': 1663.8,
-                      'Temperature': 13.0
-                      },
-                  'Grout':
-                      {
-                      'Conductivity': 0.6,
-                      'Density': 1000,
-                      'Specific Heat': 1000
-                      }
-                  }
+            'Name': 'BH 1',
+            'Location': [0, 0],
+            'Depth': 76.2,
+            'Radius': 0.048,
+            'Shank Spacing': 0.032,
+            'Pipe':
+                {
+                    'Outside Diameter': 0.032,
+                    'Wall Thickness': 0.00243,
+                    'Conductivity': 0.389,
+                    'Density': 800,
+                    'Specific Heat': 1000
+                },
+            'Fluid':
+                {
+                    'Type': 'Water',
+                    'Concentration': 100,
+                    'Flow Rate': 0.5
+                },
+            'Soil':
+                {
+                    'Conductivity': 4.0,
+                    'Density': 1500,
+                    'Specific Heat': 1663.8,
+                    'Temperature': 13.0
+                },
+            'Grout':
+                {
+                    'Conductivity': 0.6,
+                    'Density': 1000,
+                    'Specific Heat': 1000
+                }
+        }
 
         tolerance = 0.00001
 

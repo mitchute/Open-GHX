@@ -1,18 +1,13 @@
 import os
-import sys
+import unittest
 from collections import deque
 
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
-import unittest
-from ghx.ghx_ghxArray_Fixed import *
+from ghx.aggregated_loads import AggregatedLoad
+from ghx.array_fixed import GHXArrayFixedAggBlocks
 
 
 class TestGHXArrayFixedAggBlocks(unittest.TestCase):
-
     def test_merge_agg_load_objs(self):
-
         """
         Tests merge_agg_load_objs, which merges AggregatedLoad objects into a single object
         """
@@ -21,10 +16,10 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type": "Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -36,30 +31,30 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -70,30 +65,30 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]
@@ -200,7 +195,6 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
         self.assertEqual(ret_obj.time(), 0)
 
     def test_aggregate_load(self):
-
         """
         Tests aggregate_load which aggregates and merges aggregated objects
         """
@@ -209,10 +203,10 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
             "Name": "Vertical GHE 1x2 Std",
             "Simulation Configuration":
                 {
-                "Simulation Years": 2,
-                "Aggregation Type": "Fixed",
-                "Min Hourly History": 192,
-                "Intervals": [5, 10, 20, 40]
+                    "Simulation Years": 2,
+                    "Aggregation Type": "Fixed",
+                    "Min Hourly History": 192,
+                    "Intervals": [5, 10, 20, 40]
                 },
             "GHXs":
                 [
@@ -224,30 +218,30 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     },
                     {
@@ -258,30 +252,30 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                         "Shank Spacing": 0.0521,
                         "Pipe":
                             {
-                            "Outside Diameter": 0.0267,
-                            "Wall Thickness": 0.00243,
-                            "Conductivity": 0.389,
-                            "Density": 800,
-                            "Specific Heat": 1000
+                                "Outside Diameter": 0.0267,
+                                "Wall Thickness": 0.00243,
+                                "Conductivity": 0.389,
+                                "Density": 800,
+                                "Specific Heat": 1000
                             },
                         "Fluid":
                             {
-                            "Type": "Water",
-                            "Concentration": 100,
-                            "Flow Rate": 0.000303
+                                "Type": "Water",
+                                "Concentration": 100,
+                                "Flow Rate": 0.000303
                             },
                         "Soil":
                             {
-                            "Conductivity": 2.493,
-                            "Density": 1500,
-                            "Specific Heat": 1663.8,
-                            "Temperature": 13.0
+                                "Conductivity": 2.493,
+                                "Density": 1500,
+                                "Specific Heat": 1663.8,
+                                "Temperature": 13.0
                             },
                         "Grout":
                             {
-                            "Conductivity": 0.744,
-                            "Density": 1000,
-                            "Specific Heat": 1000
+                                "Conductivity": 0.744,
+                                "Density": 1000,
+                                "Specific Heat": 1000
                             }
                     }
                 ]

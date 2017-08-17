@@ -1,11 +1,12 @@
-from ghx.ghx_print import PrintClass
-from ghx.ghx_soil import *
-from ghx.ghx_pipe import *
-from ghx.ghx_base_properties import *
+import numpy as np
+
+from ghx.base_properties import BasePropertiesClass
+from ghx.my_print import PrintClass
+from ghx.pipe import PipeClass
+from ghx.soil import SoilClass
 
 
 class BoreholeClass:
-
     def __init__(self, json_data, print_output):
 
         try:
@@ -81,7 +82,7 @@ class BoreholeClass:
         num_final_term_2 = self.theta_3 ** 2 * (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
         den_final_term_2_pt_1 = (1 + self.beta) / (1 - self.beta)
         den_final_term_2_pt_2 = self.theta_3 ** 2 * \
-            (1 + (16 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4) ** 2)
+                                (1 + (16 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4) ** 2)
         den_final_term_2 = den_final_term_2_pt_1 + den_final_term_2_pt_2
         final_term_2 = num_final_term_2 / den_final_term_2
 
@@ -151,7 +152,7 @@ class BoreholeClass:
             self.calc_bh_total_internal_resistance()
 
         resist_short_circuiting = (1 / (3 * self.resist_bh_total_internal)) \
-            * (self.depth / self.pipe.fluid.heat_capacity()) ** 2
+                                  * (self.depth / self.pipe.fluid.heat_capacity()) ** 2
 
         self.resist_bh = self.resist_bh_ave + resist_short_circuiting
 

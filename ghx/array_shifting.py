@@ -1,11 +1,10 @@
-from ghx.ghx_base import *
-from ghx.ghx_aggregated_load import *
-from ghx.ghx_constants import ConstantClass
-from ghx.ghx_print import PrintClass
+from ghx.aggregated_loads import AggregatedLoad
+from ghx.base import BaseGHXClass
+from ghx.constants import ConstantClass
+from ghx.my_print import PrintClass
 
 
 class GHXArrayShiftingAggBlocks(BaseGHXClass):
-
     def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
         """
@@ -37,7 +36,6 @@ class GHXArrayShiftingAggBlocks(BaseGHXClass):
         Manages shifting loads between aggregation blocks
         """
 
-
     def simulate(self):
 
         """
@@ -54,7 +52,6 @@ class GHXArrayShiftingAggBlocks(BaseGHXClass):
                 PrintClass.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
 
                 for hour in range(ConstantClass.hours_in_month):
-
                     sim_hour += 1
 
                     # get raw hourly load and append to hourly list

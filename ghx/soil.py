@@ -1,9 +1,8 @@
-from ghx.ghx_print import PrintClass
-from ghx.ghx_base_properties import *
+from ghx.base_properties import BasePropertiesClass
+from ghx.my_print import PrintClass
 
 
 class SoilClass(BasePropertiesClass):
-
     def __init__(self, json_data, print_output):
 
         BasePropertiesClass.__init__(self, json_data, print_output)

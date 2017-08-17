@@ -1,5 +1,4 @@
 class ConstantClass:
-
     months_in_year = 12
     hours_in_month = 730
     hours_in_year = months_in_year * hours_in_month

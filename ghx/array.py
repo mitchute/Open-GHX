@@ -1,13 +1,13 @@
 import json
+import timeit
 
-from ghx.ghx_print import PrintClass
-from ghx.ghx_constants import ConstantClass
-from ghx.ghx_ghxArray_Fixed import *
-from ghx.ghx_ghxArray_Shifting import *
+from ghx.array_fixed import GHXArrayFixedAggBlocks
+from ghx.array_shifting import GHXArrayShiftingAggBlocks
+from ghx.constants import ConstantClass
+from ghx.my_print import PrintClass
 
 
 class GHXArray:
-
     def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
 
         """

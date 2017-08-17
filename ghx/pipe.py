@@ -1,13 +1,11 @@
-from __future__ import division
 import numpy as np
 
-from ghx.ghx_print import PrintClass
-from ghx.ghx_base_properties import *
-from ghx.ghx_fluids import *
+from ghx.base_properties import BasePropertiesClass
+from ghx.fluids import FluidsClass
+from ghx.my_print import PrintClass
 
 
 class PipeClass(BasePropertiesClass):
-
     def __init__(self, json_data_pipe, json_data_fluid, initial_temp, print_output):
 
         BasePropertiesClass.__init__(self, json_data_pipe, print_output)
@@ -46,7 +44,7 @@ class PipeClass(BasePropertiesClass):
         """
 
         self.resist_pipe_conduction = np.log(self.outer_diameter / self.inner_diameter) / \
-                                            (2 * np.pi * self.conductivity)
+                                      (2 * np.pi * self.conductivity)
 
         return self.resist_pipe_conduction
 
@@ -122,4 +120,3 @@ class PipeClass(BasePropertiesClass):
         self.resist_pipe = self.calc_pipe_convection_resistance() + self.calc_pipe_conduction_resistance()
 
         return self.resist_pipe
-

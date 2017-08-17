@@ -1,16 +1,15 @@
-from __future__ import division
-
 import os
-import simplejson as json
 import timeit
-
 from collections import deque
-from ghx.ghx_print import PrintClass
-from ghx.ghx_borehole import *
+
+import numpy as np
+import simplejson as json
+
+from ghx.borehole import BoreholeClass
+from ghx.my_print import PrintClass
 
 
 class BaseGHXClass:
-
     """
     Base class for GHXArray
     """
@@ -192,12 +191,12 @@ class BaseGHXClass:
             # if value is below range, extrapolate down
             return ((ln_t_ts - self.g_func_lntts[lower_index]) / (
                 self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (
-                self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
+                       self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
         elif ln_t_ts > self.g_func_lntts[upper_index]:
             # if value is above range, extrapolate up
             return ((ln_t_ts - self.g_func_lntts[upper_index]) / (
                 self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (
-                self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
+                       self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
         else:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
@@ -223,7 +222,7 @@ class BaseGHXClass:
             out_file.write("Hour, BH Temp [C], MFT [C]\n")
 
             for i in range(len(self.temp_bh)):
-                out_file.write("%d, %0.4f, %0.4f\n" % (i+1,
+                out_file.write("%d, %0.4f, %0.4f\n" % (i + 1,
                                                        self.temp_bh[i],
                                                        self.temp_mft[i]))
 
@@ -234,4 +233,3 @@ class BaseGHXClass:
 
         except:  # pragma: no cover
             PrintClass.fatal_error(message="Error writing output results")
-

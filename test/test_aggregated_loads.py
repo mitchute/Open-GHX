@@ -1,17 +1,10 @@
-import os
-import sys
-
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
 import unittest
-from ghx.ghx_aggregated_load import *
+
+from ghx.aggregated_loads import AggregatedLoad
 
 
 class TestAggregatedLoad(unittest.TestCase):
-
     def test_init(self):
-
         """
         Tests AggregatedLoad Class
         """
