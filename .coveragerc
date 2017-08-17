@@ -1,0 +1,6 @@
+[run]
+source =
+        ghx/
+        tests/
+omit =
+        /usr/*
