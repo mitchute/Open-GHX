@@ -232,6 +232,6 @@ class BaseGHXClass:
 
             PrintClass.my_print("....Success")
 
-        except:
+        except:  # pragma: no cover
             PrintClass.fatal_error(message="Error writing output results")
 
