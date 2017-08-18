@@ -9,7 +9,6 @@ class AggregatedLoad:
     """
 
     def __init__(self, loads, first_sim_hour, max_length, init=False):
-
         """
         Constructor for the class
         """
@@ -29,7 +28,6 @@ class AggregatedLoad:
             self.calc_q()
 
     def time(self):
-
         """
         :returns absolute time (in hours) when load occurred
         """
@@ -37,7 +35,6 @@ class AggregatedLoad:
         return self.first_sim_hour
 
     def calc_q(self):
-
         """
         Calculates the mean q value for the aggregation period
         """

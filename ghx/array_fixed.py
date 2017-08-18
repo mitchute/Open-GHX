@@ -16,7 +16,6 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
     """
 
     def __init__(self, json_data, loads_path, output_path, print_output=True):
-
         """
         Constructor for the class.
         """
@@ -24,7 +23,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         PrintClass(print_output, output_path)
 
         # init base class
-        BaseGHXClass.__init__(self, json_data, loads_path, output_path, print_output)
+        BaseGHXClass.__init__(self, json_data, loads_path,
+                              output_path, print_output)
 
         # class data
 
@@ -35,7 +35,6 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         self.agg_load_objects.append(AggregatedLoad([0], 0, 1, True))
 
     def set_load_aggregation(self):
-
         """
         Sets the load aggregation intervals based on the type specified by the user.
 
@@ -46,11 +45,11 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
             pass
         elif self.aggregation_type == "None":
             self.agg_loads_flag = False
-            self.agg_load_intervals = [ConstantClass.hours_in_year * self.sim_years]
+            self.agg_load_intervals = [
+                ConstantClass.hours_in_year * self.sim_years]
             self.min_hourly_history = 0
 
     def aggregate_load(self):
-
         """
         Creates aggregated load object
         """
@@ -65,10 +64,10 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         for i in range(self.agg_load_intervals[0]):
             agg_loads.append(self.hourly_loads[i])
 
-        self.agg_load_objects.append(AggregatedLoad(agg_loads, prev_sim_hour, len(agg_loads)))
+        self.agg_load_objects.append(AggregatedLoad(
+            agg_loads, prev_sim_hour, len(agg_loads)))
 
     def collapse_aggregate_loads(self):
-
         """
         Collapses aggregated loads
         """
@@ -81,7 +80,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                 agg_load_objects_update.append(self.agg_load_objects[i])
                 i += 1
                 continue
-            elif len(self.agg_load_objects[i].loads) == self.agg_load_intervals[-1]:  # already max agg interval
+            # already max agg interval
+            elif len(self.agg_load_objects[i].loads) == self.agg_load_intervals[-1]:
                 agg_load_objects_update.append(self.agg_load_objects[i])
                 i += 1
                 continue
@@ -99,7 +99,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                     i += num_objs
                     if num_objs > 0:
                         if num_objs * agg_int >= self.agg_load_intervals[k + 1]:
-                            agg_load_objects_update.append(self.merge_agg_load_objs(temp_objs))
+                            agg_load_objects_update.append(
+                                self.merge_agg_load_objs(temp_objs))
                         else:
                             for l in range(len(temp_objs)):
                                 agg_load_objects_update.append(temp_objs[l])
@@ -108,7 +109,6 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         self.agg_load_objects = agg_load_objects_update
 
     def merge_agg_load_objs(self, obj_list):
-
         """
         Merges AggregatedLoad objects into a single AggregatedLoad object
 
@@ -130,7 +130,6 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         return AggregatedLoad(loads, min_hour, len(loads))
 
     def simulate(self):
-
         """
         More docs to come...
         """
@@ -149,7 +148,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
 
         # set aggregate load container max length
         len_hourly_loads = self.min_hourly_history + self.agg_load_intervals[0]
-        self.hourly_loads = deque([0] * len_hourly_loads, maxlen=len_hourly_loads)
+        self.hourly_loads = deque(
+            [0] * len_hourly_loads, maxlen=len_hourly_loads)
 
         agg_hour = 0
         sim_hour = 0
@@ -157,7 +157,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         for year in range(self.sim_years):
             for month in range(ConstantClass.months_in_year):
 
-                PrintClass.my_print("....Year/Month: %d/%d" % (year + 1, month + 1))
+                PrintClass.my_print("....Year/Month: %d/%d" %
+                                    (year + 1, month + 1))
 
                 for hour in range(ConstantClass.hours_in_month):
 
@@ -170,7 +171,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                     curr_flow_rate = self.total_flow_rate[curr_index]
 
                     # update borehole flow rate
-                    self.borehole.pipe.fluid.update_fluid_state(new_flow_rate=curr_flow_rate)
+                    self.borehole.pipe.fluid.update_fluid_state(
+                        new_flow_rate=curr_flow_rate)
 
                     # calculate borehole resistance
                     self.borehole.calc_bh_resistance()
@@ -189,7 +191,8 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                         g = self.g_func_hourly[g_func_index]
                         # calculate average bh temp
                         delta_q = (q_curr - q_prev) / \
-                                  (2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
+                                  (2 * np.pi * self.borehole.soil.conductivity *
+                                   self.total_bh_length)
                         temp_bh_hourly.append(delta_q * g)
 
                         # calculate mean fluid temp
@@ -216,7 +219,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                             g = self.g_func(ln_t_ts)
                             # calculate the average borehole temp
                             delta_q = (curr_obj.q - prev_obj.q) / (
-                            2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
+                                2 * np.pi * self.borehole.soil.conductivity * self.total_bh_length)
                             temp_bh_agg.append(delta_q * g)
 
                             # calculate the mean fluid temp
@@ -241,17 +244,21 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                             agg_hour -= self.agg_load_intervals[0]
 
                     # final bh temp
-                    self.temp_bh.append(self.borehole.soil.undisturbed_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
+                    self.temp_bh.append(
+                        self.borehole.soil.undisturbed_temp + sum(temp_bh_hourly) + sum(temp_bh_agg))
 
                     # final mean fluid temp
-                    self.temp_mft.append(self.borehole.soil.undisturbed_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
+                    self.temp_mft.append(
+                        self.borehole.soil.undisturbed_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
 
                     # update borehole temperature
-                    self.borehole.pipe.fluid.update_fluid_state(new_temp=self.temp_mft[-1])
+                    self.borehole.pipe.fluid.update_fluid_state(
+                        new_temp=self.temp_mft[-1])
 
         self.generate_output_reports()
 
         PrintClass.my_print("Simulation complete", "success")
-        PrintClass.my_print("Simulation time: %0.3f sec" % (timeit.default_timer() - self.timer_start))
+        PrintClass.my_print("Simulation time: %0.3f sec" %
+                            (timeit.default_timer() - self.timer_start))
 
         PrintClass.write_log_file()

@@ -36,26 +36,26 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -70,29 +70,28 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
-                ]
-            ,
+                ],
             "G-func Pairs": [
                 [-14.583933, -3.258945],
                 [-14.459771, -3.201266],
@@ -170,13 +169,16 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                 [2.028000, 8.185450],
                 [2.275000, 8.200450],
                 [3.003000, 8.226450]
-            ]
+                ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
+        curr_tst = GHXArrayFixedAggBlocks(
+            dict_bh, csv_file_path, output_path, False)
 
         # make a few dummy AggregatedLoad classes
         obj_1 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
@@ -223,26 +225,26 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -257,29 +259,28 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
-                ]
-            ,
+                ],
             "G-func Pairs": [
                 [-14.583933, -3.258945],
                 [-14.459771, -3.201266],
@@ -357,13 +358,16 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                 [2.028000, 8.185450],
                 [2.275000, 8.200450],
                 [3.003000, 8.226450]
-            ]
+                ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         # init
-        curr_tst = GHXArrayFixedAggBlocks(dict_bh, csv_file_path, output_path, False)
+        curr_tst = GHXArrayFixedAggBlocks(
+            dict_bh, csv_file_path, output_path, False)
 
         # should initialize empty first object for comparative purposes
         # [0]

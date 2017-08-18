@@ -14,4 +14,5 @@ class SoilClass(BasePropertiesClass):
             PrintClass.fatal_error(message="Error initializing SoilClass")
 
         self.heat_capacity = self.specific_heat * self.density
-        self.thermal_diffusivity = self.conductivity / (self.density * self.specific_heat)
+        self.thermal_diffusivity = self.conductivity / \
+            (self.density * self.specific_heat)

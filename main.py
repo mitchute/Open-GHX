@@ -7,6 +7,7 @@ def usage():
     print("""Call this script with three command line arguments:
     $ main.py <path to ghx input> <path to loads> <path to output dir>""")
 
+
 # check the command line arguments
 if not len(sys.argv) == 4:
     print("Invalid command line arguments")

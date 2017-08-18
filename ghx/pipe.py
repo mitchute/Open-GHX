@@ -35,7 +35,6 @@ class PipeClass(BasePropertiesClass):
         self.calc_pipe_resistance()
 
     def calc_pipe_conduction_resistance(self):
-
         """
         Calculates the thermal resistance of a pipe, in [K/(W/m)].
 
@@ -44,12 +43,11 @@ class PipeClass(BasePropertiesClass):
         """
 
         self.resist_pipe_conduction = np.log(self.outer_diameter / self.inner_diameter) / \
-                                      (2 * np.pi * self.conductivity)
+            (2 * np.pi * self.conductivity)
 
         return self.resist_pipe_conduction
 
     def calc_pipe_convection_resistance(self):
-
         """
         Calculates the convection resistance using Gnielinski and Petukov, in [k/(W/m)]
 
@@ -60,7 +58,8 @@ class PipeClass(BasePropertiesClass):
         lower_limit = 2000
         upper_limit = 4000
 
-        re = 4 * self.fluid.mass_flow_rate / (self.fluid.visc() * np.pi * self.inner_diameter)
+        re = 4 * self.fluid.mass_flow_rate / \
+            (self.fluid.visc() * np.pi * self.inner_diameter)
 
         if re < lower_limit:
             nu = 4.01  # laminar mean(4.36, 3.66)
@@ -68,14 +67,16 @@ class PipeClass(BasePropertiesClass):
             nu_low = 4.01  # laminar
             f = self.friction_factor(re)  # turbulent
             pr = self.fluid.pr()
-            nu_high = (f / 8) * (re - 1000) * pr / (1 + 12.7 * (f / 8) ** 0.5 * (pr ** (2 / 3) - 1))
+            nu_high = (f / 8) * (re - 1000) * pr / \
+                (1 + 12.7 * (f / 8) ** 0.5 * (pr ** (2 / 3) - 1))
             sigma = 1 / (1 + np.exp(-(re - 3000) / 150))  # smoothing function
 
             nu = (1 - sigma) * nu_low + sigma * nu_high
         else:
             f = self.friction_factor(re)
             pr = self.fluid.pr()
-            nu = (f / 8) * (re - 1000) * pr / (1 + 12.7 * (f / 8) ** 0.5 * (pr ** (2 / 3) - 1))
+            nu = (f / 8) * (re - 1000) * pr / \
+                (1 + 12.7 * (f / 8) ** 0.5 * (pr ** (2 / 3) - 1))
 
         h = nu * self.fluid.cond() / self.inner_diameter
 
@@ -84,7 +85,6 @@ class PipeClass(BasePropertiesClass):
         return self.resist_pipe_convection
 
     def friction_factor(self, re):
-
         """
         Calculates the friction factor in smooth tubes
 
@@ -100,14 +100,14 @@ class PipeClass(BasePropertiesClass):
             return 64.0 / re  # pure laminar flow
         elif lower_limit <= re < upper_limit:
             f_low = 64.0 / re  # pure laminar flow
-            f_high = (0.79 * np.log(re) - 1.64) ** (-2.0)  # pure turbulent flow
+            # pure turbulent flow
+            f_high = (0.79 * np.log(re) - 1.64) ** (-2.0)
             sf = 1 / (1 + np.exp(-(re - 3000.0) / 450.0))  # smoothing function
             return (1 - sf) * f_low + sf * f_high
         else:
             return (0.79 * np.log(re) - 1.64) ** (-2.0)  # pure turbulent flow
 
     def calc_pipe_resistance(self):
-
         """
         Calculates the combined conduction and convection pipe resistance
 
@@ -117,6 +117,7 @@ class PipeClass(BasePropertiesClass):
         Equation 3
         """
 
-        self.resist_pipe = self.calc_pipe_convection_resistance() + self.calc_pipe_conduction_resistance()
+        self.resist_pipe = self.calc_pipe_convection_resistance(
+        ) + self.calc_pipe_conduction_resistance()
 
         return self.resist_pipe

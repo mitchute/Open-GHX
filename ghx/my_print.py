@@ -13,7 +13,6 @@ class PrintClass:
     log_messages = ""
 
     def __init__(self, print_output, output_path):
-
         """
         class constructor
         """
@@ -22,7 +21,6 @@ class PrintClass:
 
     @staticmethod
     def my_print(message, color=''):
-
         """
         prints the message if self.print_output
         default color is black, unless overridden
@@ -44,7 +42,6 @@ class PrintClass:
 
     @staticmethod
     def write_log_file():
-
         """
         Write log file
         """
@@ -67,7 +64,6 @@ class PrintClass:
 
     @staticmethod
     def fatal_error(message=None):  # pragma: no cover
-
         """
         Fatal error. Terminate program
         """
@@ -75,7 +71,8 @@ class PrintClass:
         if message is not None:
             PrintClass.my_print('%s' % message, PrintClass.color_fail)
         else:
-            PrintClass.my_print('Fatal error encountered', PrintClass.color_fail)
+            PrintClass.my_print('Fatal error encountered',
+                                PrintClass.color_fail)
 
         PrintClass.my_print('Program exiting', PrintClass.color_fail)
 
