@@ -39,7 +39,7 @@ def diff_csv_files(base_csv, test_csv):
 
     for i in range(1, base_data.shape[1]):
         rms_err.append(calc_rms_err(base_data[:, i], test_data[:, i]))
-        #map_err.append(calc_map_err(base_data[:, i], test_data[:, i]))
+        # map_err.append(calc_map_err(base_data[:, i], test_data[:, i]))
         max_abs_err.append(calc_max_abs_err(base_data[:, i], test_data[:, i]))
 
     return rms_err, max_abs_err
