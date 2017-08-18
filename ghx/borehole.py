@@ -42,13 +42,15 @@ class BoreholeClass:
 
         self.soil = SoilClass(json_data['Soil'], print_output)
         self.grout = BasePropertiesClass(json_data['Grout'], print_output)
-        self.pipe = PipeClass(json_data['Pipe'], json_data['Fluid'], json_data['Soil']['Temperature'], print_output)
+        self.pipe = PipeClass(
+            json_data['Pipe'], json_data['Fluid'], json_data['Soil']['Temperature'], print_output)
 
         # validate shank spacing
         if self.shank_space > (2 * self.radius - self.pipe.outer_diameter) \
                 or self.shank_space < self.pipe.outer_diameter:  # pragma: no cover
             PrintClass.my_print("Invalid shank spacing", 'warn')
-            PrintClass.my_print("Check shank spacing, pipe diameter, and borehole radius", 'warn')
+            PrintClass.my_print(
+                "Check shank spacing, pipe diameter, and borehole radius", 'warn')
             PrintClass.fatal_error(message="Error initializing BoreholeClass")
 
         self.resist_bh_ave = None
@@ -66,7 +68,6 @@ class BoreholeClass:
         self.calc_bh_resistance()
 
     def calc_bh_average_resistance(self):
-
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
 
@@ -78,20 +79,22 @@ class BoreholeClass:
 
         self.beta = 2 * np.pi * self.grout.conductivity * self.pipe.resist_pipe
 
-        final_term_1 = np.log(self.theta_2 / (2 * self.theta_1 * (1 - self.theta_1 ** 4) ** self.sigma))
-        num_final_term_2 = self.theta_3 ** 2 * (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
+        final_term_1 = np.log(
+            self.theta_2 / (2 * self.theta_1 * (1 - self.theta_1 ** 4) ** self.sigma))
+        num_final_term_2 = self.theta_3 ** 2 * \
+            (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
         den_final_term_2_pt_1 = (1 + self.beta) / (1 - self.beta)
         den_final_term_2_pt_2 = self.theta_3 ** 2 * \
-                                (1 + (16 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4) ** 2)
+            (1 + (16 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4) ** 2)
         den_final_term_2 = den_final_term_2_pt_1 + den_final_term_2_pt_2
         final_term_2 = num_final_term_2 / den_final_term_2
 
-        self.resist_bh_ave = (1 / (4 * np.pi * self.grout.conductivity)) * (self.beta + final_term_1 - final_term_2)
+        self.resist_bh_ave = (1 / (4 * np.pi * self.grout.conductivity)
+                              ) * (self.beta + final_term_1 - final_term_2)
 
         return self.resist_bh_ave
 
     def calc_bh_total_internal_resistance(self):
-
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
 
@@ -105,10 +108,13 @@ class BoreholeClass:
 
         final_term_1 = np.log(
             ((1 + self.theta_1 ** 2) ** self.sigma) / (self.theta_3 * (1 - self.theta_1 ** 2) ** self.sigma))
-        num_term_2 = self.theta_3 ** 2 * (1 - self.theta_1 ** 4 + 4 * self.sigma * self.theta_1 ** 2) ** 2
-        den_term_2_pt_1 = (1 + self.beta) / (1 - self.beta) * (1 - self.theta_1 ** 4) ** 2
+        num_term_2 = self.theta_3 ** 2 * \
+            (1 - self.theta_1 ** 4 + 4 * self.sigma * self.theta_1 ** 2) ** 2
+        den_term_2_pt_1 = (1 + self.beta) / (1 - self.beta) * \
+            (1 - self.theta_1 ** 4) ** 2
         den_term_2_pt_2 = self.theta_3 ** 2 * (1 - self.theta_1 ** 4) ** 2
-        den_term_2_pt_3 = 8 * self.sigma * self.theta_1 ** 2 * self.theta_3 ** 2 * (1 + self.theta_1 ** 4)
+        den_term_2_pt_3 = 8 * self.sigma * self.theta_1 ** 2 * \
+            self.theta_3 ** 2 * (1 + self.theta_1 ** 4)
         den_term_2 = den_term_2_pt_1 - den_term_2_pt_2 + den_term_2_pt_3
         final_term_2 = num_term_2 / den_term_2
 
@@ -118,17 +124,16 @@ class BoreholeClass:
         return self.resist_bh_total_internal
 
     def calc_bh_grout_resistance(self):
-
         """
         Calculates borehole resistance. Use for validation.
         """
 
-        self.resist_bh_grout = self.calc_bh_average_resistance() - self.pipe.resist_pipe / 2.0
+        self.resist_bh_grout = self.calc_bh_average_resistance() - \
+            self.pipe.resist_pipe / 2.0
 
         return self.resist_bh_grout
 
     def calc_bh_resistance(self):
-
         """
         Calculates the effective thermal resistance of the borehole assuming a uniform heat flux.
 
@@ -152,7 +157,7 @@ class BoreholeClass:
             self.calc_bh_total_internal_resistance()
 
         resist_short_circuiting = (1 / (3 * self.resist_bh_total_internal)) \
-                                  * (self.depth / self.pipe.fluid.heat_capacity()) ** 2
+            * (self.depth / self.pipe.fluid.heat_capacity()) ** 2
 
         self.resist_bh = self.resist_bh_ave + resist_short_circuiting
 

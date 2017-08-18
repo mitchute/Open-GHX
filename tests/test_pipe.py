@@ -1,9 +1,3 @@
-import os
-import sys
-
-# add the source directory to the path so the unit test framework can find it
-sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'ghx'))
-
 import numpy as np
 
 import unittest
@@ -32,11 +26,15 @@ class TestPipeClass(unittest.TestCase):
 
         curr_tst = PipeClass(dict_pipe, dict_fluid, 13.0, False)
 
-        self.assertEqual(curr_tst.outer_diameter, dict_pipe['Outside Diameter'])
-        self.assertEqual(curr_tst.outer_radius, dict_pipe['Outside Diameter'] / 2)
+        self.assertEqual(curr_tst.outer_diameter,
+                         dict_pipe['Outside Diameter'])
+        self.assertEqual(curr_tst.outer_radius,
+                         dict_pipe['Outside Diameter'] / 2)
 
-        self.assertEqual(curr_tst.inner_diameter, dict_pipe['Outside Diameter'] - 2 * dict_pipe['Wall Thickness'])
-        self.assertEqual(curr_tst.inner_radius, (dict_pipe['Outside Diameter'] - 2 * dict_pipe['Wall Thickness']) / 2)
+        self.assertEqual(curr_tst.inner_diameter,
+                         dict_pipe['Outside Diameter'] - 2 * dict_pipe['Wall Thickness'])
+        self.assertEqual(curr_tst.inner_radius,
+                         (dict_pipe['Outside Diameter'] - 2 * dict_pipe['Wall Thickness']) / 2)
 
     def test_friction_factor(self):
         """
@@ -73,23 +71,29 @@ class TestPipeClass(unittest.TestCase):
 
         # transitional tests
         re = 2000
-        self.assertAlmostEqual(curr_tst.friction_factor(re), 0.034003503, delta=tolerance)
+        self.assertAlmostEqual(curr_tst.friction_factor(
+            re), 0.034003503, delta=tolerance)
 
         re = 3000
-        self.assertAlmostEqual(curr_tst.friction_factor(re), 0.033446219, delta=tolerance)
+        self.assertAlmostEqual(curr_tst.friction_factor(
+            re), 0.033446219, delta=tolerance)
 
         re = 4000
-        self.assertAlmostEqual(curr_tst.friction_factor(re), 0.03895358, delta=tolerance)
+        self.assertAlmostEqual(curr_tst.friction_factor(
+            re), 0.03895358, delta=tolerance)
 
         # turbulent tests
         re = 5000
-        self.assertEqual(curr_tst.friction_factor(re), (0.79 * np.log(re) - 1.64) ** (-2.0))
+        self.assertEqual(curr_tst.friction_factor(
+            re), (0.79 * np.log(re) - 1.64) ** (-2.0))
 
         re = 15000
-        self.assertEqual(curr_tst.friction_factor(re), (0.79 * np.log(re) - 1.64) ** (-2.0))
+        self.assertEqual(curr_tst.friction_factor(
+            re), (0.79 * np.log(re) - 1.64) ** (-2.0))
 
         re = 25000
-        self.assertEqual(curr_tst.friction_factor(re), (0.79 * np.log(re) - 1.64) ** (-2.0))
+        self.assertEqual(curr_tst.friction_factor(
+            re), (0.79 * np.log(re) - 1.64) ** (-2.0))
 
     def test_calc_pipe_convection_resistance(self):
         """
@@ -114,17 +118,20 @@ class TestPipeClass(unittest.TestCase):
         tolerance = 0.00001
 
         # turbulent
-        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.004453, delta=tolerance)
+        self.assertAlmostEqual(
+            curr_tst.calc_pipe_convection_resistance(), 0.004453, delta=tolerance)
 
         # transitional
         curr_tst.fluid.flow_rate = dict_fluid['Flow Rate'] / 4
         curr_tst.fluid.calc_mass_flow_rate()
-        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.019084, delta=tolerance)
+        self.assertAlmostEqual(
+            curr_tst.calc_pipe_convection_resistance(), 0.019084, delta=tolerance)
 
         # laminar
         curr_tst.fluid.flow_rate = dict_fluid['Flow Rate'] / 10
         curr_tst.fluid.calc_mass_flow_rate()
-        self.assertAlmostEqual(curr_tst.calc_pipe_convection_resistance(), 0.135714, delta=tolerance)
+        self.assertAlmostEqual(
+            curr_tst.calc_pipe_convection_resistance(), 0.135714, delta=tolerance)
 
     def test_calc_pipe_conduction_resistance(self):
         """
@@ -149,7 +156,8 @@ class TestPipeClass(unittest.TestCase):
 
         tolerance = 0.00001
 
-        self.assertAlmostEqual(curr_tst.calc_pipe_conduction_resistance(), 0.082204, delta=tolerance)
+        self.assertAlmostEqual(
+            curr_tst.calc_pipe_conduction_resistance(), 0.082204, delta=tolerance)
 
     def test_calc_pipe_resistance(self):
         """
@@ -174,4 +182,5 @@ class TestPipeClass(unittest.TestCase):
 
         tolerance = 0.00001
 
-        self.assertAlmostEqual(curr_tst.calc_pipe_resistance(), 0.082204 + 0.004453, delta=tolerance)
+        self.assertAlmostEqual(curr_tst.calc_pipe_resistance(
+        ), 0.082204 + 0.004453, delta=tolerance)

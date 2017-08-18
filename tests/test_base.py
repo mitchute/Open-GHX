@@ -31,26 +31,26 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -65,29 +65,28 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
-                ]
-            ,
+                ],
             "G-func Pairs": [
                 [-14.583933, -3.258945],
                 [-14.459771, -3.201266],
@@ -165,18 +164,24 @@ class TestBaseGHXClass(unittest.TestCase):
                 [2.028000, 8.185450],
                 [2.275000, 8.200450],
                 [3.003000, 8.226450]
-            ]
+                ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         self.assertEqual(curr_tst.name, dict_bh['Name'])
-        self.assertEqual(curr_tst.sim_years, dict_bh['Simulation Configuration']['Simulation Years'])
-        self.assertEqual(curr_tst.aggregation_type, dict_bh['Simulation Configuration']['Aggregation Type'])
-        self.assertEqual(curr_tst.min_hourly_history, dict_bh['Simulation Configuration']['Min Hourly History'])
-        self.assertEqual(curr_tst.agg_load_intervals, dict_bh['Simulation Configuration']['Intervals'])
+        self.assertEqual(
+            curr_tst.sim_years, dict_bh['Simulation Configuration']['Simulation Years'])
+        self.assertEqual(curr_tst.aggregation_type,
+                         dict_bh['Simulation Configuration']['Aggregation Type'])
+        self.assertEqual(curr_tst.min_hourly_history,
+                         dict_bh['Simulation Configuration']['Min Hourly History'])
+        self.assertEqual(curr_tst.agg_load_intervals,
+                         dict_bh['Simulation Configuration']['Intervals'])
 
         i = 0
 
@@ -185,27 +190,45 @@ class TestBaseGHXClass(unittest.TestCase):
             self.assertEqual(this_ghx.location, dict_bh['GHXs'][i]['Location'])
             self.assertEqual(this_ghx.depth, dict_bh['GHXs'][i]['Depth'])
             self.assertEqual(this_ghx.radius, dict_bh['GHXs'][i]['Radius'])
-            self.assertEqual(this_ghx.shank_space, dict_bh['GHXs'][i]['Shank Spacing'])
-            self.assertEqual(this_ghx.pipe.outer_diameter, dict_bh['GHXs'][i]['Pipe']['Outside Diameter'])
-            self.assertEqual(this_ghx.pipe.thickness, dict_bh['GHXs'][i]['Pipe']['Wall Thickness'])
-            self.assertEqual(this_ghx.pipe.conductivity, dict_bh['GHXs'][i]['Pipe']['Conductivity'])
-            self.assertEqual(this_ghx.pipe.density, dict_bh['GHXs'][i]['Pipe']['Density'])
-            self.assertEqual(this_ghx.pipe.specific_heat, dict_bh['GHXs'][i]['Pipe']['Specific Heat'])
-            self.assertEqual(this_ghx.pipe.fluid.fluid_type, dict_bh['GHXs'][i]['Fluid']['Type'])
-            self.assertEqual(this_ghx.pipe.fluid.concentration, dict_bh['GHXs'][i]['Fluid']['Concentration'])
-            self.assertEqual(this_ghx.pipe.fluid.flow_rate, dict_bh['GHXs'][i]['Fluid']['Flow Rate'])
-            self.assertEqual(this_ghx.soil.conductivity, dict_bh['GHXs'][i]['Soil']['Conductivity'])
-            self.assertEqual(this_ghx.soil.density, dict_bh['GHXs'][i]['Soil']['Density'])
-            self.assertEqual(this_ghx.soil.specific_heat, dict_bh['GHXs'][i]['Soil']['Specific Heat'])
-            self.assertEqual(this_ghx.soil.undisturbed_temp, dict_bh['GHXs'][i]['Soil']['Temperature'])
-            self.assertEqual(this_ghx.grout.conductivity, dict_bh['GHXs'][i]['Grout']['Conductivity'])
-            self.assertEqual(this_ghx.grout.density, dict_bh['GHXs'][i]['Grout']['Density'])
-            self.assertEqual(this_ghx.grout.specific_heat, dict_bh['GHXs'][i]['Grout']['Specific Heat'])
+            self.assertEqual(this_ghx.shank_space,
+                             dict_bh['GHXs'][i]['Shank Spacing'])
+            self.assertEqual(this_ghx.pipe.outer_diameter,
+                             dict_bh['GHXs'][i]['Pipe']['Outside Diameter'])
+            self.assertEqual(this_ghx.pipe.thickness,
+                             dict_bh['GHXs'][i]['Pipe']['Wall Thickness'])
+            self.assertEqual(this_ghx.pipe.conductivity,
+                             dict_bh['GHXs'][i]['Pipe']['Conductivity'])
+            self.assertEqual(this_ghx.pipe.density,
+                             dict_bh['GHXs'][i]['Pipe']['Density'])
+            self.assertEqual(this_ghx.pipe.specific_heat,
+                             dict_bh['GHXs'][i]['Pipe']['Specific Heat'])
+            self.assertEqual(this_ghx.pipe.fluid.fluid_type,
+                             dict_bh['GHXs'][i]['Fluid']['Type'])
+            self.assertEqual(this_ghx.pipe.fluid.concentration,
+                             dict_bh['GHXs'][i]['Fluid']['Concentration'])
+            self.assertEqual(this_ghx.pipe.fluid.flow_rate,
+                             dict_bh['GHXs'][i]['Fluid']['Flow Rate'])
+            self.assertEqual(this_ghx.soil.conductivity,
+                             dict_bh['GHXs'][i]['Soil']['Conductivity'])
+            self.assertEqual(this_ghx.soil.density,
+                             dict_bh['GHXs'][i]['Soil']['Density'])
+            self.assertEqual(this_ghx.soil.specific_heat,
+                             dict_bh['GHXs'][i]['Soil']['Specific Heat'])
+            self.assertEqual(this_ghx.soil.undisturbed_temp,
+                             dict_bh['GHXs'][i]['Soil']['Temperature'])
+            self.assertEqual(this_ghx.grout.conductivity,
+                             dict_bh['GHXs'][i]['Grout']['Conductivity'])
+            self.assertEqual(this_ghx.grout.density,
+                             dict_bh['GHXs'][i]['Grout']['Density'])
+            self.assertEqual(this_ghx.grout.specific_heat,
+                             dict_bh['GHXs'][i]['Grout']['Specific Heat'])
             i += 1
 
         for i in range(len(curr_tst.g_func_val)):
-            self.assertEqual(curr_tst.g_func_lntts[i], dict_bh['G-func Pairs'][i][0])
-            self.assertEqual(curr_tst.g_func_val[i], dict_bh['G-func Pairs'][i][1])
+            self.assertEqual(
+                curr_tst.g_func_lntts[i], dict_bh['G-func Pairs'][i][0])
+            self.assertEqual(
+                curr_tst.g_func_val[i], dict_bh['G-func Pairs'][i][1])
 
     def test_merge_dicts(self):
 
@@ -233,26 +256,26 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -267,32 +290,34 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
                 ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         x = {
@@ -308,26 +333,26 @@ class TestBaseGHXClass(unittest.TestCase):
                     "Conductivity": 0.389,
                     "Density": 800,
                     "Specific Heat": 1000
-                },
+            },
             "Fluid":
                 {
                     "Type": "Water",
                     "Concentration": 100,
                     "Flow Rate": 0.000303
-                },
+            },
             "Soil":
                 {
                     "Conductivity": 2.493,
                     "Density": 1500,
                     "Specific Heat": 1663.8,
                     "Temperature": 13.0
-                },
+            },
             "Grout":
                 {
                     "Conductivity": 0.744,
                     "Density": 1000,
                     "Specific Heat": 1000
-                }
+            }
         }
         y = {
             "Name": "BH 2",
@@ -342,26 +367,26 @@ class TestBaseGHXClass(unittest.TestCase):
                     "Conductivity": 0.389,
                     "Density": 800,
                     "Specific Heat": 1000
-                },
+            },
             "Fluid":
                 {
                     "Type": "Water",
                     "Concentration": 100,
                     "Flow Rate": 0.000303
-                },
+            },
             "Soil":
                 {
                     "Conductivity": 2.493,
                     "Density": 1500,
                     "Specific Heat": 1663.8,
                     "Temperature": 13.0
-                },
+            },
             "Grout":
                 {
                     "Conductivity": 0.744,
                     "Density": 1000,
                     "Specific Heat": 1000
-                }
+            }
         }
 
         dict_list = [x, y]
@@ -378,12 +403,12 @@ class TestBaseGHXClass(unittest.TestCase):
 
             if sub_keys_exist:
                 for sub_key in merged_dict[key].keys():
-                    self.assertEqual(merged_dict[key][sub_key], dict_list[-1][key][sub_key])
+                    self.assertEqual(
+                        merged_dict[key][sub_key], dict_list[-1][key][sub_key])
             else:
                 self.assertEqual(merged_dict[key], dict_list[0][key])
 
     def test_interp_g_funcs(self):
-
         """
         Tests g-function interpolation
         """
@@ -412,26 +437,26 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -446,29 +471,28 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
-                ]
-            ,
+                ],
             "G-func Pairs": [
                 [-14.583933, -3.258945],
                 [-14.459771, -3.201266],
@@ -546,11 +570,13 @@ class TestBaseGHXClass(unittest.TestCase):
                 [2.028000, 8.185450],
                 [2.275000, 8.200450],
                 [3.003000, 8.226450]
-            ]
+                ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1
@@ -565,7 +591,6 @@ class TestBaseGHXClass(unittest.TestCase):
         self.assertAlmostEqual(curr_tst.g_func(5.0), 8.29, delta=tolerance)
 
     def test_calc_ts(self):
-
         """
         Tests calc_ts which sets timescale
         """
@@ -594,26 +619,26 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     },
                     {
                         "Name": "BH 2",
@@ -628,29 +653,28 @@ class TestBaseGHXClass(unittest.TestCase):
                                 "Conductivity": 0.389,
                                 "Density": 800,
                                 "Specific Heat": 1000
-                            },
+                        },
                         "Fluid":
                             {
                                 "Type": "Water",
                                 "Concentration": 100,
                                 "Flow Rate": 0.000303
-                            },
+                        },
                         "Soil":
                             {
                                 "Conductivity": 2.493,
                                 "Density": 1500,
                                 "Specific Heat": 1663.8,
                                 "Temperature": 13.0
-                            },
+                        },
                         "Grout":
                             {
                                 "Conductivity": 0.744,
                                 "Density": 1000,
                                 "Specific Heat": 1000
-                            }
+                        }
                     }
-                ]
-            ,
+                ],
             "G-func Pairs": [
                 [-14.583933, -3.258945],
                 [-14.459771, -3.201266],
@@ -728,11 +752,13 @@ class TestBaseGHXClass(unittest.TestCase):
                 [2.028000, 8.185450],
                 [2.275000, 8.200450],
                 [3.003000, 8.226450]
-            ]
+                ]
         }
 
-        csv_file_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
-        output_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', 'run', 'testing')
+        csv_file_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'examples', 'testing.csv')
+        output_path = os.path.join(os.path.dirname(
+            os.path.realpath(__file__)), '..', 'run', 'testing')
         curr_tst = BaseGHXClass(dict_bh, csv_file_path, output_path, False)
 
         tolerance = 0.1

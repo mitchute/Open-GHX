@@ -42,7 +42,6 @@ class FluidsClass:
         self.heat_capacity_val = self.heat_capacity()
 
     def dens(self):
-
         """
         Determines the fluid density as a function of temperature, in Celsius.
         Uses the CoolProp python library.
@@ -57,7 +56,6 @@ class FluidsClass:
         return self.dens_val
 
     def cp(self):
-
         """
         Determines the fluid specific heat as a function of temperature, in Celsius.
         Uses the CoolProp python library to find the fluid specific heat.
@@ -73,7 +71,6 @@ class FluidsClass:
         return self.cp_val
 
     def visc(self):
-
         """
         Determines the fluid viscosity as a function of temperature, in Celsius.
         Uses the CoolProp python library.
@@ -89,7 +86,6 @@ class FluidsClass:
         return self.visc_val
 
     def cond(self):
-
         """
         Determines the fluid conductivity as a function of temperature, in Celsius.
         Uses the CoolProp python library.
@@ -105,7 +101,6 @@ class FluidsClass:
         return self.cond_val
 
     def pr(self):
-
         """
         Determines the fluid Prandtl as a function of temperature, in Celsius.
         Uses the CoolProp python library.
@@ -117,7 +112,6 @@ class FluidsClass:
         return self.cp() * self.visc() / self.cond()
 
     def heat_capacity(self):
-
         """
         Calculates fluid thermal capacitance
         """
@@ -125,7 +119,6 @@ class FluidsClass:
         return self.mass_flow_rate * self.cp()
 
     def calc_mass_flow_rate(self):
-
         """
         Calculates the fluid mass flow rate
         """
@@ -135,7 +128,6 @@ class FluidsClass:
         return self.mass_flow_rate
 
     def update_fluid_state(self, new_temp=None, new_flow_rate=None):
-
         """
         Updates fluid state as necessary
         """

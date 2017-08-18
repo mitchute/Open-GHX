@@ -9,7 +9,6 @@ from ghx.my_print import PrintClass
 
 class GHXArray:
     def __init__(self, ghx_input_json_path, loads_path, output_path, print_output=True):
-
         """
         Class constructor
         """
@@ -30,7 +29,6 @@ class GHXArray:
         self.get_sim_config(self.ghx_input_json_path)
 
     def get_sim_config(self, sim_config_path):
-
         """
         Reads the simulation configuration. If not successful, program exits.
 
@@ -44,23 +42,25 @@ class GHXArray:
             with open(sim_config_path) as json_file:
                 self.json_data = json.load(json_file)
         except:  # pragma: no cover
-            PrintClass.fatal_error(message="Error reading simulation configuration---check file path")
+            PrintClass.fatal_error(
+                message="Error reading simulation configuration---check file path")
 
         try:
             try:
                 self.aggregation_type = self.json_data['Simulation Configuration']['Aggregation Type']
             except:  # pragma: no cover
-                PrintClass.my_print("....'Aggregation Type' key not found", "warn")
+                PrintClass.my_print(
+                    "....'Aggregation Type' key not found", "warn")
                 errors_found = True
 
         except:  # pragma: no cover
-            PrintClass.fatal_error(message="Error reading simulation configuration")
+            PrintClass.fatal_error(
+                message="Error reading simulation configuration")
 
         if errors_found:  # pragma: no cover
             PrintClass.fatal_error(message="Error loading data")
 
     def simulate(self):
-
         """
         Main simulation routine. Simulates the GHXArray object.
 
@@ -80,5 +80,6 @@ class GHXArray:
                                       self.output_path,
                                       self.print_output).simulate()
         else:
-            PrintClass.my_print("\tAggregation Type \"%s\" not found" % self.aggregation_type, "warn")
+            PrintClass.my_print(
+                "\tAggregation Type \"%s\" not found" % self.aggregation_type, "warn")
             PrintClass.fatal_error(message="Error starting program")

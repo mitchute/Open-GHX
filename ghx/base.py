@@ -15,7 +15,6 @@ class BaseGHXClass:
     """
 
     def __init__(self, json_data, loads_path, output_path, print_output=True):
-
         """
         Class constructor
         """
@@ -53,7 +52,8 @@ class BaseGHXClass:
         try:
             self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
         except:  # pragma: no cover
-            PrintClass.my_print("....'Min Hourly History' key not found", 'warn')
+            PrintClass.my_print(
+                "....'Min Hourly History' key not found", 'warn')
             errors_found = True
 
         try:
@@ -84,11 +84,13 @@ class BaseGHXClass:
             self.total_bh_length += this_bh.depth
             self.ghx_list.append(this_bh)
 
-        self.borehole = BoreholeClass(self.merge_dicts(ghx_dict_list), print_output)
+        self.borehole = BoreholeClass(
+            self.merge_dicts(ghx_dict_list), print_output)
 
         try:
             PrintClass.my_print("....Importing flow rates and loads")
-            load_pairs = np.genfromtxt(loads_path, delimiter=',', skip_header=1)
+            load_pairs = np.genfromtxt(
+                loads_path, delimiter=',', skip_header=1)
             self.sim_hours = []
             self.sim_loads = []
             self.total_flow_rate = []
@@ -117,7 +119,6 @@ class BaseGHXClass:
         self.agg_loads_flag = True
 
     def merge_dicts(self, list_of_dicts):
-
         """
         Merges two-level dictionaries into a single identical dictionary.
         For non-int/floats arguments, the first item in the list will remain in place.
@@ -154,19 +155,19 @@ class BaseGHXClass:
         return z
 
     def calc_ts(self):
-
         """
         Calculates non-dimensional time.
         """
 
         try:
-            ts = self.borehole.depth ** 2 / (9 * self.borehole.soil.thermal_diffusivity)
+            ts = self.borehole.depth ** 2 / \
+                (9 * self.borehole.soil.thermal_diffusivity)
             return ts
         except:  # pragma: no cover
-            PrintClass.fatal_error(message="Error calculating simulation time scale \"ts\"")
+            PrintClass.fatal_error(
+                message="Error calculating simulation time scale \"ts\"")
 
     def calc_g_func(self):
-
         """
         Calculate g-functions for given ground heat exchangers.
         """
@@ -191,18 +192,17 @@ class BaseGHXClass:
             # if value is below range, extrapolate down
             return ((ln_t_ts - self.g_func_lntts[lower_index]) / (
                 self.g_func_lntts[lower_index + 1] - self.g_func_lntts[lower_index])) * (
-                       self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
+                self.g_func_val[lower_index + 1] - self.g_func_val[lower_index]) + self.g_func_val[lower_index]
         elif ln_t_ts > self.g_func_lntts[upper_index]:
             # if value is above range, extrapolate up
             return ((ln_t_ts - self.g_func_lntts[upper_index]) / (
                 self.g_func_lntts[upper_index - 1] - self.g_func_lntts[upper_index])) * (
-                       self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
+                self.g_func_val[upper_index - 1] - self.g_func_val[upper_index]) + self.g_func_val[upper_index]
         else:
             # value is in range
             return np.interp(ln_t_ts, self.g_func_lntts, self.g_func_val)
 
     def generate_output_reports(self):  # pragma: no cover
-
         """
         Generates output results
         """
