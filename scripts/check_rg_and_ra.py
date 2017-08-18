@@ -47,7 +47,6 @@ class BHResistanceClass:
         self.calc_bh_grout_thermal_resistance()
 
     def calc_bh_average_thermal_resistance(self):
-
         """
         Calculates the average thermal resistance of the borehole using the first-order multipole method.
 
@@ -57,18 +56,20 @@ class BHResistanceClass:
         Equation 13
         """
 
-        final_term_1 = np.log(self.theta_2 / (2 * self.theta_1 * (1 - self.theta_1 ** 4) ** self.sigma))
-        num_final_term_2 = self.theta_3 ** 2 * (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
+        final_term_1 = np.log(
+            self.theta_2 / (2 * self.theta_1 * (1 - self.theta_1 ** 4) ** self.sigma))
+        num_final_term_2 = self.theta_3 ** 2 * \
+            (1 - (4 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4)) ** 2
         den_final_term_2_pt_1 = (1 + self.beta) / (1 - self.beta)
         den_final_term_2_pt_2 = self.theta_3 ** 2 * \
             (1 + (16 * self.sigma * self.theta_1 ** 4) / (1 - self.theta_1 ** 4) ** 2)
         den_final_term_2 = den_final_term_2_pt_1 + den_final_term_2_pt_2
         final_term_2 = num_final_term_2 / den_final_term_2
 
-        self.resist_bh_ave = (1 / (4 * np.pi * self.grout.conductivity)) * (self.beta + final_term_1 - final_term_2)
+        self.resist_bh_ave = (1 / (4 * np.pi * self.grout.conductivity)
+                              ) * (self.beta + final_term_1 - final_term_2)
 
     def calc_bh_total_internal_thermal_resistance(self):
-
         """
         Calculates the total internal thermal resistance of the borehole using the first-order multipole method.
 
@@ -80,10 +81,13 @@ class BHResistanceClass:
 
         final_term_1 = np.log(
             ((1 + self.theta_1 ** 2) ** self.sigma) / (self.theta_3 * (1 - self.theta_1 ** 2) ** self.sigma))
-        num_term_2 = self.theta_3 ** 2 * (1 - self.theta_1 ** 4 + 4 * self.sigma * self.theta_1 ** 2) ** 2
-        den_term_2_pt_1 = (1 + self.beta) / (1 - self.beta) * (1 - self.theta_1 ** 4) ** 2
+        num_term_2 = self.theta_3 ** 2 * \
+            (1 - self.theta_1 ** 4 + 4 * self.sigma * self.theta_1 ** 2) ** 2
+        den_term_2_pt_1 = (1 + self.beta) / (1 - self.beta) * \
+            (1 - self.theta_1 ** 4) ** 2
         den_term_2_pt_2 = self.theta_3 ** 2 * (1 - self.theta_1 ** 4) ** 2
-        den_term_2_pt_3 = 8 * self.sigma * self.theta_1 ** 2 * self.theta_3 ** 2 * (1 + self.theta_1 ** 4)
+        den_term_2_pt_3 = 8 * self.sigma * self.theta_1 ** 2 * \
+            self.theta_3 ** 2 * (1 + self.theta_1 ** 4)
         den_term_2 = den_term_2_pt_1 - den_term_2_pt_2 + den_term_2_pt_3
         final_term_2 = num_term_2 / den_term_2
 
@@ -93,6 +97,7 @@ class BHResistanceClass:
     def calc_bh_grout_thermal_resistance(self):
 
         self.resist_grout = self.resist_bh_ave - self.resist_pipe / 2
+
 
 out_file = open("my_data.csv", 'w')
 
@@ -114,25 +119,34 @@ for d_bh in borehole_diameters:
                 elif config == 'C':
                     s = d_bh - d_po
 
-                cls = BHResistanceClass(d_po=d_po, d_bh=d_bh, s=s, soil_cond=s_k, grout_cond=g_k, resist_pipe=0.05)
+                cls = BHResistanceClass(
+                    d_po=d_po, d_bh=d_bh, s=s, soil_cond=s_k, grout_cond=g_k, resist_pipe=0.05)
 
                 # out_file.write("%f,%f,%f,%f,%f,%f\n" %
-                               # (cls.theta_1,
-                                # cls.theta_2,
-                                # cls.soil.conductivity,
-                                # cls.grout.conductivity,
-                                # cls.resist_grout,
-                                # cls.resist_bh_total_internal))
+                # (cls.theta_1,
+                # cls.theta_2,
+                # cls.soil.conductivity,
+                # cls.grout.conductivity,
+                # cls.resist_grout,
+                # cls.resist_bh_total_internal))
 
-                out_file.write("%s%0.3f\n" %("dict_bh['Radius'] = ", d_bh/2.0))
-                out_file.write("%s%0.8f\n" %("dict_bh['Shank Spacing'] = ", s))
-                out_file.write("%s%0.1f\n" %("dict_bh['Soil']['Conductivity'] = ", s_k))
-                out_file.write("%s%0.1f\n" %("dict_bh['Grout']['Conductivity'] = ", g_k))
-                out_file.write("%s\n" %("curr_tst = ghx.BoreholeClass(dict_bh, False)"))
-                out_file.write("%s\n" %("curr_tst.pipe.resist_pipe = 0.05"))
-                out_file.write("%s%0.5f%s\n" %("self.assertAlmostEqual(curr_tst.theta_1, ", cls.theta_1, ", delta=tolerance)"))
-                out_file.write("%s%0.1f%s\n" %("self.assertAlmostEqual(curr_tst.theta_2, ", cls.theta_2, ", delta=tolerance)"))
-                out_file.write("%s%0.5f%s\n" %("self.assertAlmostEqual(curr_tst.calc_bh_grout_resistance(), ", cls.resist_grout, ", delta=tolerance)"))
+                out_file.write("%s%0.3f\n" %
+                               ("dict_bh['Radius'] = ", d_bh / 2.0))
+                out_file.write("%s%0.8f\n" %
+                               ("dict_bh['Shank Spacing'] = ", s))
+                out_file.write("%s%0.1f\n" %
+                               ("dict_bh['Soil']['Conductivity'] = ", s_k))
+                out_file.write("%s%0.1f\n" %
+                               ("dict_bh['Grout']['Conductivity'] = ", g_k))
+                out_file.write("%s\n" %
+                               ("curr_tst = ghx.BoreholeClass(dict_bh, False)"))
+                out_file.write("%s\n" % ("curr_tst.pipe.resist_pipe = 0.05"))
+                out_file.write("%s%0.5f%s\n" % (
+                    "self.assertAlmostEqual(curr_tst.theta_1, ", cls.theta_1, ", delta=tolerance)"))
+                out_file.write("%s%0.1f%s\n" % (
+                    "self.assertAlmostEqual(curr_tst.theta_2, ", cls.theta_2, ", delta=tolerance)"))
+                out_file.write("%s%0.5f%s\n" % (
+                    "self.assertAlmostEqual(curr_tst.calc_bh_grout_resistance(), ", cls.resist_grout, ", delta=tolerance)"))
                 out_file.write("\n")
 
             # out_file.write("\n")

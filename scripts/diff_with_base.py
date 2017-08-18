@@ -29,12 +29,12 @@ def diff_csv_files(base_csv, test_csv):
         print("'base' and 'test' do not have the same shape")
         sys.exit(1)
 
-    if np.any(base_data[:,0]) != np.any(test_data[:,0]):
+    if np.any(base_data[:, 0]) != np.any(test_data[:, 0]):
         print("time step mis-match")
         sys.exit(1)
 
     rms_err = []  # root-mean squared error
-    #map_err = []  # mean absolute percent error
+    # map_err = []  # mean absolute percent error
     max_abs_err = []  # absolute max error
 
     for i in range(1, base_data.shape[1]):
@@ -105,7 +105,8 @@ def diff_dir(path_to_base, path_to_root):
             else:
                 print(os.path.join(root, dir))
                 rms_err, max_abs_err = diff_csv_files(base_csv, test_csv)
-                abs_sim_time, percent_base_sim_time = get_time(base_txt, test_txt)
+                abs_sim_time, percent_base_sim_time = get_time(
+                    base_txt, test_txt)
 
                 try:
                     num = test_dir.split('\\')[-2]
@@ -142,14 +143,18 @@ def diff_dir(path_to_base, path_to_root):
                     min_hist = "0"
                     agg_start = "0"
 
-                out_file.write("%s,%s,%s,%s," % (test_dir, num, min_hist, agg_start))
+                out_file.write("%s,%s,%s,%s," %
+                               (test_dir, num, min_hist, agg_start))
 
                 for i in range(len(rms_err)):
-                    out_file.write("%0.5f,%0.5f," % (rms_err[i], max_abs_err[i]))
+                    out_file.write("%0.5f,%0.5f," %
+                                   (rms_err[i], max_abs_err[i]))
 
-                out_file.write("%0.1f,%0.4f\n" % (abs_sim_time, percent_base_sim_time))
+                out_file.write("%0.1f,%0.4f\n" %
+                               (abs_sim_time, percent_base_sim_time))
 
     out_file.close()
+
 
 path_to_base_file = sys.argv[1]
 path_to_root = sys.argv[2]

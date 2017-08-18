@@ -20,4 +20,5 @@ def make_interval(depth, depth_integer_multiplier, num, step_num, start_val):
 
     return all_groups_str
 
+
 print(make_interval(12, 2, 10, 10, 10))
