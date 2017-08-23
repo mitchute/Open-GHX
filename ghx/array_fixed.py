@@ -26,6 +26,27 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         BaseGHXClass.__init__(self, json_data, loads_path,
                               output_path, print_output)
 
+        errors_found = False
+
+        try:
+            self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
+        except:  # pragma: no cover
+            PrintClass.my_print(
+                "....'Min Hourly History' key not found", 'warn')
+            errors_found = True
+
+        try:
+            self.agg_load_intervals = json_data['Simulation Configuration']['Intervals']
+        except:  # pragma: no cover
+            PrintClass.my_print("....'Intervals' key not found", 'warn')
+            errors_found = True
+
+        if not errors_found:
+            # success
+            PrintClass.my_print("Simulation successfully initialized")
+        else:  # pragma: no cover
+            PrintClass.fatal_error(message="Error initializing GHXArrayFixedAggBlocks")
+
         # class data
 
         # set load aggregation intervals

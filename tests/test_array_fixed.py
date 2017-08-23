@@ -181,6 +181,11 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
         curr_tst = GHXArrayFixedAggBlocks(
             dict_bh, csv_file_path, output_path, False)
 
+        self.assertEqual(curr_tst.min_hourly_history,
+                         dict_bh['Simulation Configuration']['Min Hourly History'])
+        self.assertEqual(curr_tst.agg_load_intervals,
+                         dict_bh['Simulation Configuration']['Intervals'])
+
         # make a few dummy AggregatedLoad classes
         obj_1 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
         obj_2 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10, 10)

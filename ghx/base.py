@@ -50,19 +50,6 @@ class BaseGHXClass:
             errors_found = True
 
         try:
-            self.min_hourly_history = json_data['Simulation Configuration']['Min Hourly History']
-        except:  # pragma: no cover
-            PrintClass.my_print(
-                "....'Min Hourly History' key not found", 'warn')
-            errors_found = True
-
-        try:
-            self.agg_load_intervals = json_data['Simulation Configuration']['Intervals']
-        except:  # pragma: no cover
-            PrintClass.my_print("....'Intervals' key not found", 'warn')
-            errors_found = True
-
-        try:
             self.g_func_lntts = []
             self.g_func_val = []
             for pair in json_data['G-func Pairs']:
@@ -101,10 +88,7 @@ class BaseGHXClass:
         except:  # pragma: no cover
             PrintClass.fatal_error(message="Error importing loads")
 
-        if not errors_found:
-            # success
-            PrintClass.my_print("Simulation successfully initialized")
-        else:  # pragma: no cover
+        if errors_found: # pragma: no cover
             PrintClass.fatal_error(message="Error initializing BaseGHXClass")
 
         self.ts = self.calc_ts()

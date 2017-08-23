@@ -179,10 +179,6 @@ class TestBaseGHXClass(unittest.TestCase):
             curr_tst.sim_years, dict_bh['Simulation Configuration']['Simulation Years'])
         self.assertEqual(curr_tst.aggregation_type,
                          dict_bh['Simulation Configuration']['Aggregation Type'])
-        self.assertEqual(curr_tst.min_hourly_history,
-                         dict_bh['Simulation Configuration']['Min Hourly History'])
-        self.assertEqual(curr_tst.agg_load_intervals,
-                         dict_bh['Simulation Configuration']['Intervals'])
 
         i = 0
 

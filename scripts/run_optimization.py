@@ -6,7 +6,7 @@ import ghx.array as ghx
 
 cwd = os.getcwd()
 
-input_path = os.path.join(cwd, "..", "examples", "1x2_Std_GHX.json")
+input_path = os.path.join(cwd, "..", "examples", "1x2_Std_GHX_Fixed.json")
 load_path = os.path.join(cwd, "..", "examples", "1x2_Std_GHX_Sin.csv")
 
 with open(input_path) as json_file:
