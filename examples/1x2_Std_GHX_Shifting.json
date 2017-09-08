@@ -3,9 +3,9 @@
     "Simulation Configuration":
         {
         "Simulation Years":1,
-        "Aggregation Type":"Fixed",
+        "Aggregation Type":"Shifting",
         "History Depth":5,
-        "History Levels": [12, 48, 192, 384]
+        "History Expansion Rate": 2
         },
     "GHXs":
         [

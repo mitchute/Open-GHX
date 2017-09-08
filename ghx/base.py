@@ -94,12 +94,7 @@ class BaseGHXClass:
         self.ts = self.calc_ts()
         self.temp_bh = deque()
         self.temp_mft = deque()
-
         self.agg_load_objects = []
-
-        self.g_func_hourly = deque()
-        self.hourly_loads = deque()
-
         self.agg_loads_flag = True
 
     def merge_dicts(self, list_of_dicts):
@@ -144,8 +139,7 @@ class BaseGHXClass:
         """
 
         try:
-            ts = self.borehole.depth ** 2 / \
-                (9 * self.borehole.soil.thermal_diffusivity)
+            ts = self.borehole.depth ** 2 / (9 * self.borehole.soil.thermal_diffusivity)
             return ts
         except:  # pragma: no cover
             PrintClass.fatal_error(

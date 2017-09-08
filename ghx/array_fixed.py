@@ -3,7 +3,7 @@ from collections import deque
 
 import numpy as np
 
-from ghx.aggregated_loads import AggregatedLoad
+from ghx.aggregated_loads import AggregatedLoadFixed
 from ghx.base import BaseGHXClass
 from ghx.constants import ConstantClass
 from ghx.my_print import PrintClass
@@ -53,7 +53,10 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         self.set_load_aggregation()
 
         # set first aggregated load, which is zero. Need this for later
-        self.agg_load_objects.append(AggregatedLoad([0], 0, 1, True))
+        self.agg_load_objects.append(AggregatedLoadFixed([0], 0, 1, True))
+
+        self.g_func_hourly = deque()
+        self.hourly_loads = deque()
 
     def set_load_aggregation(self):
         """
@@ -85,7 +88,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
         for i in range(self.agg_load_intervals[0]):
             agg_loads.append(self.hourly_loads[i])
 
-        self.agg_load_objects.append(AggregatedLoad(
+        self.agg_load_objects.append(AggregatedLoadFixed(
             agg_loads, prev_sim_hour, len(agg_loads)))
 
     def collapse_aggregate_loads(self):
@@ -148,7 +151,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
             if max_hour < this_obj.last_sim_hour:
                 max_hour = this_obj.last_sim_hour
 
-        return AggregatedLoad(loads, min_hour, len(loads))
+        return AggregatedLoadFixed(loads, min_hour, len(loads))
 
     def simulate(self):
         """
@@ -273,8 +276,7 @@ class GHXArrayFixedAggBlocks(BaseGHXClass):
                         self.borehole.soil.undisturbed_temp + sum(temp_mft_hourly) + sum(temp_mft_agg))
 
                     # update borehole temperature
-                    self.borehole.pipe.fluid.update_fluid_state(
-                        new_temp=self.temp_mft[-1])
+                    self.borehole.pipe.fluid.update_fluid_state(new_temp=self.temp_mft[-1])
 
         self.generate_output_reports()
 

@@ -100,3 +100,6 @@ run
 *.gz
 *.bbl
 *.blg
+
+# Other stuff
+*.xlsx

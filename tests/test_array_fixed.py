@@ -2,7 +2,7 @@ import os
 import unittest
 from collections import deque
 
-from ghx.aggregated_loads import AggregatedLoad
+from ghx.aggregated_loads import AggregatedLoadFixed
 from ghx.array_fixed import GHXArrayFixedAggBlocks
 
 
@@ -187,10 +187,10 @@ class TestGHXArrayFixedAggBlocks(unittest.TestCase):
                          dict_bh['Simulation Configuration']['Intervals'])
 
         # make a few dummy AggregatedLoad classes
-        obj_1 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
-        obj_2 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10, 10)
-        obj_3 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20, 10)
-        obj_4 = AggregatedLoad([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 30, 10)
+        obj_1 = AggregatedLoadFixed([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 0, 10)
+        obj_2 = AggregatedLoadFixed([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 10, 10)
+        obj_3 = AggregatedLoadFixed([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 20, 10)
+        obj_4 = AggregatedLoadFixed([1, 2, 3, 4, 5, 6, 7, 8, 9, 10], 30, 10)
 
         obj_list = [obj_1, obj_2, obj_3, obj_4]
 
